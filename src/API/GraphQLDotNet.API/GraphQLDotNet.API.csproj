@@ -10,6 +10,17 @@
 
 
   <ItemGroup>
-    <PackageReference Include="graphiql" Version="1.2.0" />
+    <PackageReference Include="GraphQL" Version="3.0.0-preview-1271" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.5.0-alpha0027" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.5.0-alpha0027" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Schemas\" />
+    <Folder Include="GraphTypes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Contracts\GraphQLDotNet.Contracts\GraphQLDotNet.Contracts.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

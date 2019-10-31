@@ -1,6 +1,6 @@
 using System;
 
-namespace GraphQLDotNet.API
+namespace GraphQLDotNet.Contracts
 {
     public class WeatherForecast
     {

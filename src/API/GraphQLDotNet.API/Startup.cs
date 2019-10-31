@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GraphiQl;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using GraphQLDotNet.API.Schemas;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace GraphQLDotNet.API
 {
@@ -26,6 +22,19 @@ namespace GraphQLDotNet.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
+            services.AddSingleton<WeatherForecastSchema>();
+
+            services.AddGraphQL(options =>
+            {
+                options.EnableMetrics = true;
+                options.ExposeExceptions = false;
+            });
+            
             services.AddControllers();
         }
 
@@ -38,7 +47,9 @@ namespace GraphQLDotNet.API
             }
 
             //app.UseHttpsRedirection();
-            app.UseGraphiQl();
+            
+            app.UseGraphQL<WeatherForecastSchema>();
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
 
             app.UseRouting();
 
