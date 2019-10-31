@@ -7,23 +7,24 @@ using Xamarin.Forms;
 
 using GraphQLDotNet.Mobile.Models;
 using GraphQLDotNet.Mobile.Views;
+using GraphQLDotNet.Contracts;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
+        public ObservableCollection<WeatherForecast> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public ItemsViewModel()
         {
             Title = "Browse";
-            Items = new ObservableCollection<Item>();
+            Items = new ObservableCollection<WeatherForecast>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            MessagingCenter.Subscribe<NewItemPage, WeatherForecast>(this, "AddItem", async (obj, item) =>
             {
-                var newItem = item as Item;
+                var newItem = item as WeatherForecast;
                 Items.Add(newItem);
                 await DataStore.AddItemAsync(newItem);
             });

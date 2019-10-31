@@ -1,16 +1,17 @@
 ﻿using System;
-
+using GraphQLDotNet.Contracts;
 using GraphQLDotNet.Mobile.Models;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public Item? Item { get; set; }
-        public ItemDetailViewModel(Item? item = null)
+        public ItemDetailViewModel(WeatherForecast weatherForecast)
         {
-            Title = item?.Text;
-            Item = item;
+            Title = weatherForecast.Date.ToLongDateString();
+            Item = weatherForecast;
         }
+
+        public WeatherForecast Item { get; }
     }
 }

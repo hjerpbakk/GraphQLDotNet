@@ -5,6 +5,7 @@ using Xamarin.Forms.Xaml;
 
 using GraphQLDotNet.Mobile.Models;
 using GraphQLDotNet.Mobile.ViewModels;
+using GraphQLDotNet.Contracts;
 
 namespace GraphQLDotNet.Mobile.Views
 {
@@ -26,10 +27,10 @@ namespace GraphQLDotNet.Mobile.Views
         {
             InitializeComponent();
 
-            var item = new Item
+            var item = new WeatherForecast(WeatherKind.Sunny)
             {
-                Text = "Item 1",
-                Description = "This is an item description."
+                Date = DateTime.Now,
+                Summary = "Always sunny in Philadelphia"
             };
 
             viewModel = new ItemDetailViewModel(item);

@@ -2,7 +2,7 @@
 
 namespace GraphQLDotNet.Mobile.Models
 {
-    public class Item
+    public class ItemOld
     {
         public string Id { get; set; } = "";
         public string Text { get; set; } = "";

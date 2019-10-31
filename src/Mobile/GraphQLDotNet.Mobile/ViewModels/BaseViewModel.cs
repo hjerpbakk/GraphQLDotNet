@@ -7,12 +7,13 @@ using Xamarin.Forms;
 
 using GraphQLDotNet.Mobile.Models;
 using GraphQLDotNet.Mobile.Services;
+using GraphQLDotNet.Contracts;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IDataStore<WeatherForecast> DataStore => DependencyService.Get<IDataStore<WeatherForecast>>();
 
         bool isBusy = false;
         public bool IsBusy

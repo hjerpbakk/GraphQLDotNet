@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using GraphQLDotNet.Mobile.Models;
 using GraphQLDotNet.Mobile.Views;
 using GraphQLDotNet.Mobile.ViewModels;
+using GraphQLDotNet.Contracts;
 
 namespace GraphQLDotNet.Mobile.Views
 {
@@ -29,11 +30,11 @@ namespace GraphQLDotNet.Mobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Item;
-            if (item == null)
+            var weatherForecast = args.SelectedItem as WeatherForecast;
+            if (weatherForecast == null)
                 return;
 
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(weatherForecast)));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;
