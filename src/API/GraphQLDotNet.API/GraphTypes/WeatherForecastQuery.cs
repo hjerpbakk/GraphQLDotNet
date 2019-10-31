@@ -9,9 +9,12 @@ namespace GraphQLDotNet.API.GraphTypes
         public WeatherForecastQuery()
         {
             Field<ListGraphType<WeatherForecastType>>("forecasts", "Get forecasts for the next dayz.",
-                resolve: context =>
+                new QueryArguments(
+                        new QueryArgument<DateGraphType> { Name = "date", Description = "The Date of the forecast." }
+                    ),
+                context =>
                 {
-                    return new WeatherForecastController().Get();
+                    return new WeatherForecastController().Get(context.GetArgument<DateTime>("date"));
                 });
         }
     }
