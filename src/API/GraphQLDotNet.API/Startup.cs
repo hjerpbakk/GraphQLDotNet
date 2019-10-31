@@ -1,5 +1,6 @@
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using GraphQLDotNet.API.GraphTypes;
 using GraphQLDotNet.API.Schemas;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace GraphQLDotNet.API
                 options.AllowSynchronousIO = true;
             });
 
+            services.AddSingleton<WeatherForecastQuery>();
             services.AddSingleton<WeatherForecastSchema>();
 
             services.AddGraphQL(options =>
