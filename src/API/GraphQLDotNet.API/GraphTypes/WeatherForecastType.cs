@@ -1,5 +1,4 @@
-﻿using System;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 using GraphQLDotNet.Contracts;
 
 namespace GraphQLDotNet.API.GraphTypes
@@ -12,6 +11,7 @@ namespace GraphQLDotNet.API.GraphTypes
             Field(x => x.TemperatureC).Description("The Temperature in C.");
             Field(x => x.TemperatureF).Description("The Temperature in F.");
             Field(x => x.Summary).Description("A textual summary.");
+            Field(x => x.Kind).Description("The kind of weather.");
         }
     }
 }

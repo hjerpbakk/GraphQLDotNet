@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using GraphQLDotNet.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace GraphQLDotNet.API.Controllers
 {
@@ -17,16 +15,11 @@ namespace GraphQLDotNet.API.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public WeatherForecastController()
-        {
-
-        }
-
         [HttpGet]
         public IEnumerable<WeatherForecast> Get(DateTime dateTime)
         {
             var rng = new Random();
-            var forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast((WeatherKind)rng.Next(3))
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = rng.Next(-20, 55),
