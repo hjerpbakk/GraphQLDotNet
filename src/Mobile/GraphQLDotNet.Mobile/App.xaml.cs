@@ -13,7 +13,7 @@ namespace GraphQLDotNet.Mobile
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            DependencyService.Register<GraphQLDataStore>();
             MainPage = new AppShell();
         }
 
