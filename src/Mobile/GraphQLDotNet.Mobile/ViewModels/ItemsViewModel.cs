@@ -13,19 +13,19 @@ namespace GraphQLDotNet.Mobile.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<WeatherForecast> Items { get; set; }
+        public ObservableCollection<WeatherForecastModel> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public ItemsViewModel()
         {
             Title = "Browse";
-            Items = new ObservableCollection<WeatherForecast>();
+            Items = new ObservableCollection<WeatherForecastModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             MessagingCenter.Subscribe<NewItemPage, WeatherForecast>(this, "AddItem", async (obj, item) =>
             {
                 var newItem = item as WeatherForecast;
-                Items.Add(newItem);
+                Items.Add(new WeatherForecastModel(newItem));
                 await DataStore.AddItemAsync(newItem);
             });
         }
@@ -43,7 +43,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 var items = await DataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Items.Add(new WeatherForecastModel(item));
                 }
             }
             catch (Exception ex)

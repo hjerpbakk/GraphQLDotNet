@@ -33,7 +33,7 @@ namespace GraphQLDotNet.Mobile.Views
                 Summary = "Always sunny in Philadelphia"
             };
 
-            viewModel = new ItemDetailViewModel(item);
+            viewModel = new ItemDetailViewModel(new WeatherForecastModel(item));
             BindingContext = viewModel;
         }
     }

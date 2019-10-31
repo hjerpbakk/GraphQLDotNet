@@ -6,12 +6,12 @@ namespace GraphQLDotNet.Mobile.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public ItemDetailViewModel(WeatherForecast weatherForecast)
+        public ItemDetailViewModel(WeatherForecastModel weatherForecast)
         {
-            Title = weatherForecast.Date.ToLongDateString();
+            Title = weatherForecast.Date;
             Item = weatherForecast;
         }
 
-        public WeatherForecast Item { get; }
+        public WeatherForecastModel Item { get; }
     }
 }

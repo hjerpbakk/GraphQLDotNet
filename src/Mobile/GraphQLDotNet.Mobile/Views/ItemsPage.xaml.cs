@@ -30,7 +30,7 @@ namespace GraphQLDotNet.Mobile.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var weatherForecast = args.SelectedItem as WeatherForecast;
+            var weatherForecast = args.SelectedItem as WeatherForecastModel;
             if (weatherForecast == null)
                 return;
 

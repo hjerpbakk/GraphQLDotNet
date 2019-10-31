@@ -17,12 +17,11 @@
             </d:ListView.ItemsSource>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Date}" d:Text="{Binding .}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" />
-                            <Label Text="{Binding Summary}" d:Text="Item description" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
-                        </StackLayout>
-                    </ViewCell>
+                    <ImageCell Text="{Binding Date}" Detail="{Binding Summary}">
+                        <ImageCell.ImageSource>
+                            <FontImageSource FontFamily="{DynamicResource MaterialFontFamily}" Glyph="{Binding WeatherIcon}" Color="{StaticResource PrimaryColor}" />
+                        </ImageCell.ImageSource>
+                    </ImageCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
