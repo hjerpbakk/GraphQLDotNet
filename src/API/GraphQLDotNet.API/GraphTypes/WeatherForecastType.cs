@@ -8,10 +8,11 @@ namespace GraphQLDotNet.API.GraphTypes
         public WeatherForecastType()
         {
             Field(x => x.Date).Description("The Date of the forecast.");
-            Field(x => x.TemperatureC).Description("The Temperature in C.");
+            Field(x => x.Temperature).Description("The Temperature in C.");
             Field(x => x.TemperatureF).Description("The Temperature in F.");
             Field(x => x.Summary).Description("A textual summary.");
-            Field(x => x.Kind).Description("The kind of weather.");
+            Field(x => x.OpenWeatherIcon).Description("Icon id of the weather.");
+            Field(x => x.Location).Description("Location of the measurement.");
         }
     }
 }

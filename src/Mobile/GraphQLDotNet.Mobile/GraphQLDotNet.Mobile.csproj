@@ -17,4 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\GraphQLDotNet.Contracts\GraphQLDotNet.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="OpenWeather\" />
+  </ItemGroup>
 </Project>

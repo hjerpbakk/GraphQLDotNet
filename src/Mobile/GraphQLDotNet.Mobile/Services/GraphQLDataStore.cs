@@ -7,11 +7,12 @@ using GraphQL.Common.Exceptions;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using GraphQLDotNet.Contracts;
+using GraphQLDotNet.Mobile.Models;
 using Polly;
 
 namespace GraphQLDotNet.Mobile.Services
 {
-    public class GraphQLDataStore : IDataStore<WeatherForecast>
+    public class GraphQLDataStore : IDataStore<WeatherForecastModel>
     {
         static readonly Lazy<GraphQLHttpClient> _clientHolder = new Lazy<GraphQLHttpClient>(CreateGraphQLClient);
 
@@ -21,7 +22,7 @@ namespace GraphQLDotNet.Mobile.Services
         {
         }
 
-        public Task<bool> AddItemAsync(WeatherForecast item)
+        public Task<bool> AddItemAsync(WeatherForecastModel item)
         {
             throw new NotImplementedException();
         }
@@ -31,22 +32,21 @@ namespace GraphQLDotNet.Mobile.Services
             throw new NotImplementedException();
         }
 
-        public Task<WeatherForecast> GetItemAsync(DateTime date)
+        public Task<WeatherForecastModel> GetItemAsync(DateTime date)
         {
             throw new NotImplementedException();
         }
 
-        // TODO: Try IAsyncEnumerable too
-        public async Task<IEnumerable<WeatherForecast>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<WeatherForecastModel>> GetItemsAsync(bool forceRefresh = false)
         {
             var request = new GraphQLRequest { Query = "query { forecasts { date summary kind } } " };
 
             var response = await AttemptAndRetry(() => Client.SendQueryAsync(request)).ConfigureAwait(false);
 
-            return response.GetDataFieldAs<IEnumerable<WeatherForecast>>("forecasts");
+            return response.GetDataFieldAs<IEnumerable<WeatherForecastModel>>("forecasts");
         }
 
-        public Task<bool> UpdateItemAsync(WeatherForecast item)
+        public Task<bool> UpdateItemAsync(WeatherForecastModel item)
         {
             throw new NotImplementedException();
         }

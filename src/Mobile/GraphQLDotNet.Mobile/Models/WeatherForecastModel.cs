@@ -11,7 +11,7 @@ namespace GraphQLDotNet.Mobile.Models
         public WeatherForecastModel(WeatherForecast weatherForecast)
         {
             this.weatherForecast = weatherForecast;
-            WeatherIcon = (string)typeof(IconFont).GetField(weatherForecast.Kind.ToString()).GetRawConstantValue();
+            WeatherIcon = (string)typeof(IconFont).GetField(WeatherKind.Sunny.ToString()).GetRawConstantValue();
         }
 
         public string WeatherIcon { get; }

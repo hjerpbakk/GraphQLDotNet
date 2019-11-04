@@ -1,21 +1,44 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using GraphQL.Types;
-using GraphQLDotNet.API.Controllers;
+using GraphQLDotNet.Contracts;
+using GraphQLDotNet.Services.OpenWeather;
 
 namespace GraphQLDotNet.API.GraphTypes
 {
-    public class WeatherForecastQuery : ObjectGraphType
+    public sealed class WeatherForecastQuery : ObjectGraphType
     {
-        public WeatherForecastQuery()
+        public WeatherForecastQuery(IOpenWeatherClient openWeatherClient)
         {
-            Field<ListGraphType<WeatherForecastType>>("forecasts", "Get forecasts for the next dayz.",
+            Field<WeatherForecastType>("forecast", "Get forecast for the next dayz.",
                 new QueryArguments(
-                        new QueryArgument<DateGraphType> { Name = "date", Description = "The Date of the forecast." }
+                        new QueryArgument<NonNullGraphType<LongGraphType>> { Name = "city_id", Description = "Id of the city to fetch weather from." }
                     ),
                 context =>
                 {
-                    return new WeatherForecastController().Get(context.GetArgument<DateTime>("date"));
+                    return openWeatherClient.GetWeatherFor(context.GetArgument<long>("city_id"));
                 });
+            Field<WeatherLocationType>("location", "Location from name",
+                new QueryArguments(
+                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "name", Description = "Name of the location to fetch." }
+                    ),
+                context =>
+                {
+                    return openWeatherClient.GetLoactionFor(context.GetArgument<string>("name"));
+                });
+            Field<WeatherForecastType>("forecastForLocation", "Get forecast for the next dayz",
+                new QueryArguments(
+                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "name", Description = "Name of the location from witch to fetch weather." }
+                    ),
+                context =>
+                {
+                    return GetWeatherFor(openWeatherClient, context.GetArgument<string>("name"));
+                });
+        }
+
+        private async Task<WeatherForecast> GetWeatherFor(IOpenWeatherClient openWeatherClient, string name)
+        {
+            var location = await openWeatherClient.GetLoactionFor(name);
+            return await openWeatherClient.GetWeatherFor(location.Id);
         }
     }
 }

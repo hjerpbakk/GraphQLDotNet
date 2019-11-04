@@ -1,7 +1,10 @@
+using System;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
-using GraphQLDotNet.API.GraphTypes;
+using GraphQLDotNet.API.OpenWeather;
 using GraphQLDotNet.API.Schemas;
+using GraphQLDotNet.Services;
+using LightInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -20,21 +23,26 @@ namespace GraphQLDotNet.API
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureContainer(IServiceContainer serviceContainer)
+        {
+            serviceContainer.RegisterFrom<ServiceCompositionRoot>();
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
             });
 
-            services.AddSingleton<WeatherForecastQuery>();
-            services.AddSingleton<WeatherForecastSchema>();
-
+            services.AddOpenWeather(Configuration);
             services.AddGraphQL(options =>
             {
                 options.EnableMetrics = true;
-                options.ExposeExceptions = false;
+                options.ExposeExceptions = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
             });
             
             services.AddControllers();

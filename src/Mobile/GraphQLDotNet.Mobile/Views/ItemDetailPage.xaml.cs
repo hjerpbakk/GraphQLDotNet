@@ -14,7 +14,7 @@ namespace GraphQLDotNet.Mobile.Views
     [DesignTimeVisible(false)]
     public partial class ItemDetailPage : ContentPage
     {
-        ItemDetailViewModel viewModel;
+        ItemDetailViewModel? viewModel;
 
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {
@@ -27,14 +27,14 @@ namespace GraphQLDotNet.Mobile.Views
         {
             InitializeComponent();
 
-            var item = new WeatherForecast(WeatherKind.Sunny)
+            /*var item = new WeatherForecast(WeatherKind.Sunny)
             {
                 Date = DateTime.Now,
                 Summary = "Always sunny in Philadelphia"
             };
 
             viewModel = new ItemDetailViewModel(new WeatherForecastModel(item));
-            BindingContext = viewModel;
+            BindingContext = viewModel;*/
         }
     }
 }

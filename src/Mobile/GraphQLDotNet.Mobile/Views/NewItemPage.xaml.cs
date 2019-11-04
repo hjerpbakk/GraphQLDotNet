@@ -14,17 +14,17 @@ namespace GraphQLDotNet.Mobile.Views
     [DesignTimeVisible(false)]
     public partial class NewItemPage : ContentPage
     {
-        public WeatherForecast Item { get; set; }
+        public WeatherForecast? Item { get; set; }
 
         public NewItemPage()
         {
             InitializeComponent();
 
-            Item = new WeatherForecast(WeatherKind.Sunny)
+            /*Item = new WeatherForecastModel(WeatherKind.Sunny)
             {
                 Date = DateTime.Now.Date,
                 Summary = "This is an item description."
-            };
+            };*/
 
             BindingContext = this;
         }
