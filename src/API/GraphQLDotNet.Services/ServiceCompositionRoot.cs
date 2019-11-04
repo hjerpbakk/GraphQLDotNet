@@ -7,8 +7,7 @@ namespace GraphQLDotNet.Services
     {
         public void Compose(IServiceRegistry serviceRegistry)
         {
-            serviceRegistry.Register<IOpenWeatherClient, OpenWeatherClient>(new PerContainerLifetime())
-                .Decorate(typeof(IOpenWeatherClient), typeof(CachedOpenWeatherClient));
+            serviceRegistry.Decorate(typeof(IOpenWeatherClient), typeof(CachedOpenWeatherClient));
         }
     }
 }

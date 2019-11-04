@@ -11,12 +11,12 @@ namespace GraphQLDotNet.Services.OpenWeather
     public sealed class OpenWeatherClient : IOpenWeatherClient
     {
         private readonly OpenWeatherConfiguration openWeatherConfiguration;
-        private readonly IHttpClientFactory httpClientFactory;
+        private readonly HttpClient httpClient;
 
-        public OpenWeatherClient(OpenWeatherConfiguration openWeatherConfiguration, IHttpClientFactory httpClientFactory)
+        public OpenWeatherClient(OpenWeatherConfiguration openWeatherConfiguration, HttpClient httpClient)
         {
             this.openWeatherConfiguration = openWeatherConfiguration;
-            this.httpClientFactory = httpClientFactory;
+            this.httpClient = httpClient;
         }
 
         public async Task<WeatherForecast> GetWeatherFor(long id)
@@ -26,7 +26,6 @@ namespace GraphQLDotNet.Services.OpenWeather
                 throw new ArgumentException("Specify a valid location id.", nameof(id));
             }
 
-            using var httpClient = httpClientFactory.CreateClient(nameof(OpenWeatherClient));
             var url = string.Format(openWeatherConfiguration.OpenWeatherURL, id);
             var openWeatherForecast = await httpClient.GetAsync<Forecast>(url);
             var weather = openWeatherForecast.Weather.First();

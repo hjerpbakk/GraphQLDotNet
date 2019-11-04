@@ -32,7 +32,7 @@ namespace GraphQLDotNet.API.OpenWeather
             services.AddSingleton<WeatherForecastQuery>();
             services.AddSingleton<WeatherForecastSchema>();
 
-            services.AddHttpClient(nameof(OpenWeatherClient), client =>
+            services.AddHttpClient<IOpenWeatherClient, OpenWeatherClient>(client =>
             {
                 client.BaseAddress = new Uri(openWeatherConfiguration.BaseUrl);
             })
