@@ -24,7 +24,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
         {
             var graphQLRequest = new GraphQLRequest
             {
-                Query = "query GetLocations($beginsWith: String, $maxResults: Int) { locations(beginsWith: $beginsWith, maxResults: $maxResults)  { name country id } }",
+                Query = "query GetLocations($beginsWith: String, $maxResults: Int) { locations(beginsWith: $beginsWith, maxResults: $maxResults)  { name country id latitude longitude } }",
                 OperationName = "GetLocations",
                 Variables = new { beginsWith = searchTerm, maxResults = maxNumberOfResults }
             };

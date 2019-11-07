@@ -119,7 +119,7 @@ namespace GraphQLDotNet.Services.OpenWeather
             var locations = JsonSerializer.DeserializeAsync<Location[]>(cities, options).GetAwaiter().GetResult();
             return locations
                 .OrderBy(location => location.Name)
-                .Select(location => new WeatherLocation(location.Id, location.Name, location.Country)).ToArray();
+                .Select(location => new WeatherLocation(location.Id, location.Name, location.Country, location.Coord.Lat, location.Coord.Lon)).ToArray();
         }
 
         private async Task<T> GetOrSet<T>(object key, Func<Task<T>> create, MemoryCacheEntryOptions options)

@@ -105,6 +105,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
+                // TODO: preserve list ordering after refresh and between runs
                 var weatherSummaries = await OpenWeatherClient.GetWeatherSummaryFor(weatherLocationIds);
                 Locations = new ObservableCollection<WeatherSummary>(weatherSummaries);
             }
