@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DA64C0CC-CDF6-4343-8815-69F415915D10}</ProjectGuid>
+    <ProjectGuid>{7366A0BA-9DD6-40DB-A62E-1DA470C9A94A}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{6968b3a4-1835-46a3-ac5c-1ae33b475983}</TemplateGuid>
     <OutputType>Library</OutputType>
@@ -90,17 +90,12 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\drawable\xamarin_logo.png" />
-    <AndroidResource Include="Resources\drawable\tab_about.png" />
-    <AndroidResource Include="Resources\drawable\tab_feed.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphQLDotNet.Mobile\GraphQLDotNet.Mobile.csproj">
-      <Project>{69F4BEE3-C8C0-49C3-98D7-90BE611DD404}</Project>
+      <Project>{DAECED46-8700-40AD-83E0-399E3F2FF09D}</Project>
       <Name>GraphQLDotNet.Mobile</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Resources\materialdesignicons-webfont.ttf" />
   </ItemGroup>
  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 
-namespace GraphQLDotNet.Mobile
+namespace GraphQLDotNet.Mobile.Views
 {
-    public partial class AppShell : Xamarin.Forms.Shell
+    public partial class LocationsPage : ContentPage
     {
-        public AppShell()
+        public LocationsPage()
         {
             InitializeComponent();
         }

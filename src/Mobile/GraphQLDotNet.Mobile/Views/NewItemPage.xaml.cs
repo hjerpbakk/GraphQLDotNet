@@ -5,7 +5,6 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using GraphQLDotNet.Mobile.Models;
-using GraphQLDotNet.Contracts;
 
 namespace GraphQLDotNet.Mobile.Views
 {
@@ -14,17 +13,17 @@ namespace GraphQLDotNet.Mobile.Views
     [DesignTimeVisible(false)]
     public partial class NewItemPage : ContentPage
     {
-        public WeatherForecast? Item { get; set; }
+        public Item Item { get; set; }
 
         public NewItemPage()
         {
             InitializeComponent();
 
-            /*Item = new WeatherForecastModel(WeatherKind.Sunny)
+            Item = new Item
             {
-                Date = DateTime.Now.Date,
-                Summary = "This is an item description."
-            };*/
+                Text = "Item name",
+                Description = "This is an item description."
+            };
 
             BindingContext = this;
         }

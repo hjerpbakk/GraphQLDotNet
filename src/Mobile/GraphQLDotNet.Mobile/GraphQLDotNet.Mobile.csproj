@@ -2,22 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.3.0.947036" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
-    <PackageReference Include="GraphQL.Client" Version="2.0.0-alpha.3" />
     <PackageReference Include="Polly" Version="7.1.1" />
+    <PackageReference Include="modernhttpclient-updated" Version="3.4.2" />
+    <PackageReference Include="GraphQL.Client" Version="2.0.0-alpha.3" />
+    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Commands\" />
+    <Folder Include="Views\Controls\" />
+    <Folder Include="Views\Behaviors\" />
+    <Folder Include="Views\Converters\" />
+    <Folder Include="OpenWeather\" />
+    <Folder Include="ViewModels\Messages\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\GraphQLDotNet.Contracts\GraphQLDotNet.Contracts.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="OpenWeather\" />
   </ItemGroup>
 </Project>

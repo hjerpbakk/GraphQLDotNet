@@ -17,28 +17,23 @@ namespace GraphQLDotNet.API.GraphTypes
                 {
                     return openWeatherClient.GetWeatherFor(context.GetArgument<long>("city_id"));
                 });
-            Field<WeatherLocationType>("location", "Location from name",
+            Field<ListGraphType<WeatherForecastType>>("forecasts", "Get forecasts for the given locations.",
                 new QueryArguments(
-                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "name", Description = "Name of the location to fetch." }
+                        new QueryArgument<NonNullGraphType<ListGraphType<LongGraphType>>> { Name = "location_ids", Description = "Ids of the locations to fetch weather from." }
                     ),
                 context =>
                 {
-                    return openWeatherClient.GetLoactionFor(context.GetArgument<string>("name"));
+                    return openWeatherClient.GetWeatherFor(context.GetArgument<long[]>("location_ids"));
                 });
-            Field<WeatherForecastType>("forecastForLocation", "Get forecast for the next dayz",
+            Field<ListGraphType<WeatherLocationType>>("locations", "Available locations",
                 new QueryArguments(
-                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "name", Description = "Name of the location from witch to fetch weather." }
+                        new QueryArgument<StringGraphType> { Name = "beginsWith", Description = "Characters the location begins with", DefaultValue = "" },
+                        new QueryArgument<IntGraphType> { Name = "maxResults", Description = "Max number of results", DefaultValue = IOpenWeatherClient.MaxNumberOfResults }
                     ),
                 context =>
                 {
-                    return GetWeatherFor(openWeatherClient, context.GetArgument<string>("name"));
+                    return openWeatherClient.GetLocations(context.GetArgument<string>("beginsWith"), context.GetArgument<int>("maxResults"));
                 });
-        }
-
-        private async Task<WeatherForecast> GetWeatherFor(IOpenWeatherClient openWeatherClient, string name)
-        {
-            var location = await openWeatherClient.GetLoactionFor(name);
-            return await openWeatherClient.GetWeatherFor(location.Id);
         }
     }
 }

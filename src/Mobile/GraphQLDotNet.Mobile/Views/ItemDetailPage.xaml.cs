@@ -5,7 +5,6 @@ using Xamarin.Forms.Xaml;
 
 using GraphQLDotNet.Mobile.Models;
 using GraphQLDotNet.Mobile.ViewModels;
-using GraphQLDotNet.Contracts;
 
 namespace GraphQLDotNet.Mobile.Views
 {
@@ -14,7 +13,7 @@ namespace GraphQLDotNet.Mobile.Views
     [DesignTimeVisible(false)]
     public partial class ItemDetailPage : ContentPage
     {
-        ItemDetailViewModel? viewModel;
+        ItemDetailViewModel viewModel;
 
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {
@@ -27,14 +26,14 @@ namespace GraphQLDotNet.Mobile.Views
         {
             InitializeComponent();
 
-            /*var item = new WeatherForecast(WeatherKind.Sunny)
+            var item = new Item
             {
-                Date = DateTime.Now,
-                Summary = "Always sunny in Philadelphia"
+                Text = "Item 1",
+                Description = "This is an item description."
             };
 
-            viewModel = new ItemDetailViewModel(new WeatherForecastModel(item));
-            BindingContext = viewModel;*/
+            viewModel = new ItemDetailViewModel(item);
+            BindingContext = viewModel;
         }
     }
 }

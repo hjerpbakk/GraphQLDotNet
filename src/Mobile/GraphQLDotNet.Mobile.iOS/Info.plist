@@ -34,9 +34,7 @@
 	<string>GraphQLDotNet.Mobile</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>materialdesignicons-webfont.ttf</string>
-	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Fill in a reason why your app needs access to location.</string>
 </dict>
 </plist>

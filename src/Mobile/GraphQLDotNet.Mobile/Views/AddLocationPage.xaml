@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:GraphQLDotNet.Mobile.Views.Behaviors"
+             xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
+             x:Class="GraphQLDotNet.Mobile.Views.AddLocationPage"
+             Title="{Binding Title, Mode=OneTime}">
+    <ContentPage.BindingContext>
+        <vm:AddLocationViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+        <SearchBar x:Name="searchBar"
+                   Placeholder="Enter search term">
+            <SearchBar.Behaviors>
+                <behaviors:EventToCommandBehavior EventName="TextChanged"
+                                                  Command="{Binding PerformSearch, Mode=OneTime}" />
+            </SearchBar.Behaviors>
+        </SearchBar>
+        <ListView ItemsSource="{Binding SearchResults}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name, Mode=OneTime}" Detail="{Binding Country, Mode=OneTime}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Behaviors>
+                <behaviors:EventToCommandBehavior EventName="ItemSelected"
+                                                  Command="{Binding LocationSelectedCommand, Mode=OneTime}" />
+            </ListView.Behaviors>
+        </ListView>
+    </StackLayout>
+</ContentPage>

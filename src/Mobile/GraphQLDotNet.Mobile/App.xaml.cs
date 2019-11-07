@@ -1,21 +1,21 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GraphQLDotNet.Mobile.Services;
 using GraphQLDotNet.Mobile.Views;
 
 namespace GraphQLDotNet.Mobile
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();
 
-            DependencyService.Register<GraphQLDataStore>();
-            MainPage = new AppShell();
+            //DependencyService.Register<MockDataStore>();
+            MainPage = new MainPage();
         }
+
+        public long WeatherId { get; set; }
 
         protected override void OnStart()
         {

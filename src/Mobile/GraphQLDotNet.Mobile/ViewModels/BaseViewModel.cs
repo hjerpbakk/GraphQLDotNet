@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using Xamarin.Forms;
-
-using GraphQLDotNet.Mobile.Models;
-using GraphQLDotNet.Mobile.Services;
-using GraphQLDotNet.Contracts;
-
 namespace GraphQLDotNet.Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<WeatherForecast> DataStore => DependencyService.Get<IDataStore<WeatherForecast>>();
+        //public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
         bool isBusy = false;
         public bool IsBusy
@@ -22,8 +16,8 @@ namespace GraphQLDotNet.Mobile.ViewModels
             set { SetProperty(ref isBusy, value); }
         }
 
-        string? title = string.Empty;
-        public string? Title
+        string title = string.Empty;
+        public string Title
         {
             get { return title; }
             set { SetProperty(ref title, value); }
@@ -31,7 +25,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName]string propertyName = "",
-            Action? onChanged = default)
+            Action? onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
