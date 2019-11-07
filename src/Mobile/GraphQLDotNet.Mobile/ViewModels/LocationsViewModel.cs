@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using GraphQLDotNet.Mobile.Models;
 using GraphQLDotNet.Mobile.OpenWeather;
-using GraphQLDotNet.Mobile.Services;
+using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Messages;
 using GraphQLDotNet.Mobile.Views;
@@ -24,11 +22,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
             Title = "Locations";
             AddLocationCommand = new AsyncCommand(ExecuteAddLocationsCommand);
             RefreshCommand = new AsyncCommand(ExecuteRefreshLocations);
-            locations = new ObservableCollection<WeatherSummary>();
+            locations = new ObservableCollection<OrderedWeatherSummary>();
 
             // TODO: Show IsRefreshing animation and do this properly
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ExecuteRefreshLocations();
+            LoadWeatherSummariesFromDisk();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
             // TODO: this warning suxx
@@ -38,12 +36,12 @@ namespace GraphQLDotNet.Mobile.ViewModels
             {
                 try
                 {
-                    var summary = await OpenWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
                     // TODO: Sjekk om finnes fra før
-                    Locations.Add(summary);
-                    // TODO: Save location here
+                    var summary = await OpenWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
+                    var orderedSummary = new OrderedWeatherSummary(summary, Locations.Count);                   
+                    Locations.Add(orderedSummary);
                     var localStorage = new LocalStorage();
-                    await localStorage.Save(Locations.Select(l => l.Id));
+                    await localStorage.Save(Locations);
                 }
                 catch (Exception)
                 {
@@ -56,8 +54,8 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public IAsyncCommand AddLocationCommand { get; }
         public IAsyncCommand RefreshCommand { get; }
 
-        ObservableCollection<WeatherSummary> locations;
-        public ObservableCollection<WeatherSummary> Locations
+        ObservableCollection<OrderedWeatherSummary> locations;
+        public ObservableCollection<OrderedWeatherSummary> Locations
         {
             get { return locations; }
             set { SetProperty(ref locations, value); }
@@ -97,17 +95,15 @@ namespace GraphQLDotNet.Mobile.ViewModels
         {
             try
             {
-                // TODO: Hent local storage på ordentlig vis
-                var weatherLocationIds = await new LocalStorage().Load();
-                if (weatherLocationIds.Length == 0)
-                {
-                    // TODO: Make sure instructions are shown
-                    return;
-                }
+                // TODO: Create specific service and minimal type for this operation
+                var weatherSummaries = await OpenWeatherClient.GetWeatherSummaryFor(Locations.Select(w => w.Id));
 
-                // TODO: preserve list ordering after refresh and between runs
-                var weatherSummaries = await OpenWeatherClient.GetWeatherSummaryFor(weatherLocationIds);
-                Locations = new ObservableCollection<WeatherSummary>(weatherSummaries);
+                var updatedWeather =
+                    from orderedWeatherSummary in Locations
+                    join summary in weatherSummaries on orderedWeatherSummary.Id equals summary.Id
+                    orderby orderedWeatherSummary.Ordering
+                    select orderedWeatherSummary.UpdateWeather(summary);
+                Locations = new ObservableCollection<OrderedWeatherSummary>(updatedWeather);
             }
             catch (Exception ex)
             {
@@ -118,6 +114,20 @@ namespace GraphQLDotNet.Mobile.ViewModels
             {
                 IsRefreshing = false;
             }
+        }
+
+        async Task LoadWeatherSummariesFromDisk()
+        {
+            IsRefreshing = true;
+            // TODO: Hent local storage på ordentlig vis i starten
+            var weatherSummaries = new LocalStorage().Load();
+            if (weatherSummaries.Length == 0)
+            {
+                return;
+            }
+
+            Locations = new ObservableCollection<OrderedWeatherSummary>(weatherSummaries.OrderBy(w => w.Ordering));
+            await ExecuteRefreshLocations();
         }
     }
 }

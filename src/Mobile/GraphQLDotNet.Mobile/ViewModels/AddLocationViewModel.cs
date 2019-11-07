@@ -28,7 +28,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
             // TODO: Dette funket ikke på første run på Android i alle fall...
             var currentCountry = countryLocator.GetCurrentCountry().GetAwaiter().GetResult();
             searchResults = new ObservableCollection<WeatherLocation>(OpenWeatherClient.GetLocations($", {currentCountry}").GetAwaiter().GetResult());
-            // TODO: Show location on map by clicking (i)-button in list
         }
 
         // TODO: Use Async-command...

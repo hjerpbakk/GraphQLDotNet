@@ -14,7 +14,7 @@
     <PackageReference Include="Polly" Version="7.1.1" />
     <PackageReference Include="modernhttpclient-updated" Version="3.4.2" />
     <PackageReference Include="GraphQL.Client" Version="2.0.0-alpha.3" />
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\Commands\" />
@@ -24,6 +24,7 @@
     <Folder Include="OpenWeather\" />
     <Folder Include="ViewModels\Messages\" />
     <Folder Include="Services\" />
+    <Folder Include="OpenWeather\Persistence\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\GraphQLDotNet.Contracts\GraphQLDotNet.Contracts.csproj" />

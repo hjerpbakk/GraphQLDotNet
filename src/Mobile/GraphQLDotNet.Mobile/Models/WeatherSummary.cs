@@ -1,6 +1,8 @@
-﻿namespace GraphQLDotNet.Mobile.Models
+﻿using System;
+
+namespace GraphQLDotNet.Mobile.Models
 {
-    public class WeatherSummary
+    public sealed class WeatherSummary
     {
         public WeatherSummary(string location, string temperature, string openWeatherIcon, long id)
         {

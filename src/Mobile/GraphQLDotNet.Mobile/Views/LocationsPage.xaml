@@ -39,6 +39,21 @@
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <StackLayout>
+                    <Label Text="No locations chosen."
+                           Margin="10,100,10,10"
+                           FontAttributes="Bold"
+                           FontSize="18"
+                           HorizontalOptions="Fill"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Add another location using the Add button."
+                           FontAttributes="Italic"
+                           FontSize="12"
+                           HorizontalOptions="Fill"
+                           HorizontalTextAlignment="Center" />
+                </StackLayout>
+        </CollectionView.EmptyView>
         </CollectionView>
     </RefreshView>
 </ContentPage>

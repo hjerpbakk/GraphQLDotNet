@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Text.Json;
 using Xamarin.Essentials;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using GraphQLDotNet.Mobile.Models;
 
-namespace GraphQLDotNet.Mobile.Services
+namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
 {
     public class LocalStorage
     {
@@ -19,12 +20,12 @@ namespace GraphQLDotNet.Mobile.Services
             weatherLocationsPath = Path.Combine(FileSystem.AppDataDirectory, "weather-locations.dat");
         }
 
-        public async Task Save(IEnumerable<long> weatherLocationIds)
+        public async Task Save(IEnumerable<OrderedWeatherSummary> weatherLocationIds)
         {
             await weatherLocationsSemaphore.WaitAsync();
             try
             {
-                var data = JsonSerializer.Serialize(new WeatherLocations { Ids = weatherLocationIds.ToArray() });
+                var data = JsonConvert.SerializeObject(new WeatherLocations { WeatherSummaries = weatherLocationIds.ToArray() });
                 await File.WriteAllTextAsync(weatherLocationsPath, data);
             }
             finally
@@ -33,21 +34,21 @@ namespace GraphQLDotNet.Mobile.Services
             }
         }
 
-        public async Task<long[]> Load()
+        public OrderedWeatherSummary[] Load()
         {
             if (!File.Exists(weatherLocationsPath))
             {
-                return new long[0];
+                return new OrderedWeatherSummary[0];
             }
 
-            var data = await File.ReadAllTextAsync(weatherLocationsPath);
-            var loaded = JsonSerializer.Deserialize<WeatherLocations>(data);
-            return loaded.Ids;
+            var data = File.ReadAllText(weatherLocationsPath);
+            var loaded = JsonConvert.DeserializeObject<WeatherLocations>(data);
+            return loaded.WeatherSummaries;
         }
     }
 
     public class WeatherLocations
     {
-        public long[] Ids { get; set; } = new long[0];
+        public OrderedWeatherSummary[] WeatherSummaries { get; set; } = new OrderedWeatherSummary[0];
     }
 }

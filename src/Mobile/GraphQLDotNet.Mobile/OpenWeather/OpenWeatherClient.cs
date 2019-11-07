@@ -48,7 +48,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             return response.GetDataFieldAs<WeatherSummary>("forecast");
         }
 
-        public static async Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(long[] locationIds)
+        public static async Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(IEnumerable<long> locationIds)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 {
                     Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { location temperature openWeatherIcon id } }",
                     OperationName = "WeatherSummaries",
-                    Variables = new { location_ids = locationIds }
+                    Variables = new { location_ids = locationIds.ToArray() }
                 };
 
                 var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
