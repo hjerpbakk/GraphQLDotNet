@@ -95,14 +95,13 @@ namespace GraphQLDotNet.Mobile.ViewModels
         {
             try
             {
-                // TODO: Create specific service and minimal type for this operation
-                var weatherSummaries = await OpenWeatherClient.GetWeatherSummaryFor(Locations.Select(w => w.Id));
-
+                var weatherSummaries = await OpenWeatherClient.GetWeatherUpdatesFor(Locations.Select(w => w.Id));
                 var updatedWeather =
                     from orderedWeatherSummary in Locations
                     join summary in weatherSummaries on orderedWeatherSummary.Id equals summary.Id
                     orderby orderedWeatherSummary.Ordering
                     select orderedWeatherSummary.UpdateWeather(summary);
+                // TODO: Save updated values here or wait for app shutdown??
                 Locations = new ObservableCollection<OrderedWeatherSummary>(updatedWeather);
             }
             catch (Exception ex)

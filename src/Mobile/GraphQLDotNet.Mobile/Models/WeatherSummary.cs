@@ -1,4 +1,5 @@
 ﻿using System;
+using GraphQLDotNet.Mobile.OpenWeather;
 
 namespace GraphQLDotNet.Mobile.Models
 {
@@ -8,7 +9,7 @@ namespace GraphQLDotNet.Mobile.Models
         {
             Name = location;
             Temperature = temperature;
-            OpenWeatherIcon = $"https://openweathermap.org/img/wn/{openWeatherIcon}@2x.png";
+            OpenWeatherIcon = WeatherIcons.GetFullWeatherIconUrl(openWeatherIcon);
             Id = id;
         }
 

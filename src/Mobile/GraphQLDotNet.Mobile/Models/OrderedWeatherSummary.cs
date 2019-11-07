@@ -14,20 +14,23 @@ namespace GraphQLDotNet.Mobile.Models
         }
 
         [JsonConstructor]
-        public OrderedWeatherSummary()
+        public OrderedWeatherSummary(string name, long id, int ordering)
         {
+            Name = name;
+            Id = id;
+            Ordering = ordering;
         }
 
-        public string Name { get; set; } = "";
+        public string Name { get; }
         public string Temperature { get; set; } = "";
         public string OpenWeatherIcon { get; set; } = "";
-        public long Id { get; set; } = -1;
-        public int Ordering { get; set; } = -1;
+        public long Id { get; }
+        public int Ordering { get; }
 
-        public OrderedWeatherSummary UpdateWeather(WeatherSummary newWeather)
+        public OrderedWeatherSummary UpdateWeather(WeatherUpdate weatherUpdate)
         {
-            OpenWeatherIcon = newWeather.OpenWeatherIcon;
-            Temperature = newWeather.Temperature;
+            OpenWeatherIcon = weatherUpdate.OpenWeatherIcon;
+            Temperature = weatherUpdate.Temperature;
             return this;
         }
     }

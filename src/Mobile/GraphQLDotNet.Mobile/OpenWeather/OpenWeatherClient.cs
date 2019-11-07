@@ -71,6 +71,29 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             }
         }
 
+        public static async Task<IEnumerable<WeatherUpdate>> GetWeatherUpdatesFor(IEnumerable<long> locationIds)
+        {
+            try
+            {
+                var graphQLRequest = new GraphQLRequest
+                {
+                    Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { temperature openWeatherIcon id } }",
+                    OperationName = "WeatherSummaries",
+                    Variables = new { location_ids = locationIds.ToArray() }
+                };
+
+                var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+                var forecasts = response.GetDataFieldAs<IEnumerable<WeatherUpdate>>("forecasts");
+                return forecasts;
+            }
+            catch (Exception ex)
+            {
+                // TODO: Exception handling, here and elsewhere. async void begone
+                Debug.WriteLine(ex);
+                return new WeatherUpdate[0];
+            }
+        }
+
         static GraphQLHttpClient CreateGraphQLClient() => new GraphQLHttpClient(new GraphQLHttpClientOptions
         {
             EndPoint = new Uri(BackendConstants.GraphQLApiUrl),
