@@ -27,10 +27,10 @@ namespace GraphQLDotNet.Mobile.Models
         public long Id { get; }
         public int Ordering { get; }
 
-        public OrderedWeatherSummary UpdateWeather(WeatherUpdate weatherUpdate)
+        public OrderedWeatherSummary UpdateWeather(WeatherSummary weatherSummary)
         {
-            OpenWeatherIcon = weatherUpdate.OpenWeatherIcon;
-            Temperature = weatherUpdate.Temperature;
+            OpenWeatherIcon = weatherSummary.OpenWeatherIcon;
+            Temperature = weatherSummary.Temperature;
             return this;
         }
     }

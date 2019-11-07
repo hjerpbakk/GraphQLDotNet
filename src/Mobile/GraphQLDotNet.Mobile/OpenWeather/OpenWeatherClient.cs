@@ -71,7 +71,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             }
         }
 
-        public static async Task<IEnumerable<WeatherUpdate>> GetWeatherUpdatesFor(IEnumerable<long> locationIds)
+        public static async Task<IEnumerable<WeatherSummary>> GetWeatherUpdatesFor(IEnumerable<long> locationIds)
         {
             try
             {
@@ -83,14 +83,14 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 };
 
                 var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
-                var forecasts = response.GetDataFieldAs<IEnumerable<WeatherUpdate>>("forecasts");
+                var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("forecasts");
                 return forecasts;
             }
             catch (Exception ex)
             {
                 // TODO: Exception handling, here and elsewhere. async void begone
                 Debug.WriteLine(ex);
-                return new WeatherUpdate[0];
+                return new WeatherSummary[0];
             }
         }
 
