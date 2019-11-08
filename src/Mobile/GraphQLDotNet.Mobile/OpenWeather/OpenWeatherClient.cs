@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Flurl;
 using GraphQL.Client.Http;
 using GraphQL.Common.Exceptions;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using GraphQLDotNet.Contracts;
-using GraphQLDotNet.Mobile.Helpers;
 using GraphQLDotNet.Mobile.Models;
 using Polly;
-using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.OpenWeather
 {
