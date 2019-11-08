@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Flurl;
 using GraphQL.Client.Http;
 using GraphQL.Common.Exceptions;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using GraphQLDotNet.Contracts;
+using GraphQLDotNet.Mobile.Helpers;
 using GraphQLDotNet.Mobile.Models;
 using Polly;
 using Xamarin.Forms;
@@ -96,7 +98,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
 
         static GraphQLHttpClient CreateGraphQLClient() => new GraphQLHttpClient(new GraphQLHttpClientOptions
         {
-            EndPoint = new Uri(BackendConstants.GraphQLApiUrl),
+            EndPoint = new Uri(OpenWeatherConfiguration.GraphQLApiUrl),
 #if !DEBUG
             HttpMessageHandler = new ModernHttpClient.NativeMessageHandler()
 #endif
@@ -115,16 +117,6 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             return response;
 
             TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
-        }
-
-        private static class BackendConstants
-        {
-#if DEBUG
-            public static string GraphQLApiUrl { get; } = Device.RuntimePlatform is Device.Android ? "http://10.0.2.2:5000/graphql" : "http://127.0.0.1:5000/graphql";
-#else
-#error Missing GraphQL Api Url
-        public static string GraphQLApiUrl { get; } = "";
-#endif
         }
     }
 }

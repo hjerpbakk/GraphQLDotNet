@@ -2,6 +2,10 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using GraphQLDotNet.Mobile.Views;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using GraphQLDotNet.Mobile.Helpers;
 
 namespace GraphQLDotNet.Mobile
 {
@@ -15,11 +19,12 @@ namespace GraphQLDotNet.Mobile
             MainPage = new MainPage();
         }
 
-        public long WeatherId { get; set; }
-
         protected override void OnStart()
         {
-            // Handle when your app starts
+            AppCenter.Start($"ios={Secrets.AppCenteriOsSecret};" +
+                  //"uwp={Your UWP App secret here};" +
+                  //"android={Your Android App secret here}",
+                  typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnSleep()

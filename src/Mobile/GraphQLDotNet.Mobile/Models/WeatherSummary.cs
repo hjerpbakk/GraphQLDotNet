@@ -1,4 +1,6 @@
-﻿namespace GraphQLDotNet.Mobile.Models
+﻿using GraphQLDotNet.Mobile.OpenWeather;
+
+namespace GraphQLDotNet.Mobile.Models
 {
     public sealed class WeatherSummary
     {
@@ -6,7 +8,7 @@
         {
             Name = location;
             Temperature = temperature;
-            OpenWeatherIcon = $"https://openweathermap.org/img/wn/{openWeatherIcon}@2x.png";
+            OpenWeatherIcon = OpenWeatherConfiguration.GetIconURL(openWeatherIcon);
             Id = id;
         }
 

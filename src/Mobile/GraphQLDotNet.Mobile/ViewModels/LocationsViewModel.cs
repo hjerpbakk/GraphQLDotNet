@@ -95,6 +95,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
         {
             try
             {
+                // TODO: if service fails, list becomes empty 
                 var weatherSummaries = await OpenWeatherClient.GetWeatherUpdatesFor(Locations.Select(w => w.Id));
                 var updatedWeather =
                     from orderedWeatherSummary in Locations
@@ -122,6 +123,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
             var weatherSummaries = new LocalStorage().Load();
             if (weatherSummaries.Length == 0)
             {
+                IsRefreshing = false;
                 return;
             }
 

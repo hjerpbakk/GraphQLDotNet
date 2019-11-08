@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -23,7 +25,21 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                     }
                 }
 
-                return GetCountryCodeFromLocation(location);
+                //return await GetCountryCodeFromLocation();
+                return DefaultCountry;
+
+                /*async Task<string> GetCountryCodeFromLocation()
+                {
+                    // TODO: Funker ikke i det hele tatt...
+                    var placemark = await Geocoding.GetPlacemarksAsync(location.Latitude, location.Longitude);
+                    var firstPlace = placemark.FirstOrDefault();
+                    if (firstPlace == null)
+                    {
+                        return DefaultCountry;
+                    }
+
+                    return firstPlace.CountryCode;
+                }*/
             }
             catch (FeatureNotSupportedException)
             {
@@ -45,12 +61,6 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 // Unable to get location
                 return DefaultCountry;
             }
-        }
-
-        // TODO: finn land fra coordinatene
-        private string GetCountryCodeFromLocation(Location location)
-        {
-            return "NO";
         }
     }
 }
