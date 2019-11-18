@@ -1,4 +1,7 @@
 ﻿using GraphQLDotNet.Mobile.Helpers;
+using GraphQLDotNet.Mobile.ViewModels;
+using GraphQLDotNet.Mobile.ViewModels.Common;
+using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using GraphQLDotNet.Mobile.Views;
 using LightInject;
 using Microsoft.AppCenter;
@@ -14,13 +17,18 @@ namespace GraphQLDotNet.Mobile
         {
             InitializeComponent();
             //DependencyService.Register<MockDataStore>();
-            MainPage = new MainPage();
+            //MainPage = new MainPage();
         }
 
-        protected override void OnStart()
+#pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
+        protected override async void OnStart()
+#pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
         {
+            // TODO: async void
             AppCenter.Start($"{Secrets.AppCenteriOsSecret}",
                   typeof(Analytics), typeof(Crashes));
+            var navigationService = ViewModelLocator.Resolve<INavigationService>();
+            await navigationService.NavigateToAsync<MainViewModel>();
         }
 
         protected override void OnSleep()

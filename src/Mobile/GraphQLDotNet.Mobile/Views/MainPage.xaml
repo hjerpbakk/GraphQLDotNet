@@ -5,8 +5,10 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             mc:Ignorable="d"
             xmlns:views="clr-namespace:GraphQLDotNet.Mobile.Views"
-            x:Class="GraphQLDotNet.Mobile.Views.MainPage">
-    <TabbedPage.Children>
+            xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
+            x:Class="GraphQLDotNet.Mobile.Views.MainPage"
+            vm:ViewModelLocator.AutoWireViewModel="true">      
+     <TabbedPage.Children>
         <NavigationPage Title="Weather">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">

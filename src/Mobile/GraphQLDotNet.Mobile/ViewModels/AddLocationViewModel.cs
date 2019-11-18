@@ -7,6 +7,7 @@ using System.Windows.Input;
 using GraphQLDotNet.Contracts;
 using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
+using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Messages;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -14,7 +15,7 @@ using Xamarin.Forms;
 namespace GraphQLDotNet.Mobile.ViewModels
 {
     // TODO: Ikke lag noen VMer i XAML igjen, ever!
-    public class AddLocationViewModel : BaseViewModel
+    public class AddLocationViewModel : ViewModelBase
     {
         private readonly CountryLocator countryLocator;
 

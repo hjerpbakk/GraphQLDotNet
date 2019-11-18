@@ -35,6 +35,7 @@
     <Folder Include="Services\" />
     <Folder Include="OpenWeather\Persistence\" />
     <Folder Include="ViewModels\Navigation\" />
+    <Folder Include="ViewModels\Common\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\GraphQLDotNet.Contracts\GraphQLDotNet.Contracts.csproj" />

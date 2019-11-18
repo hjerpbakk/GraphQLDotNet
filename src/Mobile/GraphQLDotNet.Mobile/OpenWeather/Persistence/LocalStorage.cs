@@ -1,15 +1,15 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using GraphQLDotNet.Mobile.Models;
+using Newtonsoft.Json;
+using Xamarin.Essentials;
 
 namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
 {
-    public class LocalStorage
+    public sealed class LocalStorage : ILocalStorage
     {
         private static readonly SemaphoreSlim weatherLocationsSemaphore;
         private static readonly string weatherLocationsPath;
@@ -45,10 +45,5 @@ namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
             var loaded = JsonConvert.DeserializeObject<WeatherLocations>(data);
             return loaded.WeatherSummaries;
         }
-    }
-
-    public class WeatherLocations
-    {
-        public OrderedWeatherSummary[] WeatherSummaries { get; set; } = new OrderedWeatherSummary[0];
     }
 }
