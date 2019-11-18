@@ -59,6 +59,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Commands
         private readonly Func<T, Task> m_execute;
         private readonly Func<T, bool> m_canExecute;
         private readonly Action<Exception> m_onException;
+
         public AsyncCommand(Func<T, Task> execute, Action<Exception>? onExceptipon = null)
         {
             m_execute = execute;
