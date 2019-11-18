@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -15,5 +16,10 @@ namespace GraphQLDotNet.Mobile.ViewModels
         }
 
         public ICommand OpenWebCommand { get; }
+
+        public async Task Initialize()
+        {
+            await Task.Delay(1000);
+        }
     }
 }

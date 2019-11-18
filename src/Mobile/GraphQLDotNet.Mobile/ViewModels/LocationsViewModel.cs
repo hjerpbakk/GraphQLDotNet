@@ -36,9 +36,9 @@ namespace GraphQLDotNet.Mobile.ViewModels
             {
                 try
                 {
-                    // TODO: Sjekk om finnes fra før
+                    // TODO: Sjekk om finnes fra før før legges til
                     var summary = await OpenWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
-                    var orderedSummary = new OrderedWeatherSummary(summary, Locations.Count);                   
+                    var orderedSummary = new OrderedWeatherSummary(summary, Locations.Count);
                     Locations.Add(orderedSummary);
                     var localStorage = new LocalStorage();
                     await localStorage.Save(Locations);
@@ -52,6 +52,17 @@ namespace GraphQLDotNet.Mobile.ViewModels
         }
 
         public IAsyncCommand AddLocationCommand { get; }
+        public AsyncCommand<OrderedWeatherSummary> RemoveLocationCommand =>
+            new AsyncCommand<OrderedWeatherSummary>(async (OrderedWeatherSummary weatherSummaryToDelete) =>
+            {
+                if (Locations.Remove(weatherSummaryToDelete))
+                {
+                    // TODO: Fetch instance properly
+                    var localStorage = new LocalStorage();
+                    await localStorage.Save(Locations);
+                }
+            });
+
         public IAsyncCommand RefreshCommand { get; }
 
         ObservableCollection<OrderedWeatherSummary> locations;

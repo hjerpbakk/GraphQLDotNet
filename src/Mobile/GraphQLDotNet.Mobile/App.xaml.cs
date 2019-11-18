@@ -1,11 +1,10 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using GraphQLDotNet.Mobile.Helpers;
 using GraphQLDotNet.Mobile.Views;
+using LightInject;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using GraphQLDotNet.Mobile.Helpers;
+using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile
 {
@@ -14,16 +13,13 @@ namespace GraphQLDotNet.Mobile
         public App()
         {
             InitializeComponent();
-
             //DependencyService.Register<MockDataStore>();
             MainPage = new MainPage();
         }
 
         protected override void OnStart()
         {
-            AppCenter.Start($"ios={Secrets.AppCenteriOsSecret};" +
-                  //"uwp={Your UWP App secret here};" +
-                  //"android={Your Android App secret here}",
+            AppCenter.Start($"{Secrets.AppCenteriOsSecret}",
                   typeof(Analytics), typeof(Crashes));
         }
 

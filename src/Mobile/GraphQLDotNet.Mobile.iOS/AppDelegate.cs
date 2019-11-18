@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using ContextMenu.iOS;
 using Foundation;
 using UIKit;
 
@@ -23,6 +23,8 @@ namespace GraphQLDotNet.Mobile.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            ContextMenuViewRenderer.Preserve();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

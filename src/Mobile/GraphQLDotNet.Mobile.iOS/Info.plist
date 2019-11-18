@@ -27,7 +27,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.hjerpbakk.GraphQLDotNet-Mobile</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>alpha0001</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -36,5 +36,7 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Fill in a reason why your app needs access to location.</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2019.1</string>
 </dict>
 </plist>

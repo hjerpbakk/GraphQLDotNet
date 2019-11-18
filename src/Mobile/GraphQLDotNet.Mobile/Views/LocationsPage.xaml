@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:GraphQLDotNet.Mobile.Models"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
+             xmlns:context="clr-namespace:ContextMenu.Views;assembly=ContextMenu"
              x:Class="GraphQLDotNet.Mobile.Views.LocationsPage"
+             x:DataType="vm:LocationsViewModel"
              Title="{Binding Title, Mode=OneTime}">
     <ContentPage.BindingContext>
         <vm:LocationsViewModel />
@@ -11,32 +14,54 @@
         <ToolbarItem Text="Add" Command="{Binding AddLocationCommand, Mode=OneTime}" />
     </ContentPage.ToolbarItems>
     <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand, Mode=OneTime}">
-            <CollectionView ItemsSource="{Binding Locations, Mode=OneWay}">
+            <CollectionView BackgroundColor="White" Margin="-1,-1,0,0" ItemsSource="{Binding Locations, Mode=OneWay}" x:Name="CollectionView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.RowSpan="2"
-                               Source="{Binding OpenWeatherIcon, Mode=OneTime}"
-                               Aspect="AspectFill"
-                               HeightRequest="60"
-                               WidthRequest="60" />
-                        <Label Grid.Column="1"
-                               Text="{Binding Name, Mode=OneTime}"
-                               FontAttributes="Bold" />
-                        <Label Grid.Row="1"
-                               Grid.Column="1"
-                               Text="{Binding Temperature, Mode=OneTime}"
-                               FontAttributes="Italic"
-                               VerticalOptions="End" />
-                    </Grid>
+                    <context:SwipeActionContextHolder MovedCommand="{Binding BindingContext.RemoveLocationCommand, Source={x:Reference CollectionView}}">
+                        <context:SwipeActionContextMenuView>
+                            <context:SwipeActionContextMenuView.View>
+                                <Grid Padding="10"
+                                      WidthRequest="{Binding Source={x:Reference CollectionView}, Path=Width}"
+                                      x:DataType="m:OrderedWeatherSummary"
+                                      BackgroundColor="White">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.RowSpan="2"
+                                           Source="{Binding OpenWeatherIcon, Mode=OneTime}"
+                                           Aspect="AspectFill"
+                                           HeightRequest="60"
+                                           WidthRequest="60" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Name, Mode=OneTime}"
+                                           FontAttributes="Bold" />
+                                    <Label Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{Binding Temperature, Mode=OneTime}"
+                                           FontAttributes="Italic"
+                                           VerticalOptions="End" />
+                                </Grid>
+                            </context:SwipeActionContextMenuView.View>
+                            <context:SwipeActionContextMenuView.ContextTemplate>
+                                <DataTemplate>
+                                        <StackLayout BackgroundColor="Red"
+                                                 Padding="0,0,10,0">
+                                        <Label Text="⬅️ 🗑"
+                                               TextColor="White"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="CenterAndExpand"
+                                               HorizontalOptions="EndAndExpand"/>
+                                    </StackLayout>
+                                    
+                                </DataTemplate>
+                            </context:SwipeActionContextMenuView.ContextTemplate>  
+                        </context:SwipeActionContextMenuView>
+                    </context:SwipeActionContextHolder>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>
