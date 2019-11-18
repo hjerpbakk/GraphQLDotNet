@@ -15,13 +15,14 @@ namespace GraphQLDotNet.Mobile.ViewModels
     {
         private readonly INavigationService navigationService;
         private readonly ICountryLocator countryLocator;
-
+        private readonly IOpenWeatherClient openWeatherClient;
         private ObservableCollection<WeatherLocation> searchResults;
 
-        public AddLocationViewModel(INavigationService navigationService, ICountryLocator countryLocator)
+        public AddLocationViewModel(INavigationService navigationService, ICountryLocator countryLocator, IOpenWeatherClient openWeatherClient)
         {
             this.navigationService = navigationService;
             this.countryLocator = countryLocator;
+            this.openWeatherClient = openWeatherClient;
             Title = "Add new location";
             searchResults = new ObservableCollection<WeatherLocation>();
         }
@@ -44,7 +45,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     : countryLocator.GetCurrentCountry().GetAwaiter().GetResult();
 
                 // TODO: Throttle events...
-                var results = await OpenWeatherClient.GetLocations($"{query.NewTextValue}, {currentCountry}");
+                var results = await openWeatherClient.GetLocations($"{query.NewTextValue}, {currentCountry}");
 
                 SearchResults = new ObservableCollection<WeatherLocation>(results);
             });
@@ -82,7 +83,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
         {
             // TODO: Dette funket ikke på første run på verken Android eller iOS
             var currentCountry = await countryLocator.GetCurrentCountry();
-            var locations = await OpenWeatherClient.GetLocations($", {currentCountry}");
+            var locations = await openWeatherClient.GetLocations($", {currentCountry}");
             SearchResults = new ObservableCollection<WeatherLocation>(locations);
         }
     }

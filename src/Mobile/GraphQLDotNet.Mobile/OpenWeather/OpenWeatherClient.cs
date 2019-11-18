@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
@@ -9,45 +8,62 @@ using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using GraphQLDotNet.Contracts;
 using GraphQLDotNet.Mobile.Models;
+using Microsoft.AppCenter.Crashes;
 using Polly;
 
 namespace GraphQLDotNet.Mobile.OpenWeather
 {
-    public static class OpenWeatherClient
+    public sealed class OpenWeatherClient : IOpenWeatherClient
     {
         static readonly Lazy<GraphQLHttpClient> _clientHolder = new Lazy<GraphQLHttpClient>(CreateGraphQLClient);
 
         static GraphQLHttpClient Client => _clientHolder.Value;
 
-        public static async Task<IEnumerable<WeatherLocation>> GetLocations(string searchTerm = "", int maxNumberOfResults = 8)
+        public async Task<IEnumerable<WeatherLocation>> GetLocations(string searchTerm = "", int maxNumberOfResults = 8)
         {
-            var graphQLRequest = new GraphQLRequest
+            try
             {
-                Query = "query GetLocations($beginsWith: String, $maxResults: Int) { locations(beginsWith: $beginsWith, maxResults: $maxResults)  { name country id latitude longitude } }",
-                OperationName = "GetLocations",
-                Variables = new { beginsWith = searchTerm, maxResults = maxNumberOfResults }
-            };
+                var graphQLRequest = new GraphQLRequest
+                {
+                    Query = "query GetLocations($beginsWith: String, $maxResults: Int) { locations(beginsWith: $beginsWith, maxResults: $maxResults)  { name country id latitude longitude } }",
+                    OperationName = "GetLocations",
+                    Variables = new { beginsWith = searchTerm, maxResults = maxNumberOfResults }
+                };
 
-            var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+                var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
 
-            return response.GetDataFieldAs<IEnumerable<WeatherLocation>>("locations");
+                return response.GetDataFieldAs<IEnumerable<WeatherLocation>>("locations");
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+                return new WeatherLocation[0];
+            }
         }
 
-        public static async Task<WeatherSummary> GetWeatherSummaryFor(long locationId)
+        public async Task<WeatherSummary> GetWeatherSummaryFor(long locationId)
         {
-            var graphQLRequest = new GraphQLRequest
+            try
             {
-                Query = "query WeatherSummary($id: Long!) { forecast(city_id: $id)  { location temperature openWeatherIcon id } }",
-                OperationName = "WeatherSummary",
-                Variables = new { id = locationId }
-            };
+                var graphQLRequest = new GraphQLRequest
+                {
+                    Query = "query WeatherSummary($id: Long!) { forecast(city_id: $id)  { location temperature openWeatherIcon id } }",
+                    OperationName = "WeatherSummary",
+                    Variables = new { id = locationId }
+                };
 
-            var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+                var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
 
-            return response.GetDataFieldAs<WeatherSummary>("forecast");
+                return response.GetDataFieldAs<WeatherSummary>("forecast");
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+                return WeatherSummary.Default;
+            }
         }
 
-        public static async Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(IEnumerable<long> locationIds)
+        public async Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(IEnumerable<long> locationIds)
         {
             try
             {
@@ -62,15 +78,14 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("forecasts");
                 return forecasts;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                // TODO: Exception handling, here and elsewhere. async void begone
-                Debug.WriteLine(ex);
+                Crashes.TrackError(exception);
                 return new WeatherSummary[0];
             }
         }
 
-        public static async Task<IEnumerable<WeatherSummary>> GetWeatherUpdatesFor(IEnumerable<long> locationIds)
+        public async Task<IEnumerable<WeatherSummary>> GetWeatherUpdatesFor(IEnumerable<long> locationIds)
         {
             try
             {
@@ -85,14 +100,14 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("forecasts");
                 return forecasts;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                // TODO: Exception handling, here and elsewhere. async void begone
-                Debug.WriteLine(ex);
+                Crashes.TrackError(exception);
                 return new WeatherSummary[0];
             }
         }
 
+        // TODO: Configure using DI
         static GraphQLHttpClient CreateGraphQLClient() => new GraphQLHttpClient(new GraphQLHttpClientOptions
         {
             EndPoint = new Uri(OpenWeatherConfiguration.GraphQLApiUrl),

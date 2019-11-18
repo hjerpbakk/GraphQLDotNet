@@ -25,6 +25,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
             serviceContainer.Register<INavigationService, NavigationService>(new PerContainerLifetime());
             serviceContainer.Register<ILocalStorage, LocalStorage>(new PerContainerLifetime());
             serviceContainer.Register<ICountryLocator, CountryLocator>(new PerContainerLifetime());
+            serviceContainer.Register<IOpenWeatherClient, OpenWeatherClient>(new PerContainerLifetime());
         }
 
         public static readonly BindableProperty AutoWireViewModelProperty =

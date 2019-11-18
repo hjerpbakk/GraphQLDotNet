@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQLDotNet.Mobile.Models;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
 
@@ -28,6 +30,10 @@ namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
                 var data = JsonConvert.SerializeObject(new WeatherLocations { WeatherSummaries = weatherLocationIds.ToArray() });
                 await File.WriteAllTextAsync(weatherLocationsPath, data);
             }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+            }
             finally
             {
                 weatherLocationsSemaphore.Release();
@@ -36,14 +42,22 @@ namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
 
         public OrderedWeatherSummary[] Load()
         {
-            if (!File.Exists(weatherLocationsPath))
+            try
             {
+                if (!File.Exists(weatherLocationsPath))
+                {
+                    return new OrderedWeatherSummary[0];
+                }
+
+                var data = File.ReadAllText(weatherLocationsPath);
+                var loaded = JsonConvert.DeserializeObject<WeatherLocations>(data);
+                return loaded.WeatherSummaries;
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
                 return new OrderedWeatherSummary[0];
             }
-
-            var data = File.ReadAllText(weatherLocationsPath);
-            var loaded = JsonConvert.DeserializeObject<WeatherLocations>(data);
-            return loaded.WeatherSummaries;
         }
     }
 }
