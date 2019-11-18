@@ -6,9 +6,9 @@ using Xamarin.Essentials;
 
 namespace GraphQLDotNet.Mobile.OpenWeather
 {
-    public class CountryLocator
+    public sealed class CountryLocator : ICountryLocator
     {
-        const string DefaultCountry = "";
+        const string DefaultCountry = "NO";
 
         public async Task<string> GetCurrentCountry()
         {

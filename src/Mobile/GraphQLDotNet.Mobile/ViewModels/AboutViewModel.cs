@@ -21,7 +21,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
 #pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
             {
                 // TODO: async void
-                await navigationService.NavigateToAsync<AboutViewModel>();
+                await navigationService.NavigateTo<AboutViewModel>();
                 //Launcher.OpenAsync(new Uri("https://xamarin.com/platform"));
             });
             this.navigationService = navigationService;

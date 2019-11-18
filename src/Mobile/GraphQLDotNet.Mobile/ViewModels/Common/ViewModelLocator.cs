@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
+using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using LightInject;
@@ -19,9 +20,11 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
             serviceContainer.Register<MainViewModel>();
             serviceContainer.Register<LocationsViewModel>();
             serviceContainer.Register<AboutViewModel>();
+            serviceContainer.Register<AddLocationViewModel>();
 
             serviceContainer.Register<INavigationService, NavigationService>(new PerContainerLifetime());
             serviceContainer.Register<ILocalStorage, LocalStorage>(new PerContainerLifetime());
+            serviceContainer.Register<ICountryLocator, CountryLocator>(new PerContainerLifetime());
         }
 
         public static readonly BindableProperty AutoWireViewModelProperty =

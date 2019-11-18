@@ -9,27 +9,35 @@ using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Messages;
+using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
-    // TODO: Ikke lag noen VMer i XAML igjen, ever!
     public class AddLocationViewModel : ViewModelBase
     {
-        private readonly CountryLocator countryLocator;
+        private readonly INavigationService navigationService;
+        private readonly ICountryLocator countryLocator;
 
-        // TODO: Cancel as command
-        public AddLocationViewModel()
+        public AddLocationViewModel(INavigationService navigationService, ICountryLocator countryLocator)
         {
-            // TODO: use DI
-            countryLocator = new CountryLocator();
+            this.navigationService = navigationService;
+            this.countryLocator = countryLocator;
             Title = "Add new location";
-
-            // TODO: Dette funket ikke på første run på Android i alle fall...
-            var currentCountry = countryLocator.GetCurrentCountry().GetAwaiter().GetResult();
-            searchResults = new ObservableCollection<WeatherLocation>(OpenWeatherClient.GetLocations($", {currentCountry}").GetAwaiter().GetResult());
+            searchResults = new ObservableCollection<WeatherLocation>();
         }
+
+        public override async Task Initialize()
+        {
+            // TODO: Dette funket ikke på første run på verken Android eller iOS
+            var currentCountry = await countryLocator.GetCurrentCountry();
+            var locations = await OpenWeatherClient.GetLocations($", {currentCountry}");
+            SearchResults = new ObservableCollection<WeatherLocation>(locations);
+        }
+
+        public IAsyncCommand CancelCommand => new AsyncCommand(
+            async () => await navigationService.PopModal());
 
         // TODO: Use Async-command...
         public ICommand PerformSearch => new Command<TextChangedEventArgs>((TextChangedEventArgs query) =>
@@ -57,7 +65,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
             MessagingCenter.Send(this,
                 nameof(AddLocationMessage),
                 new AddLocationMessage(SearchResults[row].Id));
-            await Application.Current.MainPage.Navigation.PopModalAsync();
+            await navigationService.PopModal();
         });
 
         public ICommand OpenLocationInMapsCommand => new AsyncCommand<int>(async (int row) =>

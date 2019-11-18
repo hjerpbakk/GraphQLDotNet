@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:c="clr-namespace:GraphQLDotNet.Contracts;assembly=GraphQLDotNet.Contracts"
              xmlns:behaviors="clr-namespace:GraphQLDotNet.Mobile.Views.Behaviors"
              xmlns:controls="clr-namespace:GraphQLDotNet.Mobile.Views.Controls"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
+             xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              x:Class="GraphQLDotNet.Mobile.Views.AddLocationPage"
+             x:DataType="vm:AddLocationViewModel"
+             common:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title, Mode=OneTime}">
-    <ContentPage.BindingContext>
-        <vm:AddLocationViewModel />
-    </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked" />
+        <ToolbarItem Text="Cancel" Command="{Binding CancelCommand, Mode=OneTime}" />
     </ContentPage.ToolbarItems>
     <StackLayout>
         <SearchBar Placeholder="Enter search term">
@@ -19,12 +20,15 @@
                                                   Command="{Binding PerformSearch, Mode=OneTime}" />
             </SearchBar.Behaviors>
         </SearchBar>
-        <controls:AccessorizedListView ItemsSource="{Binding SearchResults}"
+        <controls:AccessorizedListView ItemsSource="{Binding SearchResults, Mode=OneWay}"
                                        AccessoryTappedCommand="{Binding OpenLocationInMapsCommand, Mode=OneTime}"
                                        RowTappedCommand="{Binding LocationSelectedCommand, Mode=OneTime}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name, Mode=OneTime}" Detail="{Binding Country, Mode=OneTime}" StyleId="detail-button" />
+                    <TextCell x:DataType="c:WeatherLocation"
+                              Text="{Binding Name, Mode=OneTime}"
+                              Detail="{Binding Country, Mode=OneTime}"
+                              StyleId="detail-button" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </controls:AccessorizedListView>

@@ -9,21 +9,31 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
 {
     public sealed class NavigationService : INavigationService
     {
-        public async Task NavigateToAsync<TViewModel>() where TViewModel : ViewModelBase
+        public async Task NavigateTo<TViewModel>() where TViewModel : ViewModelBase
         {
-            Page page = CreatePage(typeof(TViewModel));
+            var page = CreatePage(typeof(TViewModel));
             if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
             {
                 await navigationPage.PushAsync(page);
             }
             else
             {
-                //Application.Current.MainPage = new NavigationPage(page);
                 Application.Current.MainPage = page;
             }
 
             await ((ViewModelBase)page.BindingContext).Initialize();
         }
+
+        public async Task NavigateModallyTo<TViewModel>() where TViewModel : ViewModelBase
+        {
+            var page = CreatePage(typeof(TViewModel));
+            // TODO: Consider the use of Application here...
+            await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page));
+            await ((ViewModelBase)page.BindingContext).Initialize();
+        }
+
+        public async Task PopModal() =>
+            await Application.Current.MainPage.Navigation.PopModalAsync();
 
         private Page CreatePage(Type viewModelType)
         {

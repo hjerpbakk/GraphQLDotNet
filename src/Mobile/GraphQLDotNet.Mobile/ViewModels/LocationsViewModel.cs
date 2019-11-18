@@ -9,6 +9,7 @@ using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Messages;
+using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using GraphQLDotNet.Mobile.Views;
 using Xamarin.Forms;
 
@@ -16,15 +17,16 @@ namespace GraphQLDotNet.Mobile.ViewModels
 {
     public class LocationsViewModel : ViewModelBase
     {
+        private readonly INavigationService navigationService;
         private readonly ILocalStorage localStorage;
 
         // TODO: Current location øverst
         // TODO: Laste data ved oppstart...
-        public LocationsViewModel(ILocalStorage localStorage)
+        public LocationsViewModel(INavigationService navigationService, ILocalStorage localStorage)
         {
+            this.navigationService = navigationService;
             this.localStorage = localStorage;
             Title = "Locations";
-            AddLocationCommand = new AsyncCommand(ExecuteAddLocationsCommand);
             RefreshCommand = new AsyncCommand(ExecuteRefreshLocations);
             locations = new ObservableCollection<OrderedWeatherSummary>();
 
@@ -49,9 +51,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
             });
         }
 
-        public IAsyncCommand AddLocationCommand { get; }
-        public AsyncCommand<OrderedWeatherSummary> RemoveLocationCommand =>
-            new AsyncCommand<OrderedWeatherSummary>(async (OrderedWeatherSummary weatherSummaryToDelete) =>
+        public IAsyncCommand AddLocationCommand => new AsyncCommand(
+            async () => await navigationService.NavigateModallyTo<AddLocationViewModel>());
+
+        public AsyncCommand<OrderedWeatherSummary> RemoveLocationCommand => new AsyncCommand<OrderedWeatherSummary>(
+            async (OrderedWeatherSummary weatherSummaryToDelete) =>
             {
                 if (Locations.Remove(weatherSummaryToDelete))
                 {
@@ -87,29 +91,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
             await ExecuteRefreshLocations();
         }
 
-        async Task ExecuteAddLocationsCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-            try
-            {
-                await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(new AddLocationPage()));
-            }
-            catch (Exception ex)
-            {
-                // TODO: Error
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
         async Task ExecuteRefreshLocations()
         {
             try
@@ -119,8 +100,12 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
-                // TODO: if service fails, list becomes empty 
                 var weatherSummaries = await OpenWeatherClient.GetWeatherUpdatesFor(Locations.Select(w => w.Id));
+                if (!weatherSummaries.Any())
+                {
+                    return;
+                }
+
                 var updatedWeather =
                     from orderedWeatherSummary in Locations
                     join summary in weatherSummaries on orderedWeatherSummary.Id equals summary.Id
@@ -128,11 +113,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     select orderedWeatherSummary.UpdateWeather(summary);
                 // TODO: Save updated values here or wait for app shutdown??
                 Locations = new ObservableCollection<OrderedWeatherSummary>(updatedWeather);
-            }
-            catch (Exception ex)
-            {
-                // TODO: Error
-                Debug.WriteLine(ex);
             }
             finally
             {

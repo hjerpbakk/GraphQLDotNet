@@ -5,9 +5,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="GraphQLDotNet.Mobile.Views.AboutPage"
-             xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
-             Title="{Binding Title}"
-             vm:ViewModelLocator.AutoWireViewModel="true">
+             xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
+             xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
+             x:DataType="vm:AboutViewModel"
+             Title="{Binding Title, Mode=OneTime}"
+             common:ViewModelLocator.AutoWireViewModel="true">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>

@@ -28,7 +28,7 @@ namespace GraphQLDotNet.Mobile
             AppCenter.Start($"{Secrets.AppCenteriOsSecret}",
                   typeof(Analytics), typeof(Crashes));
             var navigationService = ViewModelLocator.Resolve<INavigationService>();
-            await navigationService.NavigateToAsync<MainViewModel>();
+            await navigationService.NavigateTo<MainViewModel>();
         }
 
         protected override void OnSleep()

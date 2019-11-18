@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.Views
 {
@@ -10,12 +7,6 @@ namespace GraphQLDotNet.Mobile.Views
         public AddLocationPage()
         {
             InitializeComponent();
-        }
-
-        // TODO: Fjern denne når jeg får page sheet til å funke
-        async void Cancel_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PopModalAsync();
         }
     }
 }

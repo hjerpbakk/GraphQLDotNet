@@ -8,8 +8,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        //public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-
+        // TODO: Needed?
         bool isBusy;
         public bool IsBusy
         {
