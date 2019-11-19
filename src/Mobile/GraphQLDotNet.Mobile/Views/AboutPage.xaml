@@ -8,7 +8,7 @@
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              x:DataType="vm:AboutViewModel"
-             Title="{Binding Title, Mode=OneTime}"
+             Title="{Binding Title, Mode=OneWay}"
              common:ViewModelLocator.AutoWireViewModel="true">
     <ContentPage.Resources>
         <ResourceDictionary>

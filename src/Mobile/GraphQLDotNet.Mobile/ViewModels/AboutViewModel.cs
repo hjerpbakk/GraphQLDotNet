@@ -1,10 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
@@ -14,20 +11,15 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public AboutViewModel(INavigationService navigationService)
         {
-            Title = "About2";
-
-#pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
-            OpenWebCommand = new Command(async () =>
-#pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
-            {
-                // TODO: async void
-                await navigationService.NavigateTo<AboutViewModel>();
-                //Launcher.OpenAsync(new Uri("https://xamarin.com/platform"));
-            });
             this.navigationService = navigationService;
+            Title = "About2";
         }
 
-        public ICommand OpenWebCommand { get; }
+        public IAsyncCommand OpenWebCommand => new AsyncCommand(async () =>
+        {
+            await navigationService.NavigateTo<AboutViewModel>();
+            //Launcher.OpenAsync(new Uri("https://xamarin.com/platform"));
+        });
 
         public override async Task Initialize()
         {
