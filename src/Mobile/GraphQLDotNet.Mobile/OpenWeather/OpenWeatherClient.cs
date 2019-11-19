@@ -108,6 +108,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
         }
 
         // TODO: Configure using DI
+        // TODO: Try with slow services and consider loading indicators
         static GraphQLHttpClient CreateGraphQLClient() => new GraphQLHttpClient(new GraphQLHttpClientOptions
         {
             EndPoint = new Uri(OpenWeatherConfiguration.GraphQLApiUrl),
@@ -128,7 +129,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
 
             return response;
 
-            TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
         }
     }
 }

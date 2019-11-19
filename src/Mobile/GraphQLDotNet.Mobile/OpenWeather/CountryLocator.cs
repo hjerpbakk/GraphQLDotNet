@@ -1,14 +1,31 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Crashes;
+using Wibci.CountryReverseGeocode;
+using Wibci.CountryReverseGeocode.Models;
 using Xamarin.Essentials;
 
 namespace GraphQLDotNet.Mobile.OpenWeather
 {
     public sealed class CountryLocator : ICountryLocator
     {
-        const string DefaultCountry = "NO";
+        const string DefaultCountry = "";
+
+        private readonly CountryReverseGeocodeService reverseGeocodeService;
+        private readonly Lazy<Dictionary<string, string>> iso3ToIso2Mapping;
+
+        public CountryLocator(CountryReverseGeocodeService reverseGeocodeService)
+        {
+            this.reverseGeocodeService = reverseGeocodeService;
+            iso3ToIso2Mapping = new Lazy<Dictionary<string, string>>(() =>
+            CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                .Select(ci => new RegionInfo(ci.LCID))
+                .GroupBy(ri => ri.ThreeLetterISORegionName)
+                .ToDictionary(g => g.Key, g => g.First().TwoLetterISORegionName));
+        }
 
         public async Task<string> GetCurrentCountry()
         {
@@ -25,21 +42,23 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                     }
                 }
 
-                //return await GetCountryCodeFromLocation();
-                return DefaultCountry;
+                return GetCountryCodeFromLocation();
 
-                /*async Task<string> GetCountryCodeFromLocation()
+                string GetCountryCodeFromLocation()
                 {
-                    // TODO: Funker ikke i det hele tatt...
-                    var placemark = await Geocoding.GetPlacemarksAsync(location.Latitude, location.Longitude);
-                    var firstPlace = placemark.FirstOrDefault();
-                    if (firstPlace == null)
+                    var locationInfo = reverseGeocodeService.FindCountry(new GeoLocation { Latitude = location.Latitude, Longitude = location.Longitude });
+                    if (string.IsNullOrEmpty(locationInfo?.Id))
                     {
                         return DefaultCountry;
                     }
 
-                    return firstPlace.CountryCode;
-                }*/
+                    if (iso3ToIso2Mapping.Value.TryGetValue(locationInfo.Id, out string alpha2Code))
+                    {
+                        return alpha2Code;
+                    }
+
+                    return DefaultCountry;
+                }
             }
             catch (FeatureNotSupportedException)
             {
@@ -56,9 +75,9 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 // Handle permission exception
                 return DefaultCountry;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // Unable to get location
+                Crashes.TrackError(exception);
                 return DefaultCountry;
             }
         }
