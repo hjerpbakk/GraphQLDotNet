@@ -26,7 +26,7 @@ namespace GraphQLDotNet.Mobile.Models
 
         public static bool operator !=(WeatherSummary x, WeatherSummary y) => !(x == y);
 
-        public override bool Equals(object obj) => obj is WeatherSummary && Equals((WeatherSummary)obj);
+        public override bool Equals(object obj) => obj is WeatherSummary weatherSummary && Equals(weatherSummary);
 
         public override int GetHashCode() => Id.GetHashCode();
     }

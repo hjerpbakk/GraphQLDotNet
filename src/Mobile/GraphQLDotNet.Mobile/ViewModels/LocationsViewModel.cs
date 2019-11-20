@@ -39,7 +39,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
             MessagingCenter.Subscribe<AddLocationViewModel, AddLocationMessage>(this, nameof(AddLocationMessage), async (obj, locationMessage) =>
 #pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
             {
-                // TODO: Sjekk om finnes fra før før legges til
+                if (Locations.Contains(new OrderedWeatherSummary(locationMessage.Id)))
+                {
+                    return;
+                }
+
                 var summary = await openWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
                 if (summary == WeatherSummary.Default)
                 {

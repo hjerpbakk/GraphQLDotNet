@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace GraphQLDotNet.Mobile.Models
 {
-    public sealed class OrderedWeatherSummary
+    public sealed class OrderedWeatherSummary : IEquatable<OrderedWeatherSummary>
     {
         public OrderedWeatherSummary(WeatherSummary weatherSummary, int ordering)
         {
@@ -14,7 +15,7 @@ namespace GraphQLDotNet.Mobile.Models
         }
 
         [JsonConstructor]
-        public OrderedWeatherSummary(string name, long id, int ordering)
+        public OrderedWeatherSummary(long id, string name = "", int ordering = -1)
         {
             Name = name;
             Id = id;
@@ -33,5 +34,15 @@ namespace GraphQLDotNet.Mobile.Models
             Temperature = weatherSummary.Temperature;
             return this;
         }
+
+        public bool Equals(OrderedWeatherSummary other) => Id == other.Id;
+
+        public static bool operator ==(OrderedWeatherSummary x, OrderedWeatherSummary y) => x.Equals(y);
+
+        public static bool operator !=(OrderedWeatherSummary x, OrderedWeatherSummary y) => !(x == y);
+
+        public override bool Equals(object obj) => obj is OrderedWeatherSummary orderedWeatherSummary && Equals(orderedWeatherSummary);
+
+        public override int GetHashCode() => Id.GetHashCode();
     }
 }
