@@ -5,6 +5,7 @@ using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using LightInject;
+using Wibci.CountryReverseGeocode;
 using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels.Common
@@ -26,6 +27,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
             serviceContainer.Register<ILocalStorage, LocalStorage>(new PerContainerLifetime());
             serviceContainer.Register<ICountryLocator, CountryLocator>(new PerContainerLifetime());
             serviceContainer.Register<IOpenWeatherClient, OpenWeatherClient>(new PerContainerLifetime());
+            serviceContainer.Register<CountryReverseGeocodeService>(new PerContainerLifetime());
         }
 
         public static readonly BindableProperty AutoWireViewModelProperty =

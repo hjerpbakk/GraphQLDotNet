@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
 using GraphQLDotNet.Mobile.ViewModels.Common;
+using Microsoft.AppCenter.Crashes;
 using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels.Navigation
@@ -11,25 +12,39 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
     {
         public async Task NavigateTo<TViewModel>() where TViewModel : ViewModelBase
         {
-            var page = CreatePage(typeof(TViewModel));
-            if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
+            try
             {
-                await navigationPage.PushAsync(page);
-            }
-            else
-            {
-                Application.Current.MainPage = page;
-            }
+                var page = CreatePage(typeof(TViewModel));
+                if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
+                {
+                    await navigationPage.PushAsync(page);
+                }
+                else
+                {
+                    Application.Current.MainPage = page;
+                }
 
-            await ((ViewModelBase)page.BindingContext).Initialize();
+                await ((ViewModelBase)page.BindingContext).Initialize();
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+            }
         }
 
         public async Task NavigateModallyTo<TViewModel>() where TViewModel : ViewModelBase
         {
-            var page = CreatePage(typeof(TViewModel));
-            // TODO: Consider the use of Application here...
-            await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page));
-            await ((ViewModelBase)page.BindingContext).Initialize();
+            try
+            {
+                var page = CreatePage(typeof(TViewModel));
+                // TODO: Consider the use of Application here...
+                await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page));
+                await ((ViewModelBase)page.BindingContext).Initialize();
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+            }
         }
 
         public async Task PopModal() =>
