@@ -114,8 +114,8 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     join summary in weatherSummaries on orderedWeatherSummary.Id equals summary.Id
                     orderby orderedWeatherSummary.Ordering
                     select orderedWeatherSummary.UpdateWeather(summary);
-                // TODO: Save updated values here or wait for app shutdown??
                 Locations = new ObservableCollection<OrderedWeatherSummary>(updatedWeather);
+                await localStorage.Save(Locations);
             }
             finally
             {
