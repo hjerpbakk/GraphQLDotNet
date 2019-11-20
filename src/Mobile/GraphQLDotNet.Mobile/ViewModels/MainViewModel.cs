@@ -13,7 +13,14 @@ namespace GraphQLDotNet.Mobile.ViewModels
             if (currentPage is NavigationPage navigationPage &&
                 navigationPage.CurrentPage?.BindingContext is ViewModelBase viewModel)
             {
-                await viewModel.Initialize();
+                try
+                {
+                    await viewModel.Initialize();
+                }
+                catch (Exception exception)
+                {
+                    Crashes.TrackError(exception);
+                }   
             }
         }
     }
