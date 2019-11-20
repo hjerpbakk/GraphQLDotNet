@@ -13,11 +13,14 @@ using Polly;
 
 namespace GraphQLDotNet.Mobile.OpenWeather
 {
-    public sealed class OpenWeatherClient : IOpenWeatherClient
+    internal sealed class OpenWeatherClient : IOpenWeatherClient
     {
-        static readonly Lazy<GraphQLHttpClient> _clientHolder = new Lazy<GraphQLHttpClient>(CreateGraphQLClient);
+        private readonly GraphQLHttpClient graphQLHttpClient;
 
-        static GraphQLHttpClient Client => _clientHolder.Value;
+        // TODO: Try with slow services and consider loading indicators
+        public OpenWeatherClient(OpenWeatherConfiguration openWeatherConfiguration) =>
+            graphQLHttpClient = new GraphQLHttpClient(
+                new GraphQLHttpClientOptions { EndPoint = new Uri(openWeatherConfiguration.GraphQLApiUrl) });
 
         public async Task<IEnumerable<WeatherLocation>> GetLocations(string searchTerm = "", int maxNumberOfResults = 8)
         {
@@ -30,7 +33,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                     Variables = new { beginsWith = searchTerm, maxResults = maxNumberOfResults }
                 };
 
-                var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
 
                 return response.GetDataFieldAs<IEnumerable<WeatherLocation>>("locations");
             }
@@ -52,7 +55,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                     Variables = new { id = locationId }
                 };
 
-                var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
 
                 return response.GetDataFieldAs<WeatherSummary>("forecast");
             }
@@ -74,7 +77,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                     Variables = new { location_ids = locationIds.ToArray() }
                 };
 
-                var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
                 var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("forecasts");
                 return forecasts;
             }
@@ -96,7 +99,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                     Variables = new { location_ids = locationIds.ToArray() }
                 };
 
-                var response = await AttemptAndRetry(() => Client.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
                 var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("forecasts");
                 return forecasts;
             }
@@ -107,22 +110,18 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             }
         }
 
-        // TODO: Configure using DI
-        // TODO: Try with slow services and consider loading indicators
-        static GraphQLHttpClient CreateGraphQLClient() => new GraphQLHttpClient(new GraphQLHttpClientOptions
-        {
-            EndPoint = new Uri(OpenWeatherConfiguration.GraphQLApiUrl),
-        });
-
-        static async Task<GraphQLResponse> AttemptAndRetry(Func<Task<GraphQLResponse>> action, int numRetries = 2)
+        private static async Task<GraphQLResponse> AttemptAndRetry(Func<Task<GraphQLResponse>> action, int numRetries = 2)
         {
             var response = await Policy.Handle<Exception>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action).ConfigureAwait(false);
-
             if (response.Errors != null && response.Errors.Count() > 1)
+            {
                 throw new AggregateException(response.Errors.Select(x => new GraphQLException(x)));
-
+            }
+                
             if (response.Errors != null && response.Errors.Count() is 1)
+            {
                 throw new GraphQLException(response.Errors.First());
+            }
 
             return response;
 

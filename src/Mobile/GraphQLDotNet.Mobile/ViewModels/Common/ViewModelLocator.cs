@@ -23,6 +23,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
             serviceContainer.Register<AboutViewModel>();
             serviceContainer.Register<AddLocationViewModel>();
 
+            serviceContainer.Register<OpenWeatherConfiguration>(new PerContainerLifetime());
             serviceContainer.Register<INavigationService, NavigationService>(new PerContainerLifetime());
             serviceContainer.Register<ILocalStorage, LocalStorage>(new PerContainerLifetime());
             serviceContainer.Register<ICountryLocator, CountryLocator>(new PerContainerLifetime());
