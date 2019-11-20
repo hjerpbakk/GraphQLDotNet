@@ -15,6 +15,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
             try
             {
                 var page = CreatePage(typeof(TViewModel));
+                var init = ((ViewModelBase)page.BindingContext).Initialize();
                 if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
                 {
                     await navigationPage.PushAsync(page);
@@ -24,7 +25,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
                     Application.Current.MainPage = page;
                 }
 
-                await ((ViewModelBase)page.BindingContext).Initialize();
+                await init;
             }
             catch (Exception exception)
             {
@@ -38,8 +39,9 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
             {
                 var page = CreatePage(typeof(TViewModel));
                 // TODO: Consider the use of Application here...
+                var init = ((ViewModelBase)page.BindingContext).Initialize();
                 await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page));
-                await ((ViewModelBase)page.BindingContext).Initialize();
+                await init;
             }
             catch (Exception exception)
             {
