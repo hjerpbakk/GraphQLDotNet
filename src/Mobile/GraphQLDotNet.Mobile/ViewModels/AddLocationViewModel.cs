@@ -48,6 +48,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public ICommand PerformSearch => new Command<TextChangedEventArgs>(
             (TextChangedEventArgs query) =>
             {
+                searchTypingTimer.Stop();
                 searchTypingTimer.Start();
                 latestQueryText = query.NewTextValue;
             });
