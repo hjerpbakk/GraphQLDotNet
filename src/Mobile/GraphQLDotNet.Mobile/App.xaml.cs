@@ -14,6 +14,7 @@ namespace GraphQLDotNet.Mobile
         public App()
         {
             InitializeComponent();
+            // TODO: Dark mode
             //DependencyService.Register<MockDataStore>();
             //MainPage = new MainPage();
         }

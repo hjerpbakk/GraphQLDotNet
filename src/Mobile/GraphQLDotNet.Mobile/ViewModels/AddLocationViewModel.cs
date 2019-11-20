@@ -24,12 +24,14 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private ObservableCollection<WeatherLocation> searchResults;
         private string latestQueryText;
 
+        // TODO: Possible to auto show keyboard?
         public AddLocationViewModel(INavigationService navigationService, ICountryLocator countryLocator, IOpenWeatherClient openWeatherClient)
         {
             this.navigationService = navigationService;
             this.countryLocator = countryLocator;
             this.openWeatherClient = openWeatherClient;
-            searchTypingTimer = new Timer { AutoReset = false, Interval = 100D };
+            // TODO: What is a good interval value?
+            searchTypingTimer = new Timer { AutoReset = false, Interval = 1D };
             searchTypingTimer.Elapsed += SearchTypingTimer_Elapsed;
             Title = "Add new location";
             searchResults = new ObservableCollection<WeatherLocation>();
@@ -98,11 +100,13 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         private async Task Search()
         {
+            // TODO: Cancel previous calls if underway?
             var nameAndCountry = latestQueryText.Split(',');
             string currentCountry = nameAndCountry.Length > 1
                 ? nameAndCountry[1]
                 : await countryLocator.GetCurrentCountry();
-            var results = await openWeatherClient.GetLocations($"{latestQueryText}, {currentCountry}");
+            var searchString = $"{nameAndCountry[0]}, {currentCountry}";
+            var results = await openWeatherClient.GetLocations(searchString);
             SearchResults = new ObservableCollection<WeatherLocation>(results);
         }
     }
