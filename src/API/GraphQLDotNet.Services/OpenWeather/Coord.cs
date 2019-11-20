@@ -1,9 +1,14 @@
 ﻿namespace GraphQLDotNet.Services.OpenWeather
 {
-    internal sealed class Coord
+    internal readonly struct Coord
     {
-        // TODO: Readonly struct?
-        public double Lon { get; set; }
-        public double Lat { get; set; }
+        public Coord(double lon, double lat)
+        {
+            Lon = lon;
+            Lat = lat;
+        }
+
+        public double Lon { get; }
+        public double Lat { get; }
     }
 }

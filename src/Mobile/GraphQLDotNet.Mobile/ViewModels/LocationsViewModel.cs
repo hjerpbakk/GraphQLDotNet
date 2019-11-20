@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQLDotNet.Mobile.Models;
@@ -10,7 +8,6 @@ using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Messages;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
-using GraphQLDotNet.Mobile.Views;
 using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
