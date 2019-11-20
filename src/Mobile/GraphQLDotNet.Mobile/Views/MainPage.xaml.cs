@@ -13,6 +13,7 @@ namespace GraphQLDotNet.Mobile.Views
 
         protected override void OnCurrentPageChanged()
         {
+            // TODO: Use command
             base.OnCurrentPageChanged();
             // TODO: Hidden knowledge, match page with VM
             ((MainViewModel)BindingContext)

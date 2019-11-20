@@ -50,7 +50,7 @@ namespace GraphQLDotNet.Mobile.Views.Behaviors
             base.OnDetachingFrom(bindable);
         }
 
-        void RegisterEvent(string name)
+        private void RegisterEvent(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -62,12 +62,13 @@ namespace GraphQLDotNet.Mobile.Views.Behaviors
             {
                 throw new ArgumentException(string.Format("EventToCommandBehavior: Can't register the '{0}' event.", EventName));
             }
+
             MethodInfo methodInfo = typeof(EventToCommandBehavior).GetTypeInfo().GetDeclaredMethod("OnEvent");
             eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
             eventInfo.AddEventHandler(AssociatedObject, eventHandler);
         }
 
-        void DeregisterEvent(string name)
+        private void DeregisterEvent(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -87,7 +88,9 @@ namespace GraphQLDotNet.Mobile.Views.Behaviors
             eventHandler = null;
         }
 
-        void OnEvent(object sender, object eventArgs)
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable IDE0060 // Remove unused parameter
+        private void OnEvent(object sender, object eventArgs)
         {
             if (Command == null)
             {
@@ -113,8 +116,10 @@ namespace GraphQLDotNet.Mobile.Views.Behaviors
                 Command.Execute(resolvedParameter);
             }
         }
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0051 // Remove unused private members
 
-        static void OnEventNameChanged(BindableObject bindable, object oldValue, object newValue)
+        private static void OnEventNameChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var behavior = (EventToCommandBehavior)bindable;
             if (behavior.AssociatedObject == null)

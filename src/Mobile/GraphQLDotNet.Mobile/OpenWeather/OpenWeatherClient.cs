@@ -112,9 +112,6 @@ namespace GraphQLDotNet.Mobile.OpenWeather
         static GraphQLHttpClient CreateGraphQLClient() => new GraphQLHttpClient(new GraphQLHttpClientOptions
         {
             EndPoint = new Uri(OpenWeatherConfiguration.GraphQLApiUrl),
-#if !DEBUG
-            HttpMessageHandler = new ModernHttpClient.NativeMessageHandler()
-#endif
         });
 
         static async Task<GraphQLResponse> AttemptAndRetry(Func<Task<GraphQLResponse>> action, int numRetries = 2)

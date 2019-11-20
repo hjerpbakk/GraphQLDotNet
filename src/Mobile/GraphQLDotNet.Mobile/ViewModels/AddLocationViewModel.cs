@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Timers;
+using System.Windows.Input;
 using GraphQLDotNet.Contracts;
 using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
@@ -16,15 +19,21 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private readonly INavigationService navigationService;
         private readonly ICountryLocator countryLocator;
         private readonly IOpenWeatherClient openWeatherClient;
+        private readonly Timer searchTypingTimer;
+
         private ObservableCollection<WeatherLocation> searchResults;
+        private string latestQueryText;
 
         public AddLocationViewModel(INavigationService navigationService, ICountryLocator countryLocator, IOpenWeatherClient openWeatherClient)
         {
             this.navigationService = navigationService;
             this.countryLocator = countryLocator;
             this.openWeatherClient = openWeatherClient;
+            searchTypingTimer = new Timer { AutoReset = false, Interval = 100D };
+            searchTypingTimer.Elapsed += SearchTypingTimer_Elapsed;
             Title = "Add new location";
             searchResults = new ObservableCollection<WeatherLocation>();
+            latestQueryText = "";
         }
 
         public ObservableCollection<WeatherLocation> SearchResults
@@ -36,18 +45,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public IAsyncCommand CancelCommand => new AsyncCommand(
             async () => await navigationService.PopModal());
 
-        public IAsyncCommand<TextChangedEventArgs> PerformSearch => new AsyncCommand<TextChangedEventArgs>(
-            async (TextChangedEventArgs query) =>
+        public ICommand PerformSearch => new Command<TextChangedEventArgs>(
+            (TextChangedEventArgs query) =>
             {
-                var nameAndCountry = query.NewTextValue.Split(',');
-                string currentCountry = nameAndCountry.Length > 1
-                    ? nameAndCountry[1]
-                    : countryLocator.GetCurrentCountry().GetAwaiter().GetResult();
-
-                // TODO: Throttle events...
-                var results = await openWeatherClient.GetLocations($"{query.NewTextValue}, {currentCountry}");
-
-                SearchResults = new ObservableCollection<WeatherLocation>(results);
+                searchTypingTimer.Start();
+                latestQueryText = query.NewTextValue;
             });
 
         public IAsyncCommand<int> LocationSelectedCommand => new AsyncCommand<int>(
@@ -85,6 +87,22 @@ namespace GraphQLDotNet.Mobile.ViewModels
             var currentCountry = await countryLocator.GetCurrentCountry();
             var locations = await openWeatherClient.GetLocations($", {currentCountry}");
             SearchResults = new ObservableCollection<WeatherLocation>(locations);
+        }
+
+        private void SearchTypingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            searchTypingTimer.Stop();
+            Search().FireAndForgetSafeAsync();
+        }
+
+        private async Task Search()
+        {
+            var nameAndCountry = latestQueryText.Split(',');
+            string currentCountry = nameAndCountry.Length > 1
+                ? nameAndCountry[1]
+                : await countryLocator.GetCurrentCountry();
+            var results = await openWeatherClient.GetLocations($"{latestQueryText}, {currentCountry}");
+            SearchResults = new ObservableCollection<WeatherLocation>(results);
         }
     }
 }
