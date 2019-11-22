@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GraphQLDotNet.Mobile.Views.WeatherPage"
+             xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
+             xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
+             x:DataType="vm:WeatherViewModel"
+             common:ViewModelLocator.AutoWireViewModel="true"
+             Title="{Binding Title, Mode=OneTime}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="🗑" Command="{Binding RemoveCommand, Mode=OneTime}" />
+    </ContentPage.ToolbarItems>
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand, Mode=OneTime}">
+        <ScrollView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0,4*" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="0,6*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding Icon, Mode=OneWay}"
+                    Aspect="AspectFill"
+                    HeightRequest="120"
+                    WidthRequest="120" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                <Label Text="{Binding Temperature, Mode=OneWay}" FontSize="Title" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                <Label Text="{Binding Description, Mode=OneWay}" FontSize="Subtitle" Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                <StackLayout Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label Text="Temp min" FontSize="Caption" />
+                    <Label Text="{Binding TempMin, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
+                    <Label Text="Pressure" FontSize="Caption" />
+                    <Label Text="{Binding Pressure, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
+                    <Label Text="Sunrise" FontSize="Caption" />
+                    <Label Text="{Binding Sunrise, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
+                    <Label Text="Wind" FontSize="Caption" />
+                    <Label Text="{Binding Wind, Mode=OneWay}" FontSize="Header" />
+                </StackLayout>
+                <StackLayout Grid.Row="2" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label Text="Temp max" FontSize="Caption" />
+                    <Label Text="{Binding TempMax, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
+                    <Label Text="Humidity" FontSize="Caption" />
+                    <Label Text="{Binding Humidity, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
+                    <Label Text="Sunset" FontSize="Caption" />
+                    <Label Text="{Binding Sunset, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
+                    <Label Text="Visibility" FontSize="Caption" />
+                    <Label Text="{Binding Visibility, Mode=OneWay}" FontSize="Header" />
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

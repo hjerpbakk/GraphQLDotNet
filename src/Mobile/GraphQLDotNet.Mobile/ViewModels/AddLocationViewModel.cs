@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
@@ -63,7 +62,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
-                // TODO: Finnes det en bedre måte å sende dataene på?
+                // TODO: Finnes det en bedre måte å sende dataene på? Gjøre denne non-static om meldinger er gudd.
                 MessagingCenter.Send(this,
                     nameof(AddLocationMessage),
                     new AddLocationMessage(SearchResults[row].Id));

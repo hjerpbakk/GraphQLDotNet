@@ -34,7 +34,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
             // TODO: this warning suxx
 #pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
             MessagingCenter.Subscribe<AddLocationViewModel, AddLocationMessage>(this, nameof(AddLocationMessage), async (obj, locationMessage) =>
-#pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
             {
                 if (Locations.Contains(new OrderedWeatherSummary(locationMessage.Id)))
                 {
@@ -51,6 +50,12 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 Locations.Add(orderedSummary);
                 await localStorage.Save(Locations);
             });
+
+            MessagingCenter.Subscribe<WeatherViewModel, RemoveLocationMessage>(this, nameof(RemoveLocationMessage), async (obj, locationMessage) =>
+            {
+                await RemoveLocationCommand.ExecuteAsync(new OrderedWeatherSummary(locationMessage.Id));
+            });
+#pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
         }
 
         public IAsyncCommand AddLocationCommand => new AsyncCommand(
@@ -65,7 +70,26 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 }
             });
 
+        public IAsyncCommand SelectionChangedCommand => new AsyncCommand(
+            async () =>
+            {
+                if (SelectedLocation as object == null)
+                {
+                    return;
+                }
+
+                // TODO: HVORDAN GJØRE DETTE MED DE SWIPE-greiene oppå?!?!
+#pragma warning disable CS8604 // Possible null reference argument.
+                await navigationService.NavigateTo<WeatherViewModel, OrderedWeatherSummary>(SelectedLocation);
+#pragma warning restore CS8604 // Possible null reference argument.
+
+                SelectedLocation = null;
+                OnPropertyChanged(nameof(SelectedLocation));
+            });
+
         public IAsyncCommand RefreshCommand { get; }
+
+        public OrderedWeatherSummary? SelectedLocation { get; set; }
 
         public ObservableCollection<OrderedWeatherSummary> Locations
         {

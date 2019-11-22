@@ -4,7 +4,6 @@
              xmlns:m="clr-namespace:GraphQLDotNet.Mobile.Models"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
-             xmlns:context="clr-namespace:ContextMenu.Views;assembly=ContextMenu"
              x:Class="GraphQLDotNet.Mobile.Views.LocationsPage"
              x:DataType="vm:LocationsViewModel"
              common:ViewModelLocator.AutoWireViewModel="true"
@@ -13,14 +12,14 @@
         <ToolbarItem Text="Add" Command="{Binding AddLocationCommand, Mode=OneTime}" />
     </ContentPage.ToolbarItems>
     <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand, Mode=OneTime}">
-            <!-- TODO: Try Margin="-1,-1,0,0" hack on device and Android too -->
-            <CollectionView BackgroundColor="White" Margin="-1,-1,0,0" ItemsSource="{Binding Locations, Mode=OneWay}" x:Name="CollectionView">
+            <CollectionView ItemsSource="{Binding Locations, Mode=OneWay}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedLocation}"
+                            SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                            x:Name="CollectionView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <context:SwipeActionContextHolder MovedCommand="{Binding BindingContext.RemoveLocationCommand, Source={x:Reference CollectionView}}">
-                        <context:SwipeActionContextMenuView>
-                            <context:SwipeActionContextMenuView.View>
-                                <Grid Padding="10"
+                    <Grid Padding="10"
                                       WidthRequest="{Binding Source={x:Reference CollectionView}, Path=Width}"
                                       x:DataType="m:OrderedWeatherSummary"
                                       BackgroundColor="White">
@@ -46,22 +45,6 @@
                                            FontAttributes="Italic"
                                            VerticalOptions="End" />
                                 </Grid>
-                            </context:SwipeActionContextMenuView.View>
-                            <context:SwipeActionContextMenuView.ContextTemplate>
-                                <DataTemplate>
-                                        <StackLayout BackgroundColor="Red"
-                                                 Padding="0,0,10,0">
-                                        <Label Text="⬅️ 🗑"
-                                               TextColor="White"
-                                               FontAttributes="Bold"
-                                               VerticalOptions="CenterAndExpand"
-                                               HorizontalOptions="EndAndExpand"/>
-                                    </StackLayout>
-                                    
-                                </DataTemplate>
-                            </context:SwipeActionContextMenuView.ContextTemplate>  
-                        </context:SwipeActionContextMenuView>
-                    </context:SwipeActionContextHolder>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>

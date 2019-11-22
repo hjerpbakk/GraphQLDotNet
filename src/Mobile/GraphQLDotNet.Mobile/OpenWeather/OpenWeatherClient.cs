@@ -22,6 +22,29 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             graphQLHttpClient = new GraphQLHttpClient(
                 new GraphQLHttpClientOptions { EndPoint = new Uri(openWeatherConfiguration.GraphQLApiUrl) });
 
+        public async Task<WeatherForecast> GetWeatherForecast(long locationId)
+        {
+            try
+            {
+                var graphQLRequest = new GraphQLRequest
+                {
+                    Query = "query Forecast($id: Long!) { forecast(city_id: $id) { id location date temperature openWeatherIcon summary description tempMin tempMax pressure humidity sunrise sunset windSpeed windDegrees visibility } }",
+                    OperationName = "Forecast",
+                    Variables = new { id = locationId }
+                };
+
+                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
+
+                // TODO: fetch only whats needed and use a custom type
+                return response.GetDataFieldAs<WeatherForecast>("forecast");
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+                throw new Exception();
+            }
+        }
+
         public async Task<IEnumerable<WeatherLocation>> GetLocations(string searchTerm = "", int maxNumberOfResults = 8)
         {
             try

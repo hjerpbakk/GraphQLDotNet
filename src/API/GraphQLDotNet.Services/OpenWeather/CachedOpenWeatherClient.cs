@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Dasync.Collections;
 using GraphQLDotNet.Contracts;
@@ -50,14 +49,24 @@ namespace GraphQLDotNet.Services.OpenWeather
                 var url = string.Format(openWeatherConfiguration.OpenWeatherURL, id);
                 var openWeatherForecast = await httpClient.GetAsync<Forecast>(url);
                 var weather = openWeatherForecast.Weather.First();
-                return new WeatherForecast(
+                var weatherForecast = new WeatherForecast(
                     openWeatherForecast.Id,
                     openWeatherForecast.Name,
                     DateTimeOffset.FromUnixTimeSeconds(openWeatherForecast.Dt).UtcDateTime,
-                    openWeatherForecast.Main.Temp,
+                    Math.Round(openWeatherForecast.Main.Temp, 1),
                     weather.Icon,
                     weather.Main,
-                    weather.Description);
+                    weather.Description,
+                    Math.Round(openWeatherForecast.Main.TempMin, 1),
+                    Math.Round(openWeatherForecast.Main.TempMax, 1),
+                    openWeatherForecast.Main.Pressure,
+                    openWeatherForecast.Main.Humidity,
+                    DateTimeOffset.FromUnixTimeSeconds(openWeatherForecast.Sys.Sunrise).UtcDateTime,
+                    DateTimeOffset.FromUnixTimeSeconds(openWeatherForecast.Sys.Sunset).UtcDateTime,
+                    openWeatherForecast.Wind.Speed,
+                    openWeatherForecast.Wind.Deg,
+                    openWeatherForecast.Visibility);
+                return weatherForecast;
             }
         }
 

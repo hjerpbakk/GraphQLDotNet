@@ -18,7 +18,31 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
                 var init = ((ViewModelBase)page.BindingContext).Initialize();
                 if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
                 {
-                    await navigationPage.PushAsync(page);
+                    await navigationPage.PushAsync(page, true);
+                }
+                else
+                {
+                    Application.Current.MainPage = page;
+                }
+
+                await init;
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+            }
+        }
+
+        // TODO: De-duplicate
+        public async Task NavigateTo<TViewModel, TPageArgument>(TPageArgument argument) where TViewModel : ViewModelBase
+        {
+            try
+            {
+                var page = CreatePage(typeof(TViewModel));
+                var init = ((ViewModelBase<TPageArgument>)page.BindingContext).Initialize(argument);
+                if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
+                {
+                    await navigationPage.PushAsync(page, true);
                 }
                 else
                 {
@@ -40,7 +64,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
                 var page = CreatePage(typeof(TViewModel));
                 // TODO: Consider the use of Application here...
                 var init = ((ViewModelBase)page.BindingContext).Initialize();
-                await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page));
+                await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page), true);
                 await init;
             }
             catch (Exception exception)
@@ -50,7 +74,15 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
         }
 
         public async Task PopModal() =>
-            await Application.Current.MainPage.Navigation.PopModalAsync();
+            await Application.Current.MainPage.Navigation.PopModalAsync(true);
+
+        public async Task Pop()
+        {
+            if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
+            {
+                await navigationPage.PopAsync(true);
+            }
+        }
 
         private Page CreatePage(Type viewModelType)
         {

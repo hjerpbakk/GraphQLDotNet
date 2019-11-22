@@ -2,9 +2,9 @@
 
 namespace GraphQLDotNet.Mobile.Views
 {
-    public partial class LocationsPage : ContentPage
+    public partial class WeatherPage : ContentPage
     {
-        public LocationsPage()
+        public WeatherPage()
         {
             InitializeComponent();
         }

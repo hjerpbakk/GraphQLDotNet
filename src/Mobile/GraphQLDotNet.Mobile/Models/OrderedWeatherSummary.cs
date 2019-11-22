@@ -22,6 +22,8 @@ namespace GraphQLDotNet.Mobile.Models
             Ordering = ordering;
         }
 
+        public static OrderedWeatherSummary Default => new OrderedWeatherSummary(0L);
+
         public string Name { get; }
         public string Temperature { get; set; } = "";
         public string OpenWeatherIcon { get; set; } = "";

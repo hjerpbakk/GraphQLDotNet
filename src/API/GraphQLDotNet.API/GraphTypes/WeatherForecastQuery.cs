@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using GraphQL.Types;
-using GraphQLDotNet.Contracts;
+﻿using GraphQL.Types;
 using GraphQLDotNet.Services.OpenWeather;
 
 namespace GraphQLDotNet.API.GraphTypes
@@ -23,6 +21,7 @@ namespace GraphQLDotNet.API.GraphTypes
                     ),
                 context =>
                 {
+                    // TODO: Make available and use less data here
                     return openWeatherClient.GetWeatherFor(context.GetArgument<long[]>("location_ids"));
                 });
             Field<ListGraphType<WeatherLocationType>>("locations", "Available locations",

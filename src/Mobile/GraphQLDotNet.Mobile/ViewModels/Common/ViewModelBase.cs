@@ -46,4 +46,9 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    public class ViewModelBase<TArgument> : ViewModelBase
+    {
+        public virtual Task Initialize(TArgument argument) => Task.FromResult(false);
+    }
 }
