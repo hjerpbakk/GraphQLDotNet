@@ -96,18 +96,18 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public void TriggerPropertyChanged()
         {
-            // TODO: Notify multiples. Reflection?
-            OnPropertyChanged(nameof(Temperature));
-            OnPropertyChanged(nameof(Icon));
-            OnPropertyChanged(nameof(Description));
-            OnPropertyChanged(nameof(TempMin));
-            OnPropertyChanged(nameof(TempMax));
-            OnPropertyChanged(nameof(Pressure));
-            OnPropertyChanged(nameof(Humidity));
-            OnPropertyChanged(nameof(Sunrise));
-            OnPropertyChanged(nameof(Sunset));
-            OnPropertyChanged(nameof(Wind));
-            OnPropertyChanged(nameof(Visibility));
+            OnPropertyChanged(
+                nameof(Temperature),
+                nameof(Icon),
+                nameof(Description),
+                nameof(TempMin),
+                nameof(TempMax),
+                nameof(Pressure),
+                nameof(Humidity),
+                nameof(Sunrise),
+                nameof(Sunset),
+                nameof(Wind),
+                nameof(Visibility));
         }
 
         private string GetWind()

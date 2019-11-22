@@ -42,9 +42,18 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public virtual Task Initialize() => Task.FromResult(false);
-
+        
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        protected void OnPropertyChanged(params string[] propertyNames)
+        {
+            // TODO: Do not trigger before list is completly iterated
+            foreach (var propertyName in propertyNames)
+            {
+                OnPropertyChanged(propertyName);
+            }
+        }
     }
 
     public class ViewModelBase<TArgument> : ViewModelBase
