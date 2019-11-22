@@ -15,36 +15,33 @@
             <CollectionView ItemsSource="{Binding Locations, Mode=OneWay}"
                             SelectionMode="Single"
                             SelectedItem="{Binding SelectedLocation}"
-                            SelectionChangedCommand="{Binding SelectionChangedCommand}"
-                            x:Name="CollectionView">
+                            SelectionChangedCommand="{Binding SelectionChangedCommand}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"
-                                      WidthRequest="{Binding Source={x:Reference CollectionView}, Path=Width}"
-                                      x:DataType="m:OrderedWeatherSummary"
-                                      BackgroundColor="White">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.RowSpan="2"
-                                           Source="{Binding OpenWeatherIcon, Mode=OneTime}"
-                                           Aspect="AspectFill"
-                                           HeightRequest="60"
-                                           WidthRequest="60" />
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Name, Mode=OneTime}"
-                                           FontAttributes="Bold" />
-                                    <Label Grid.Row="1"
-                                           Grid.Column="1"
-                                           Text="{Binding Temperature, Mode=OneTime}"
-                                           FontAttributes="Italic"
-                                           VerticalOptions="End" />
-                                </Grid>
+                        x:DataType="m:OrderedWeatherSummary">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.RowSpan="2"
+                                Source="{Binding OpenWeatherIcon, Mode=OneTime}"
+                                Aspect="AspectFill"
+                                HeightRequest="60"
+                                WidthRequest="60" />
+                        <Label Grid.Column="1"
+                                Text="{Binding Name, Mode=OneTime}"
+                                FontAttributes="Bold" />
+                        <Label Grid.Row="1"
+                                Grid.Column="1"
+                                Text="{Binding Temperature, Mode=OneTime}"
+                                FontAttributes="Italic"
+                                VerticalOptions="End" />
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>
