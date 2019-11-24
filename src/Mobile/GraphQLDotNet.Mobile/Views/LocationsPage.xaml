@@ -6,6 +6,7 @@
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              x:Class="GraphQLDotNet.Mobile.Views.LocationsPage"
              x:DataType="vm:LocationsViewModel"
+             BackgroundColor="{DynamicResource Background}"
              common:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title, Mode=OneTime}">
     <ContentPage.ToolbarItems>
@@ -17,9 +18,8 @@
                             SelectedItem="{Binding SelectedLocation}"
                             SelectionChangedCommand="{Binding SelectionChangedCommand}">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10"
-                        x:DataType="m:OrderedWeatherSummary">
+                <DataTemplate x:DataType="m:OrderedWeatherSummary">
+                    <Grid Padding="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -35,11 +35,11 @@
                                 WidthRequest="60" />
                         <Label Grid.Column="1"
                                 Text="{Binding Name, Mode=OneTime}"
-                                FontAttributes="Bold" />
+                                Style="{DynamicResource TextHeadline}" />
                         <Label Grid.Row="1"
                                 Grid.Column="1"
                                 Text="{Binding Temperature, Mode=OneTime}"
-                                FontAttributes="Italic"
+                                Style="{DynamicResource TextSubheadSecondary}"
                                 VerticalOptions="End" />
                     </Grid>
                 </DataTemplate>

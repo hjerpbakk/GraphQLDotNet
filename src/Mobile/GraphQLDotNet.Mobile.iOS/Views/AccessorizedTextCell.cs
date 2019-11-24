@@ -1,4 +1,5 @@
-﻿using GraphQLDotNet.Mobile.iOS.Views;
+﻿using Foundation;
+using GraphQLDotNet.Mobile.iOS.Views;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;

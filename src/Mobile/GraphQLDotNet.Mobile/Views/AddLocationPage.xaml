@@ -8,13 +8,16 @@
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              x:Class="GraphQLDotNet.Mobile.Views.AddLocationPage"
              x:DataType="vm:AddLocationViewModel"
+             BackgroundColor="{DynamicResource Background}"
              common:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title, Mode=OneTime}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Cancel" Command="{Binding CancelCommand, Mode=OneTime}" />
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <SearchBar Placeholder="Enter search term">
+        <SearchBar Placeholder="Enter search term"
+                   CancelButtonColor="{DynamicResource ActionColor}"
+                   TextColor="{DynamicResource TextPrimaryColor}">
             <SearchBar.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="TextChanged"
                                                   Command="{Binding PerformSearch, Mode=OneTime}" />
@@ -24,10 +27,9 @@
                                        AccessoryTappedCommand="{Binding OpenLocationInMapsCommand, Mode=OneTime}"
                                        RowTappedCommand="{Binding LocationSelectedCommand, Mode=OneTime}">
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell x:DataType="c:WeatherLocation"
-                              Text="{Binding Name, Mode=OneTime}"
-                              Detail="{Binding Country, Mode=OneTime}"
+                <DataTemplate x:DataType="c:WeatherLocation">
+                    <TextCell Text="{Binding Name, Mode=OneTime}" TextColor="{DynamicResource TextPrimaryColor}"
+                              Detail="{Binding Country, Mode=OneTime}" DetailColor="{DynamicResource TextSecondaryColor}"
                               StyleId="detail-button" />
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ContextMenu.iOS;
 using Foundation;
+using GraphQLDotNet.Mobile.Services;
 using UIKit;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace GraphQLDotNet.Mobile.iOS
 {
@@ -11,7 +11,7 @@ namespace GraphQLDotNet.Mobile.iOS
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public sealed class AppDelegate : FormsApplicationDelegate
     {
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -20,14 +20,21 @@ namespace GraphQLDotNet.Mobile.iOS
         //
         // You have 17 seconds to return from this method, or iOS will terminate your application.
         //
-        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
-            global::Xamarin.Forms.Forms.Init();
+            Forms.Init();
+            LoadApplication(new App(ChangeTintColor));
+            return base.FinishedLaunching(uiApplication, launchOptions);
+        }
 
-            ContextMenuViewRenderer.Preserve();
-            LoadApplication(new App());
+        private void ChangeTintColor()
+        {
+            var color = Xamarin.Forms.Application.Current.Resources["ActionColor"];
+            var tintColor = new UIColor(((Color)color).ToCGColor());
 
-            return base.FinishedLaunching(app, options);
+            // TODO: How to change tintcolor of already visible views
+            UIView.Appearance.TintColor = tintColor;
+            UIBarButtonItem.Appearance.TintColor = tintColor;
         }
     }
 }

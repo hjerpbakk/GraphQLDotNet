@@ -1,12 +1,10 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using ContextMenu.Droid;
 
 namespace GraphQLDotNet.Mobile.Droid
 {
@@ -19,10 +17,9 @@ namespace GraphQLDotNet.Mobile.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-
+            // TODO: Support themes on Android: https://codetraveler.io/2019/09/11/check-for-dark-mode-in-xamarin-forms/
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            ContextMenuViewRenderer.Preserve();
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

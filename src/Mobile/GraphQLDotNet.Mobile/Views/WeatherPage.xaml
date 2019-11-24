@@ -5,6 +5,7 @@
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              x:DataType="vm:WeatherViewModel"
+             BackgroundColor="{DynamicResource Background}"
              common:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title, Mode=OneTime}">
     <ContentPage.ToolbarItems>
@@ -26,27 +27,27 @@
                     Aspect="AspectFill"
                     HeightRequest="120"
                     WidthRequest="120" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                <Label Text="{Binding Temperature, Mode=OneWay}" FontSize="Title" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
-                <Label Text="{Binding Description, Mode=OneWay}" FontSize="Subtitle" Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                <Label Text="{Binding Temperature, Mode=OneWay}" Style="{DynamicResource TextHeadline}" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                <Label Text="{Binding Description, Mode=OneWay}" Style="{DynamicResource TextTitle}" Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
                 <StackLayout Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                    <Label Text="Temp min" FontSize="Caption" />
-                    <Label Text="{Binding TempMin, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
-                    <Label Text="Pressure" FontSize="Caption" />
-                    <Label Text="{Binding Pressure, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
-                    <Label Text="Sunrise" FontSize="Caption" />
-                    <Label Text="{Binding Sunrise, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
-                    <Label Text="Wind" FontSize="Caption" />
-                    <Label Text="{Binding Wind, Mode=OneWay}" FontSize="Header" />
+                    <Label Text="Temp min" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding TempMin, Mode=OneWay}" Style="{DynamicResource TextSubhead}" Margin="0,0,0,15" />
+                    <Label Text="Pressure" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding Pressure, Mode=OneWay}" Style="{DynamicResource TextSubhead}" Margin="0,0,0,15" />
+                    <Label Text="Sunrise" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding Sunrise, Mode=OneWay}" Style="{DynamicResource TextSubhead}" Margin="0,0,0,15" />
+                    <Label Text="Wind" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding Wind, Mode=OneWay}" Style="{DynamicResource TextSubhead}" />
                 </StackLayout>
                 <StackLayout Grid.Row="2" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                    <Label Text="Temp max" FontSize="Caption" />
-                    <Label Text="{Binding TempMax, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
-                    <Label Text="Humidity" FontSize="Caption" />
-                    <Label Text="{Binding Humidity, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
-                    <Label Text="Sunset" FontSize="Caption" />
-                    <Label Text="{Binding Sunset, Mode=OneWay}" FontSize="Header" Margin="0,0,0,15" />
-                    <Label Text="Visibility" FontSize="Caption" />
-                    <Label Text="{Binding Visibility, Mode=OneWay}" FontSize="Header" />
+                    <Label Text="Temp max" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding TempMax, Mode=OneWay}" Style="{DynamicResource TextSubhead}" Margin="0,0,0,15" />
+                    <Label Text="Humidity" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding Humidity, Mode=OneWay}" Style="{DynamicResource TextSubhead}" Margin="0,0,0,15" />
+                    <Label Text="Sunset" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding Sunset, Mode=OneWay}" Style="{DynamicResource TextSubhead}" Margin="0,0,0,15" />
+                    <Label Text="Visibility" Style="{DynamicResource TextCaptionSecondary}" />
+                    <Label Text="{Binding Visibility, Mode=OneWay}" Style="{DynamicResource TextSubhead}" />
                 </StackLayout>
             </Grid>
         </ScrollView>
