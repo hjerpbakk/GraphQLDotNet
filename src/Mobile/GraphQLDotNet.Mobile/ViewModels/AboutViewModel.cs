@@ -5,7 +5,7 @@ using GraphQLDotNet.Mobile.ViewModels.Navigation;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
-    public class AboutViewModel : ViewModelBase
+    public class AboutViewModel : PageViewModelBase
     {
         private readonly INavigationService navigationService;
 

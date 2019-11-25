@@ -1,9 +1,9 @@
-﻿using GraphQLDotNet.Mobile.Models;
+﻿using GraphQLDotNet.Mobile.ViewModels;
 
 namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
 {
     internal sealed class WeatherLocations
     {
-        public OrderedWeatherSummary[] WeatherSummaries { get; set; } = new OrderedWeatherSummary[0];
+        public WeatherSummaryViewModel[] WeatherSummaries { get; set; } = new WeatherSummaryViewModel[0];
     }
 }

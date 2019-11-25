@@ -12,12 +12,12 @@ using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
-    public class LocationsViewModel : ViewModelBase
+    public class LocationsViewModel : PageViewModelBase
     {
         private readonly INavigationService navigationService;
         private readonly ILocalStorage localStorage;
         private readonly IOpenWeatherClient openWeatherClient;
-        private ObservableCollection<OrderedWeatherSummary> locations;
+        private ObservableCollection<WeatherSummaryViewModel> locations;
         private bool isRefreshing;
 
         // TODO: Current location øverst
@@ -29,31 +29,33 @@ namespace GraphQLDotNet.Mobile.ViewModels
             this.openWeatherClient = openWeatherClient;
             Title = "Locations";
             RefreshCommand = new AsyncCommand(ExecuteRefreshLocations);
-            locations = new ObservableCollection<OrderedWeatherSummary>();
+            locations = new ObservableCollection<WeatherSummaryViewModel>();
 
             // TODO: this warning suxx
 #pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
             MessagingCenter.Subscribe<AddLocationViewModel, AddLocationMessage>(this, nameof(AddLocationMessage), async (obj, locationMessage) =>
             {
-                if (Locations.Contains(new OrderedWeatherSummary(locationMessage.Id)))
+                if (Locations.Contains(new WeatherSummaryViewModel(locationMessage.Id)))
                 {
                     return;
                 }
 
-                var summary = await openWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
-                if (summary == WeatherSummary.Default)
-                {
-                    return;
-                }
-
-                var orderedSummary = new OrderedWeatherSummary(summary, Locations.Count);
+                var orderedSummary = new WeatherSummaryViewModel(locationMessage.Id, locationMessage.Name, Locations.Count);
                 Locations.Add(orderedSummary);
+                var summary = await openWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
+                if (summary != WeatherSummary.Default)
+                {
+                    orderedSummary.Temperature = summary.Temperature;
+                    orderedSummary.OpenWeatherIcon = summary.OpenWeatherIcon;
+                    OnPropertyChanged("Temperature");
+                }
+
                 await localStorage.Save(Locations);
             });
 
             MessagingCenter.Subscribe<WeatherViewModel, RemoveLocationMessage>(this, nameof(RemoveLocationMessage), async (obj, locationMessage) =>
             {
-                await RemoveLocationCommand.ExecuteAsync(new OrderedWeatherSummary(locationMessage.Id));
+                await RemoveLocationCommand.ExecuteAsync(new WeatherSummaryViewModel(locationMessage.Id));
             });
 #pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
         }
@@ -61,8 +63,8 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public IAsyncCommand AddLocationCommand => new AsyncCommand(
             async () => await navigationService.NavigateModallyTo<AddLocationViewModel>());
 
-        public AsyncCommand<OrderedWeatherSummary> RemoveLocationCommand => new AsyncCommand<OrderedWeatherSummary>(
-            async (OrderedWeatherSummary weatherSummaryToDelete) =>
+        public AsyncCommand<WeatherSummaryViewModel> RemoveLocationCommand => new AsyncCommand<WeatherSummaryViewModel>(
+            async (WeatherSummaryViewModel weatherSummaryToDelete) =>
             {
                 if (Locations.Remove(weatherSummaryToDelete))
                 {
@@ -78,9 +80,8 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
-                // TODO: HVORDAN GJØRE DETTE MED DE SWIPE-greiene oppå?!?!
 #pragma warning disable CS8604 // Possible null reference argument.
-                await navigationService.NavigateTo<WeatherViewModel, OrderedWeatherSummary>(SelectedLocation);
+                await navigationService.NavigateTo<WeatherViewModel, WeatherSummaryViewModel>(SelectedLocation);
 #pragma warning restore CS8604 // Possible null reference argument.
 
                 SelectedLocation = null;
@@ -89,9 +90,9 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public IAsyncCommand RefreshCommand { get; }
 
-        public OrderedWeatherSummary? SelectedLocation { get; set; }
+        public WeatherSummaryViewModel? SelectedLocation { get; set; }
 
-        public ObservableCollection<OrderedWeatherSummary> Locations
+        public ObservableCollection<WeatherSummaryViewModel> Locations
         {
             get { return locations; }
             set { SetProperty(ref locations, value); }
@@ -106,7 +107,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public async override Task Initialize()
         {
             var weatherSummaries = localStorage.Load();
-            Locations = new ObservableCollection<OrderedWeatherSummary>(weatherSummaries.OrderBy(w => w.Ordering));
+            Locations = new ObservableCollection<WeatherSummaryViewModel>(weatherSummaries.OrderBy(w => w.Ordering));
             if (weatherSummaries.Length == 0)
             {
                 return;
@@ -135,7 +136,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     join summary in weatherSummaries on orderedWeatherSummary.Id equals summary.Id
                     orderby orderedWeatherSummary.Ordering
                     select orderedWeatherSummary.UpdateWeather(summary);
-                Locations = new ObservableCollection<OrderedWeatherSummary>(updatedWeather);
+                Locations = new ObservableCollection<WeatherSummaryViewModel>(updatedWeather);
                 await localStorage.Save(Locations);
             }
             finally

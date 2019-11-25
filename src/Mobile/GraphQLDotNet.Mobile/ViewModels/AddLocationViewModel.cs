@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
-    public class AddLocationViewModel : ViewModelBase
+    public class AddLocationViewModel : PageViewModelBase
     {
         private readonly INavigationService navigationService;
         private readonly ICountryLocator countryLocator;
@@ -65,7 +65,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 // TODO: Finnes det en bedre måte å sende dataene på? Gjøre denne non-static om meldinger er gudd.
                 MessagingCenter.Send(this,
                     nameof(AddLocationMessage),
-                    new AddLocationMessage(SearchResults[row].Id));
+                    new AddLocationMessage(SearchResults[row].Id, SearchResults[row].Name));
                 await navigationService.PopModal();
             });
 

@@ -6,12 +6,12 @@ using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
-    public sealed class MainViewModel : ViewModelBase
+    public sealed class MainViewModel : PageViewModelBase
     {
         public async Task InitializeTab(Page currentPage)
         {
             if (currentPage is NavigationPage navigationPage &&
-                navigationPage.CurrentPage?.BindingContext is ViewModelBase viewModel)
+                navigationPage.CurrentPage?.BindingContext is PageViewModelBase viewModel)
             {
                 try
                 {

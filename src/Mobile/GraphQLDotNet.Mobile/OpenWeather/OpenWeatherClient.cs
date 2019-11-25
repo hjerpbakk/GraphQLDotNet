@@ -17,7 +17,6 @@ namespace GraphQLDotNet.Mobile.OpenWeather
     {
         private readonly GraphQLHttpClient graphQLHttpClient;
 
-        // TODO: Try with slow services and consider loading indicators
         public OpenWeatherClient(OpenWeatherConfiguration openWeatherConfiguration) =>
             graphQLHttpClient = new GraphQLHttpClient(
                 new GraphQLHttpClientOptions { EndPoint = new Uri(openWeatherConfiguration.GraphQLApiUrl) });

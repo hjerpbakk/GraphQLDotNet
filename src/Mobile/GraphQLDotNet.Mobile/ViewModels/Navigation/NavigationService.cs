@@ -10,12 +10,12 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
 {
     public sealed class NavigationService : INavigationService
     {
-        public async Task NavigateTo<TViewModel>() where TViewModel : ViewModelBase
+        public async Task NavigateTo<TViewModel>() where TViewModel : PageViewModelBase
         {
             try
             {
                 var page = CreatePage(typeof(TViewModel));
-                var init = ((ViewModelBase)page.BindingContext).Initialize();
+                var init = ((PageViewModelBase)page.BindingContext).Initialize();
                 if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
                 {
                     await navigationPage.PushAsync(page, true);
@@ -34,12 +34,12 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
         }
 
         // TODO: De-duplicate
-        public async Task NavigateTo<TViewModel, TPageArgument>(TPageArgument argument) where TViewModel : ViewModelBase
+        public async Task NavigateTo<TViewModel, TPageArgument>(TPageArgument argument) where TViewModel : PageViewModelBase
         {
             try
             {
                 var page = CreatePage(typeof(TViewModel));
-                var init = ((ViewModelBase<TPageArgument>)page.BindingContext).Initialize(argument);
+                var init = ((PageViewModelBase<TPageArgument>)page.BindingContext).Initialize(argument);
                 if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
                 {
                     await navigationPage.PushAsync(page, true);
@@ -57,13 +57,13 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
             }
         }
 
-        public async Task NavigateModallyTo<TViewModel>() where TViewModel : ViewModelBase
+        public async Task NavigateModallyTo<TViewModel>() where TViewModel : PageViewModelBase
         {
             try
             {
                 var page = CreatePage(typeof(TViewModel));
                 // TODO: Consider the use of Application here...
-                var init = ((ViewModelBase)page.BindingContext).Initialize();
+                var init = ((PageViewModelBase)page.BindingContext).Initialize();
                 await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page), true);
                 await init;
             }

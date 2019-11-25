@@ -12,24 +12,24 @@ using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
-    public sealed class WeatherViewModel : ViewModelBase<OrderedWeatherSummary>
+    public sealed class WeatherViewModel : PageViewModelBase<WeatherSummaryViewModel>
     {
         private readonly INavigationService navigationService;
         private readonly IOpenWeatherClient openWeatherClient;
 
         private bool isRefreshing;
 
-        private OrderedWeatherSummary weatherSummary;
+        private WeatherSummaryViewModel weatherSummary;
         private WeatherForecast? weatherForecast;
 
         public WeatherViewModel(INavigationService navigationService, IOpenWeatherClient openWeatherClient)
         {
             this.navigationService = navigationService;
             this.openWeatherClient = openWeatherClient;
-            weatherSummary = OrderedWeatherSummary.Default;
+            weatherSummary = WeatherSummaryViewModel.Default;
         }
 
-        public override async Task Initialize(OrderedWeatherSummary argument)
+        public override async Task Initialize(WeatherSummaryViewModel argument)
         {
             // TODO: Support map
             weatherSummary = argument;

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQLDotNet.Mobile.Models;
+using GraphQLDotNet.Mobile.ViewModels;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
@@ -22,7 +22,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
             weatherLocationsPath = Path.Combine(FileSystem.AppDataDirectory, "weather-locations.dat");
         }
 
-        public async Task Save(IEnumerable<OrderedWeatherSummary> weatherLocationIds)
+        public async Task Save(IEnumerable<WeatherSummaryViewModel> weatherLocationIds)
         {
             await weatherLocationsSemaphore.WaitAsync();
             try
@@ -40,13 +40,13 @@ namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
             }
         }
 
-        public OrderedWeatherSummary[] Load()
+        public WeatherSummaryViewModel[] Load()
         {
             try
             {
                 if (!File.Exists(weatherLocationsPath))
                 {
-                    return new OrderedWeatherSummary[0];
+                    return new WeatherSummaryViewModel[0];
                 }
 
                 var data = File.ReadAllText(weatherLocationsPath);
@@ -56,7 +56,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather.Persistence
             catch (Exception exception)
             {
                 Crashes.TrackError(exception);
-                return new OrderedWeatherSummary[0];
+                return new WeatherSummaryViewModel[0];
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:m="clr-namespace:GraphQLDotNet.Mobile.Models"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              x:Class="GraphQLDotNet.Mobile.Views.LocationsPage"
@@ -18,7 +17,7 @@
                             SelectedItem="{Binding SelectedLocation}"
                             SelectionChangedCommand="{Binding SelectionChangedCommand}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="m:OrderedWeatherSummary">
+                <DataTemplate x:DataType="vm:WeatherSummaryViewModel">
                     <Grid Padding="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -29,7 +28,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.RowSpan="2"
-                                Source="{Binding OpenWeatherIcon, Mode=OneTime}"
+                                Source="{Binding OpenWeatherIcon}"
                                 Aspect="AspectFill"
                                 HeightRequest="60"
                                 WidthRequest="60" />
@@ -38,7 +37,7 @@
                                 Style="{DynamicResource TextHeadline}" />
                         <Label Grid.Row="1"
                                 Grid.Column="1"
-                                Text="{Binding Temperature, Mode=OneTime}"
+                                Text="{Binding Temperature}"
                                 Style="{DynamicResource TextSubheadSecondary}"
                                 VerticalOptions="End" />
                     </Grid>

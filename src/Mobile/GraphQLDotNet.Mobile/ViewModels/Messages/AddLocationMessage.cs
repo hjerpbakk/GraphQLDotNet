@@ -2,11 +2,13 @@
 {
     public readonly struct AddLocationMessage
     {
-        public AddLocationMessage(long id)
+        public AddLocationMessage(long id, string name)
         {
             Id = id;
+            Name = name;
         }
 
         public long Id { get; }
+        public string Name { get; }
     }
 }
