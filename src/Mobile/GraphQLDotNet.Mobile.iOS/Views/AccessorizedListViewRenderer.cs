@@ -1,7 +1,6 @@
 ﻿using Foundation;
 using GraphQLDotNet.Mobile.iOS.Views;
 using GraphQLDotNet.Mobile.Views.Controls;
-using GraphQLDotNet.Mobile.Views.Styles;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -22,24 +21,6 @@ namespace GraphQLDotNet.Mobile.iOS.Views
             }
 
             formsControl = (AccessorizedListView)e.NewElement;
-            //var color = Xamarin.Forms.Application.Current.Resources["ActionColor"];
-            //TintColor = new UIColor(((Color)color).ToCGColor());
-        }
-
-        public override void TraitCollectionDidChange(UITraitCollection previousTraitCollection)
-        {
-            // TODO: Simplify
-            base.TraitCollectionDidChange(previousTraitCollection);
-            if (TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark)
-            {
-                var a = new DarkTheme();
-                //TintColor = new UIColor(((Color)a["ActionColor"]).ToCGColor());
-            }
-            else
-            {
-                var a = new LightTheme();
-                //TintColor = new UIColor(((Color)a["ActionColor"]).ToCGColor());
-            }
         }
 
 #pragma warning disable IDE0060 // Remove unused parameter
