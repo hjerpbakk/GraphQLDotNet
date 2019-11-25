@@ -17,7 +17,8 @@
     <StackLayout>
         <SearchBar Placeholder="Enter search term"
                    CancelButtonColor="{DynamicResource ActionColor}"
-                   TextColor="{DynamicResource TextPrimaryColor}">
+                   TextColor="{DynamicResource TextPrimaryColor}"
+                   x:Name="searchField">
             <SearchBar.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="TextChanged"
                                                   Command="{Binding PerformSearch, Mode=OneTime}" />

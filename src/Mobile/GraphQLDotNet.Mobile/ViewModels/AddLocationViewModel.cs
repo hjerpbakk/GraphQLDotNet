@@ -23,7 +23,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private ObservableCollection<WeatherLocation> searchResults;
         private string latestQueryText;
 
-        // TODO: Possible to auto show keyboard?
         public AddLocationViewModel(INavigationService navigationService, ICountryLocator countryLocator, IOpenWeatherClient openWeatherClient)
         {
             this.navigationService = navigationService;

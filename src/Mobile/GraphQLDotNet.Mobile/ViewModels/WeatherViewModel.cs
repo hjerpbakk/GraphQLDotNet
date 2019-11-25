@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GraphQLDotNet.Contracts;
-using GraphQLDotNet.Mobile.Models;
 using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Common;

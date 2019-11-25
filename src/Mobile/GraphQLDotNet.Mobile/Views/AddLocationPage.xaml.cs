@@ -8,5 +8,11 @@ namespace GraphQLDotNet.Mobile.Views
         {
             InitializeComponent();
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            searchField.Focus();
+        }
     }
 }
