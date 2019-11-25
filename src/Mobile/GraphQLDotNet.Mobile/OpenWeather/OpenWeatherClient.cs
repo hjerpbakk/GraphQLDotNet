@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Exceptions;
@@ -15,12 +16,18 @@ namespace GraphQLDotNet.Mobile.OpenWeather
 {
     internal sealed class OpenWeatherClient : IOpenWeatherClient
     {
+        private readonly SemaphoreSlim weatherLocationsSemaphore;
         private readonly GraphQLHttpClient graphQLHttpClient;
 
-        public OpenWeatherClient(OpenWeatherConfiguration openWeatherConfiguration) =>
+        private CancellationTokenSource? cancellationTokenSource;
+
+        public OpenWeatherClient(OpenWeatherConfiguration openWeatherConfiguration)
+        {
+            weatherLocationsSemaphore = new SemaphoreSlim(1);
             graphQLHttpClient = new GraphQLHttpClient(
                 new GraphQLHttpClientOptions { EndPoint = new Uri(openWeatherConfiguration.GraphQLApiUrl) });
-
+        }
+            
         public async Task<WeatherForecast> GetWeatherForecast(long locationId)
         {
             try
@@ -43,9 +50,16 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 throw new Exception();
             }
         }
-
+               
         public async Task<IEnumerable<WeatherLocation>> GetLocations(string searchTerm = "", int maxNumberOfResults = 8)
         {
+            if (weatherLocationsSemaphore.CurrentCount == 0)
+            {
+                cancellationTokenSource!.Cancel();
+            }
+
+            await weatherLocationsSemaphore.WaitAsync();
+            cancellationTokenSource = new CancellationTokenSource();
             try
             {
                 var graphQLRequest = new GraphQLRequest
@@ -55,14 +69,22 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                     Variables = new { beginsWith = searchTerm, maxResults = maxNumberOfResults }
                 };
 
-                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
-
+                var response = await graphQLHttpClient.SendQueryAsync(graphQLRequest, cancellationTokenSource.Token).ConfigureAwait(false);
                 return response.GetDataFieldAs<IEnumerable<WeatherLocation>>("locations");
+            }
+            catch (TaskCanceledException)
+            {
+                return new WeatherLocation[0];
             }
             catch (Exception exception)
             {
                 Crashes.TrackError(exception);
                 return new WeatherLocation[0];
+            }
+            finally
+            {
+                cancellationTokenSource.Dispose();
+                weatherLocationsSemaphore.Release();
             }
         }
 
@@ -133,8 +155,8 @@ namespace GraphQLDotNet.Mobile.OpenWeather
         }
 
         private static async Task<GraphQLResponse> AttemptAndRetry(Func<Task<GraphQLResponse>> action, int numRetries = 2)
-        {
-            var response = await Policy.Handle<Exception>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action).ConfigureAwait(false);
+        {            
+            var response = await Policy.Handle<Exception>(e => e is TaskCanceledException).WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action).ConfigureAwait(false);
             if (response.Errors != null && response.Errors.Count() > 1)
             {
                 throw new AggregateException(response.Errors.Select(x => new GraphQLException(x)));

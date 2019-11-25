@@ -24,16 +24,16 @@
                                                   Command="{Binding PerformSearch, Mode=OneTime}" />
             </SearchBar.Behaviors>
         </SearchBar>
-        <controls:AccessorizedListView ItemsSource="{Binding SearchResults, Mode=OneWay}"
-                                       AccessoryTappedCommand="{Binding OpenLocationInMapsCommand, Mode=OneTime}"
-                                       RowTappedCommand="{Binding LocationSelectedCommand, Mode=OneTime}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="c:WeatherLocation">
-                    <TextCell Text="{Binding Name, Mode=OneTime}" TextColor="{DynamicResource TextPrimaryColor}"
-                              Detail="{Binding Country, Mode=OneTime}" DetailColor="{DynamicResource TextSecondaryColor}"
-                              StyleId="detail-button" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </controls:AccessorizedListView>
+            <controls:AccessorizedListView ItemsSource="{Binding SearchResults, Mode=OneWay}"
+                                            AccessoryTappedCommand="{Binding OpenLocationInMapsCommand, Mode=OneTime}"
+                                            RowTappedCommand="{Binding LocationSelectedCommand, Mode=OneTime}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="c:WeatherLocation">
+                        <TextCell Text="{Binding Name, Mode=OneTime}" TextColor="{DynamicResource TextPrimaryColor}"
+                                    Detail="{Binding Country, Mode=OneTime}" DetailColor="{DynamicResource TextSecondaryColor}"
+                                    StyleId="detail-button" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </controls:AccessorizedListView>
     </StackLayout>
 </ContentPage>

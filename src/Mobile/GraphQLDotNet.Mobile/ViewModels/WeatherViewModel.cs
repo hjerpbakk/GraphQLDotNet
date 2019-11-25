@@ -16,8 +16,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private readonly INavigationService navigationService;
         private readonly IOpenWeatherClient openWeatherClient;
 
-        private bool isRefreshing;
-
         private WeatherSummaryViewModel weatherSummary;
         private WeatherForecast? weatherForecast;
 
@@ -63,6 +61,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public string? Visibility => weatherForecast?.Visibility.ToString("#,##0") + " m";
 
+        private bool isRefreshing;
         public bool IsRefreshing
         {
             get { return isRefreshing; }

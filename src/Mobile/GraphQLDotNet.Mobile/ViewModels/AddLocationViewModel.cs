@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
@@ -28,8 +29,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
             this.navigationService = navigationService;
             this.countryLocator = countryLocator;
             this.openWeatherClient = openWeatherClient;
-            // TODO: What is a good interval value?
-            searchTypingTimer = new Timer { AutoReset = false, Interval = 1D };
+            searchTypingTimer = new Timer { AutoReset = false, Interval = 10D };
             searchTypingTimer.Elapsed += SearchTypingTimer_Elapsed;
             Title = "Add new location";
             searchResults = new ObservableCollection<WeatherLocation>();
@@ -84,7 +84,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public override async Task Initialize()
         {
-            // TODO: Dette funket ikke på første run på verken Android eller iOS
             var currentCountry = await countryLocator.GetCurrentCountry();
             var locations = await openWeatherClient.GetLocations($", {currentCountry}");
             SearchResults = new ObservableCollection<WeatherLocation>(locations);
@@ -98,14 +97,16 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         private async Task Search()
         {
-            // TODO: Cancel previous calls if underway?
             var nameAndCountry = latestQueryText.Split(',');
             string currentCountry = nameAndCountry.Length > 1
                 ? nameAndCountry[1]
                 : await countryLocator.GetCurrentCountry();
             var searchString = $"{nameAndCountry[0]}, {currentCountry}";
             var results = await openWeatherClient.GetLocations(searchString);
-            SearchResults = new ObservableCollection<WeatherLocation>(results);
+            if (results.Any())
+            {
+                SearchResults = new ObservableCollection<WeatherLocation>(results);
+            }
         }
     }
 }
