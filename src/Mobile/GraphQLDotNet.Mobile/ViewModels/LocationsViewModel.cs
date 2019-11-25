@@ -80,10 +80,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
-#pragma warning disable CS8604 // Possible null reference argument.
-                await navigationService.NavigateTo<WeatherViewModel, WeatherSummaryViewModel>(SelectedLocation);
-#pragma warning restore CS8604 // Possible null reference argument.
-
+                await navigationService.NavigateTo<WeatherViewModel, WeatherSummaryViewModel>(SelectedLocation!);
                 SelectedLocation = null;
                 OnPropertyChanged(nameof(SelectedLocation));
             });
