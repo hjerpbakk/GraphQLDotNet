@@ -25,6 +25,7 @@ namespace GraphQLDotNet.API.GraphTypes
             Field(x => x.WindSpeed).Description("The WindSpeed");
             Field(x => x.WindDegrees).Description("The WindDegrees");
             Field(x => x.Visibility).Description("The Visibility");
+            Field(x => x.Timezone).Description("The Timezone");
         }
     }
 }

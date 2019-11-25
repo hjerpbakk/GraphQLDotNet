@@ -10,10 +10,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public WeatherSummaryViewModel(WeatherSummary weatherSummary, int ordering)
         {
             Name = weatherSummary.Name;
-            Temperature = weatherSummary.Temperature;
+            Temperature = GetShortTemperature(weatherSummary.Temperature);
             OpenWeatherIcon = weatherSummary.OpenWeatherIcon;
             Id = weatherSummary.Id;
             Ordering = ordering;
+            Time = ToTimeAtLocation(weatherSummary);
         }
 
         [JsonConstructor]
@@ -44,10 +45,19 @@ namespace GraphQLDotNet.Mobile.ViewModels
             set { SetProperty(ref openWeatherIcon, value); }
         }
 
+        // Added space to preserve layout
+        string time = " ";
+        public string Time
+        {
+            get { return time; }
+            set { SetProperty(ref time, value); }
+        }
+
         public WeatherSummaryViewModel UpdateWeather(WeatherSummary weatherSummary)
         {
             OpenWeatherIcon = weatherSummary.OpenWeatherIcon;
-            Temperature = weatherSummary.Temperature;
+            Temperature = GetShortTemperature(weatherSummary.Temperature);
+            Time = ToTimeAtLocation(weatherSummary);
             return this;
         }
 
@@ -60,5 +70,10 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public override bool Equals(object obj) => obj is WeatherSummaryViewModel orderedWeatherSummary && Equals(orderedWeatherSummary);
 
         public override int GetHashCode() => Id.GetHashCode();
+
+        private string GetShortTemperature(double temp) => Math.Round(temp, 0) + "° C";
+
+        private string ToTimeAtLocation(WeatherSummary weatherSummary) =>
+            (weatherSummary.Date + TimeSpan.FromSeconds(weatherSummary.Timezone)).ToString("HH:mm");  
     }
 }

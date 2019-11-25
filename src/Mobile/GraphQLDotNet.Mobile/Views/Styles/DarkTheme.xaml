@@ -22,12 +22,18 @@
         <Setter Property="BackgroundColor" Value="{StaticResource NavigationBackground}" />
     </Style>
 
+    <x:Double x:Key="TextSizeTemperature">32</x:Double>
     <x:Double x:Key="TextSizeHeadline">22</x:Double>
     <x:Double x:Key="TextSizeTitle">18</x:Double>
     <x:Double x:Key="TextSizeSubhead">16</x:Double>
     <x:Double x:Key="TextSizeBody">14</x:Double>
     <x:Double x:Key="TextSizeCaption">12</x:Double>
     <x:Double x:Key="TextSizeSmallCaption">11</x:Double>   
+
+    <Style x:Key="TemperatureLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        <Setter Property="FontSize" Value="{StaticResource TextSizeTemperature}" />
+    </Style>
 
     <Style x:Key="TextHeadline" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />

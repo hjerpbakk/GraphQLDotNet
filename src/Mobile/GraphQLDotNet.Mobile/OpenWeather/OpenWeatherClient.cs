@@ -34,7 +34,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             {
                 var graphQLRequest = new GraphQLRequest
                 {
-                    Query = "query Forecast($id: Long!) { forecast(city_id: $id) { id location date temperature openWeatherIcon summary description tempMin tempMax pressure humidity sunrise sunset windSpeed windDegrees visibility } }",
+                    Query = "query Forecast($id: Long!) { forecast(city_id: $id) { id location date temperature openWeatherIcon summary description tempMin tempMax pressure humidity sunrise sunset windSpeed windDegrees visibility timezone } }",
                     OperationName = "Forecast",
                     Variables = new { id = locationId }
                 };
@@ -94,7 +94,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             {
                 var graphQLRequest = new GraphQLRequest
                 {
-                    Query = "query WeatherSummary($id: Long!) { forecast(city_id: $id)  { location temperature openWeatherIcon id } }",
+                    Query = "query WeatherSummary($id: Long!) { forecast(city_id: $id)  { location temperature openWeatherIcon id date timezone } }",
                     OperationName = "WeatherSummary",
                     Variables = new { id = locationId }
                 };
@@ -110,13 +110,14 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             }
         }
 
+        // TODO: Get summary vs get Updates vs get single, simplify
         public async Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(IEnumerable<long> locationIds)
         {
             try
             {
                 var graphQLRequest = new GraphQLRequest
                 {
-                    Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { location temperature openWeatherIcon id } }",
+                    Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { location temperature openWeatherIcon id date timezone } }",
                     OperationName = "WeatherSummaries",
                     Variables = new { location_ids = locationIds.ToArray() }
                 };
@@ -138,7 +139,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             {
                 var graphQLRequest = new GraphQLRequest
                 {
-                    Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { temperature openWeatherIcon id } }",
+                    Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { temperature openWeatherIcon id date timezone } }",
                     OperationName = "WeatherSummaries",
                     Variables = new { location_ids = locationIds.ToArray() }
                 };

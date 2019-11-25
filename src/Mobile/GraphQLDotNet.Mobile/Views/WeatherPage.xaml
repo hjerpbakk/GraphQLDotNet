@@ -23,12 +23,17 @@
                     <ColumnDefinition Width="0.5*" />
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding Icon, Mode=OneWay}"
-                    Aspect="AspectFill"
-                    HeightRequest="120"
-                    WidthRequest="120" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                <Label Text="{Binding Temperature, Mode=OneWay}" Style="{DynamicResource TextHeadline}" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
-                <Label Text="{Binding Description, Mode=OneWay}" Style="{DynamicResource TextTitle}" Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                <Frame HeightRequest="150"
+                    WidthRequest="150"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    BorderColor="Transparent"
+                    BackgroundColor="Transparent">
+                        <Image Source="{Binding Icon, Mode=OneWay}"
+                               Aspect="AspectFill"/>
+                </Frame>
+                <Label Text="{Binding Temperature, Mode=OneWay}" Style="{DynamicResource TemperatureLabel}" Grid.Column="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                <Label Text="{Binding Description, Mode=OneWay}" Style="{DynamicResource TextHeadline}" Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
                 <StackLayout Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                     <Label Text="Temp min" Style="{DynamicResource TextCaptionSecondary}" />
                     <Label Text="{Binding TempMin, Mode=OneWay}" Style="{DynamicResource TextSubhead}" Margin="0,0,0,15" />

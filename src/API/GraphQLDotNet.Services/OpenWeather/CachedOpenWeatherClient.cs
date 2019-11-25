@@ -65,7 +65,8 @@ namespace GraphQLDotNet.Services.OpenWeather
                     DateTimeOffset.FromUnixTimeSeconds(openWeatherForecast.Sys.Sunset).UtcDateTime,
                     openWeatherForecast.Wind.Speed,
                     openWeatherForecast.Wind.Deg,
-                    openWeatherForecast.Visibility);
+                    openWeatherForecast.Visibility,
+                    openWeatherForecast.Timezone);
                 return weatherForecast;
             }
         }

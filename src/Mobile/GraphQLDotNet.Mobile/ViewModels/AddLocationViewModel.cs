@@ -105,6 +105,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
             var results = await openWeatherClient.GetLocations(searchString);
             if (results.Any())
             {
+                // TODO: Use return value to check for active searches. Custom renderer for kewl loading effect?
                 SearchResults = new ObservableCollection<WeatherLocation>(results);
             }
         }

@@ -45,9 +45,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 var summary = await openWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
                 if (summary != WeatherSummary.Default)
                 {
-                    orderedSummary.Temperature = summary.Temperature;
-                    orderedSummary.OpenWeatherIcon = summary.OpenWeatherIcon;
-                    OnPropertyChanged("Temperature");
+                    orderedSummary.UpdateWeather(summary);
                 }
 
                 await localStorage.Save(Locations);

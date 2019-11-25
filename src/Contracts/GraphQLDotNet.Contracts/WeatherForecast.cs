@@ -19,7 +19,8 @@ namespace GraphQLDotNet.Contracts
             DateTime sunset,
             double windSpeed,
             long windDegrees,
-            long visibility)
+            long visibility,
+            long timezone)
         {
             Id = id;
             Location = location;
@@ -37,6 +38,7 @@ namespace GraphQLDotNet.Contracts
             WindSpeed = windSpeed;
             WindDegrees = windDegrees;
             Visibility = visibility;
+            Timezone = timezone;
         }
 
         // TODO: Remove defaults if default constructor is not needed
@@ -57,5 +59,6 @@ namespace GraphQLDotNet.Contracts
         public double WindSpeed { get; } = 0D;
         public long WindDegrees { get; } = 0L;
         public long Visibility { get; } = 0L;
+        public long Timezone { get; } = 0L;
     }
 }

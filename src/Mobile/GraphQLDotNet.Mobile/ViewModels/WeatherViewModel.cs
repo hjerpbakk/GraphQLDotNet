@@ -53,9 +53,9 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public string? Humidity => weatherForecast?.Humidity + " %";
 
-        public string? Sunrise => ToLocalTime(weatherForecast?.Sunrise);
+        public string? Sunrise => ToTimeAtLocation(weatherForecast?.Sunrise);
 
-        public string? Sunset => ToLocalTime(weatherForecast?.Sunset);
+        public string? Sunset => ToTimeAtLocation(weatherForecast?.Sunset);
 
         public string? Wind => GetWind();
 
@@ -121,15 +121,14 @@ namespace GraphQLDotNet.Mobile.ViewModels
             return $"{heading} {windSpeed} {ms}";
         }
 
-        private string ToLocalTime(DateTime? utc)
+        private string ToTimeAtLocation(DateTime? utc)
         {
-            const int PaddingLength = 1;
             if (utc == null)
             {
-                return "".PadRight(PaddingLength);
+                return " ";
             }
 
-            return utc.Value.ToLocalTime().ToString("HH:mm").PadRight(PaddingLength);
+            return (utc.Value + TimeSpan.FromSeconds(weatherForecast!.Timezone)).ToString("HH:mm"); 
         }
     }
 }
