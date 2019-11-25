@@ -66,7 +66,8 @@ namespace GraphQLDotNet.Services.OpenWeather
                     openWeatherForecast.Wind.Speed,
                     openWeatherForecast.Wind.Deg,
                     openWeatherForecast.Visibility,
-                    openWeatherForecast.Timezone);
+                    openWeatherForecast.Timezone,
+                    openWeatherForecast.Clouds.All);
                 return weatherForecast;
             }
         }

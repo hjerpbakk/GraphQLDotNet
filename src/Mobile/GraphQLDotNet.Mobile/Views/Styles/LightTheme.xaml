@@ -6,7 +6,7 @@
     <Color x:Key="NavigationText">Black</Color>
     <Color x:Key="Background">White</Color>
     <Color x:Key="ActionColor">#EC8335</Color>
-
+    <Color x:Key="CloudColor">Gray</Color>
     <Color x:Key="TextPrimaryColor">Black</Color>
     <Color x:Key="TextSecondaryColor">#80000000</Color>
     <Color x:Key="TextTernaryColor">#C8C8C8</Color>

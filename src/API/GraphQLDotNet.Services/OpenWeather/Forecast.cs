@@ -11,7 +11,7 @@ namespace GraphQLDotNet.Services.OpenWeather
         public long Visibility { get; set; }
         public Wind Wind { get; set; } = new Wind();
         public Rain? Rain { get; set; }
-        public Clouds? Clouds { get; set; }
+        public Clouds Clouds { get; set; } = new Clouds();
         public long Dt { get; set; }
         public Sys Sys { get; set; } = new Sys();
         public long Timezone { get; set; }

@@ -20,7 +20,8 @@ namespace GraphQLDotNet.Contracts
             double windSpeed,
             long windDegrees,
             long visibility,
-            long timezone)
+            long timezone,
+            long clouds)
         {
             Id = id;
             Location = location;
@@ -39,6 +40,7 @@ namespace GraphQLDotNet.Contracts
             WindDegrees = windDegrees;
             Visibility = visibility;
             Timezone = timezone;
+            Clouds = clouds;
         }
 
         // TODO: Remove defaults if default constructor is not needed
@@ -60,5 +62,6 @@ namespace GraphQLDotNet.Contracts
         public long WindDegrees { get; } = 0L;
         public long Visibility { get; } = 0L;
         public long Timezone { get; } = 0L;
+        public long Clouds { get; } = 0L;
     }
 }

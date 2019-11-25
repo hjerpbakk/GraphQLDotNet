@@ -3,11 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
+             xmlns:converters="clr-namespace:GraphQLDotNet.Mobile.Views.Converters"
              x:Class="GraphQLDotNet.Mobile.Views.LocationsPage"
              x:DataType="vm:LocationsViewModel"
              BackgroundColor="{DynamicResource Background}"
              common:ViewModelLocator.AutoWireViewModel="true"
              Title="{Binding Title, Mode=OneTime}">
+    <ContentPage.Resources>
+        <converters:CloudsToBackgroundConverter x:Key="cloudsToBackgroundConverter" />
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddLocationCommand, Mode=OneTime}" />
     </ContentPage.ToolbarItems>
