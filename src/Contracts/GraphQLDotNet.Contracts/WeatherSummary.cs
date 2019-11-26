@@ -1,16 +1,14 @@
 ﻿using System;
-using GraphQLDotNet.Mobile.OpenWeather;
 
-namespace GraphQLDotNet.Mobile.Models
+namespace GraphQLDotNet.Contracts
 {
     public sealed class WeatherSummary : IEquatable<WeatherSummary>
     {
         public WeatherSummary(string location, double temperature, string openWeatherIcon, long id, DateTime date, long timezone)
         {
-            // TODO: Inherit?!?
             Name = location;
             Temperature = temperature;
-            OpenWeatherIcon = OpenWeatherConfiguration.GetIconURL(openWeatherIcon);
+            OpenWeatherIcon = openWeatherIcon;
             Id = id;
             Date = date;
             Timezone = timezone;

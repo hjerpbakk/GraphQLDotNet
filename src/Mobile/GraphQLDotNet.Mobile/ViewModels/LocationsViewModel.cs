@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using GraphQLDotNet.Mobile.Models;
+using GraphQLDotNet.Contracts;
 using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
@@ -21,7 +21,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private bool isRefreshing;
 
         // TODO: Current location øverst
-        // TODO: Laste data ved oppstart...
         public LocationsViewModel(INavigationService navigationService, ILocalStorage localStorage, IOpenWeatherClient openWeatherClient)
         {
             this.navigationService = navigationService;

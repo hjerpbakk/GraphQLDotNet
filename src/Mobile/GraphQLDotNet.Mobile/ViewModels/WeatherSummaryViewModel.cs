@@ -1,5 +1,6 @@
 ﻿using System;
-using GraphQLDotNet.Mobile.Models;
+using GraphQLDotNet.Contracts;
+using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using Newtonsoft.Json;
 
@@ -11,7 +12,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
         {
             Name = weatherSummary.Name;
             Temperature = GetShortTemperature(weatherSummary.Temperature);
-            OpenWeatherIcon = weatherSummary.OpenWeatherIcon;
+            OpenWeatherIcon = OpenWeatherConfiguration.GetIconURL(weatherSummary.OpenWeatherIcon);
             Id = weatherSummary.Id;
             Ordering = ordering;
             Time = ToTimeAtLocation(weatherSummary);
@@ -55,7 +56,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public WeatherSummaryViewModel UpdateWeather(WeatherSummary weatherSummary)
         {
-            OpenWeatherIcon = weatherSummary.OpenWeatherIcon;
+            OpenWeatherIcon = OpenWeatherConfiguration.GetIconURL(weatherSummary.OpenWeatherIcon);
             Temperature = GetShortTemperature(weatherSummary.Temperature);
             Time = ToTimeAtLocation(weatherSummary);
             return this;
