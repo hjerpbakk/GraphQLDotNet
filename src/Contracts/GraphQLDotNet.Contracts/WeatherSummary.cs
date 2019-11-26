@@ -4,24 +4,26 @@ namespace GraphQLDotNet.Contracts
 {
     public sealed class WeatherSummary : IEquatable<WeatherSummary>
     {
-        public WeatherSummary(string location, double temperature, string openWeatherIcon, long id, DateTime date, long timezone)
+        public WeatherSummary(string location, double temperature, string openWeatherIcon, long id, DateTime date, long timezone, long clouds)
         {
-            Name = location;
+            Location = location;
             Temperature = temperature;
             OpenWeatherIcon = openWeatherIcon;
             Id = id;
             Date = date;
             Timezone = timezone;
+            Clouds = clouds;
         }
 
-        public static WeatherSummary Default => new WeatherSummary("", 0D, "", 0L, DateTime.MinValue, 0L);
+        public static WeatherSummary Default => new WeatherSummary("", 0D, "", 0L, DateTime.MinValue, 0L, 0L);
 
         public DateTime Date { get; }
-        public string Name { get; }
+        public string Location { get; }
         public double Temperature { get; }
         public string OpenWeatherIcon { get; }
         public long Id { get; }
         public long Timezone { get; }
+        public long Clouds { get; }
 
         public bool Equals(WeatherSummary other) => Id == other.Id;
 

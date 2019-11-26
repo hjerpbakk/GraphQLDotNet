@@ -7,6 +7,7 @@ namespace GraphQLDotNet.API.GraphTypes
     {
         public WeatherForecastQuery(IOpenWeatherClient openWeatherClient)
         {
+            // TODO: Improve descriptions
             Field<WeatherForecastType>("forecast", "Get forecast for the next dayz.",
                 new QueryArguments(
                         new QueryArgument<NonNullGraphType<LongGraphType>> { Name = "city_id", Description = "Id of the city to fetch weather from." }
@@ -15,14 +16,13 @@ namespace GraphQLDotNet.API.GraphTypes
                 {
                     return openWeatherClient.GetWeatherFor(context.GetArgument<long>("city_id"));
                 });
-            Field<ListGraphType<WeatherForecastType>>("forecasts", "Get forecasts for the given locations.",
+            Field<ListGraphType<WeatherSummaryType>>("summaries", "Get summaries for the given locations.",
                 new QueryArguments(
                         new QueryArgument<NonNullGraphType<ListGraphType<LongGraphType>>> { Name = "location_ids", Description = "Ids of the locations to fetch weather from." }
                     ),
                 context =>
                 {
-                    // TODO: Make available and use less data here
-                    return openWeatherClient.GetWeatherFor(context.GetArgument<long[]>("location_ids"));
+                    return openWeatherClient.GetWeatherSummaryFor(context.GetArgument<long[]>("location_ids"));
                 });
             Field<ListGraphType<WeatherLocationType>>("locations", "Available locations",
                 new QueryArguments(

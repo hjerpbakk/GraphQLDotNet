@@ -10,7 +10,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
     {
         public WeatherSummaryViewModel(WeatherSummary weatherSummary, int ordering)
         {
-            Name = weatherSummary.Name;
+            Name = weatherSummary.Location;
             Temperature = GetShortTemperature(weatherSummary.Temperature);
             OpenWeatherIcon = OpenWeatherConfiguration.GetIconURL(weatherSummary.OpenWeatherIcon);
             Id = weatherSummary.Id;

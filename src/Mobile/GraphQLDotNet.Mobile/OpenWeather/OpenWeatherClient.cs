@@ -40,8 +40,6 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 };
 
                 var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
-
-                // TODO: fetch only whats needed and use a custom type
                 return response.GetDataFieldAs<WeatherForecast>("forecast");
             }
             catch (Exception exception)
@@ -88,64 +86,19 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             }
         }
 
-        public async Task<WeatherSummary> GetWeatherSummaryFor(long locationId)
+        public async Task<IEnumerable<WeatherSummary>> GetWeatherSummariesFor(params long[] locationIds)
         {
             try
             {
                 var graphQLRequest = new GraphQLRequest
                 {
-                    Query = "query WeatherSummary($id: Long!) { forecast(city_id: $id)  { location temperature openWeatherIcon id date timezone } }",
-                    OperationName = "WeatherSummary",
-                    Variables = new { id = locationId }
-                };
-
-                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
-
-                return response.GetDataFieldAs<WeatherSummary>("forecast");
-            }
-            catch (Exception exception)
-            {
-                Crashes.TrackError(exception);
-                return WeatherSummary.Default;
-            }
-        }
-
-        // TODO: Get summary vs get Updates vs get single, simplify
-        public async Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(IEnumerable<long> locationIds)
-        {
-            try
-            {
-                var graphQLRequest = new GraphQLRequest
-                {
-                    Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { location temperature openWeatherIcon id date timezone } }",
+                    Query = "query WeatherSummaries($location_ids: [Long]!) { summaries(location_ids: $location_ids)  { location temperature openWeatherIcon id date timezone } }",
                     OperationName = "WeatherSummaries",
                     Variables = new { location_ids = locationIds.ToArray() }
                 };
 
                 var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
-                var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("forecasts");
-                return forecasts;
-            }
-            catch (Exception exception)
-            {
-                Crashes.TrackError(exception);
-                return new WeatherSummary[0];
-            }
-        }
-
-        public async Task<IEnumerable<WeatherSummary>> GetWeatherUpdatesFor(IEnumerable<long> locationIds)
-        {
-            try
-            {
-                var graphQLRequest = new GraphQLRequest
-                {
-                    Query = "query WeatherSummaries($location_ids: [Long]!) { forecasts(location_ids: $location_ids)  { temperature openWeatherIcon id date timezone } }",
-                    OperationName = "WeatherSummaries",
-                    Variables = new { location_ids = locationIds.ToArray() }
-                };
-
-                var response = await AttemptAndRetry(() => graphQLHttpClient.SendQueryAsync(graphQLRequest)).ConfigureAwait(false);
-                var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("forecasts");
+                var forecasts = response.GetDataFieldAs<IEnumerable<WeatherSummary>>("summaries");
                 return forecasts;
             }
             catch (Exception exception)

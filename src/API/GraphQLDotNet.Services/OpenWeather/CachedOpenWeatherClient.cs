@@ -72,26 +72,58 @@ namespace GraphQLDotNet.Services.OpenWeather
             }
         }
 
-        public async Task<IEnumerable<WeatherForecast>> GetWeatherFor(long[] ids)
+        public async Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(long[] ids)
         {
             if (ids == null || ids.Length == 0)
             {
                 throw new ArgumentException("Specify at least one location id", nameof(ids));
             }
 
-            var results = new ConcurrentBag<WeatherForecast>();
+            if (ids.Length == 1)
+            {
+                return new [] { await GetWeatherSummaryFor(ids[0]) };
+            }
+
+            var results = new ConcurrentBag<WeatherSummary>();
             await ids.ParallelForEachAsync(async id =>
             {
-                var weatherForecast = await GetWeatherFor(id);
-                results.Add(weatherForecast);
+                var weatherSummary = await GetWeatherSummaryFor(id);
+                results.Add(weatherSummary);
             }, 0);
 
             return results;
+
+            async Task<WeatherSummary> GetWeatherSummaryFor(long id)
+            {
+                if (id <= 0)
+                {
+                    throw new ArgumentException("Specify a valid location id.", nameof(id));
+                }
+
+                return await GetOrSet(id,
+                    GetWeatherSummary,
+                    new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10) });
+
+                async Task<WeatherSummary> GetWeatherSummary()
+                {
+                    var url = string.Format(openWeatherConfiguration.OpenWeatherURL, id);
+                    var openWeatherForecast = await httpClient.GetAsync<Forecast>(url);
+                    var weather = openWeatherForecast.Weather.First();
+                    var weatherSummary = new WeatherSummary(openWeatherForecast.Name,
+                        Math.Round(openWeatherForecast.Main.Temp, 1),
+                        weather.Icon,
+                        openWeatherForecast.Id,
+                        DateTimeOffset.FromUnixTimeSeconds(openWeatherForecast.Dt).UtcDateTime,
+                        openWeatherForecast.Timezone,
+                        openWeatherForecast.Clouds.All);
+                    return weatherSummary;
+                }
+            }
         }
 
-        public IEnumerable<WeatherLocation> GetLocations(string beginsWith, int maxResults)
+        public IEnumerable<WeatherLocation> GetLocations(string searchTerms, int maxResults)
         {
-            return GetOrSet(beginsWith + maxResults,
+            return GetOrSet(searchTerms + maxResults,
                 GetLocations,
                 new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1) });
 
@@ -102,13 +134,13 @@ namespace GraphQLDotNet.Services.OpenWeather
                     maxResults = IOpenWeatherClient.MaxNumberOfResults;
                 }
 
-                if (string.IsNullOrEmpty(beginsWith))
+                if (string.IsNullOrEmpty(searchTerms))
                 {
-                    // TODO: Hent de mest populære byer fra ID etc
+                    // TODO: Hent de mest populære byer fra ID etc. My flyttes lenger ned der vi faktisk vet land
                     return availableLocations.Value.Take(maxResults);
                 }
 
-                var nameAndCountry = beginsWith.Split(',');
+                var nameAndCountry = searchTerms.Split(',');
                 if (nameAndCountry.Length > 1)
                 {
                     return availableLocations.Value
@@ -118,7 +150,7 @@ namespace GraphQLDotNet.Services.OpenWeather
                 }
 
                 return availableLocations.Value
-                        .Where(l => l.Name.StartsWith(beginsWith.Trim(), StringComparison.InvariantCultureIgnoreCase))
+                        .Where(l => l.Name.StartsWith(searchTerms.Trim(), StringComparison.InvariantCultureIgnoreCase))
                         .Take(maxResults);
             }
         }

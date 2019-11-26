@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using GraphQLDotNet.Contracts;
 using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
@@ -41,10 +40,10 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
                 var orderedSummary = new WeatherSummaryViewModel(locationMessage.Id, locationMessage.Name, Locations.Count);
                 Locations.Add(orderedSummary);
-                var summary = await openWeatherClient.GetWeatherSummaryFor(locationMessage.Id);
-                if (summary != WeatherSummary.Default)
+                var summary = await openWeatherClient.GetWeatherSummariesFor(locationMessage.Id);
+                if (summary.Any())
                 {
-                    orderedSummary.UpdateWeather(summary);
+                    orderedSummary.UpdateWeather(summary.Single());
                 }
 
                 await localStorage.Save(Locations);
@@ -119,7 +118,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
-                var weatherSummaries = await openWeatherClient.GetWeatherUpdatesFor(Locations.Select(w => w.Id));
+                var weatherSummaries = await openWeatherClient.GetWeatherSummariesFor(Locations.Select(w => w.Id).ToArray());
                 if (!weatherSummaries.Any())
                 {
                     return;

@@ -9,8 +9,7 @@ namespace GraphQLDotNet.Services.OpenWeather
         static int MaxNumberOfResults { get { return 8; } }
 
         Task<WeatherForecast> GetWeatherFor(long id);
-        Task<IEnumerable<WeatherForecast>> GetWeatherFor(long[] id);
-        // TODO: beginswith er feil ord
-        IEnumerable<WeatherLocation> GetLocations(string beginsWith, int maxResults);
+        Task<IEnumerable<WeatherSummary>> GetWeatherSummaryFor(long[] ids);
+        IEnumerable<WeatherLocation> GetLocations(string searchTerms, int maxResults);
     }
 }
