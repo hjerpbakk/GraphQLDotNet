@@ -9,7 +9,7 @@
              x:DataType="vm:LocationsViewModel"
              BackgroundColor="{DynamicResource Background}"
              common:ViewModelLocator.AutoWireViewModel="true"
-             Title="{Binding Title, Mode=OneTime}">
+             Title="Locations">
     <ContentPage.Resources>
         <converters:CloudsToBackgroundConverter x:Key="cloudsToBackgroundConverter" />
     </ContentPage.Resources>

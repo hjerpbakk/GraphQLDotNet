@@ -24,7 +24,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
             this.navigationService = navigationService;
             this.localStorage = localStorage;
             this.openWeatherClient = openWeatherClient;
-            Title = "Locations";
             RefreshCommand = new AsyncCommand(ExecuteRefreshLocations);
             locations = new ObservableCollection<WeatherSummaryViewModel>();
 

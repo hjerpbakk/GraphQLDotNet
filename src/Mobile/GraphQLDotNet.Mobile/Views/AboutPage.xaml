@@ -9,7 +9,7 @@
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              x:DataType="vm:AboutViewModel"
              BackgroundColor="{DynamicResource Background}"
-             Title="{Binding Title, Mode=OneWay}"
+             Title="Settings"
              common:ViewModelLocator.AutoWireViewModel="true">
     <Grid>
         <Grid.RowDefinitions>

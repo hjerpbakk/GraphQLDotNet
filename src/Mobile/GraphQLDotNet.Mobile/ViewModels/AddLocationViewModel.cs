@@ -31,7 +31,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
             this.openWeatherClient = openWeatherClient;
             searchTypingTimer = new Timer { AutoReset = false, Interval = 10D };
             searchTypingTimer.Elapsed += SearchTypingTimer_Elapsed;
-            Title = "Add new location";
             searchResults = new ObservableCollection<WeatherLocation>();
             latestQueryText = "";
         }

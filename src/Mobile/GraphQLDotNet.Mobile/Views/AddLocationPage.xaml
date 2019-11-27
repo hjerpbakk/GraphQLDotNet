@@ -10,7 +10,7 @@
              x:DataType="vm:AddLocationViewModel"
              BackgroundColor="{DynamicResource Background}"
              common:ViewModelLocator.AutoWireViewModel="true"
-             Title="{Binding Title, Mode=OneTime}">
+             Title="Add new location">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Cancel" Command="{Binding CancelCommand, Mode=OneTime}" />
     </ContentPage.ToolbarItems>

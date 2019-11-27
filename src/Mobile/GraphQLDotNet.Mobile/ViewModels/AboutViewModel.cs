@@ -12,7 +12,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public AboutViewModel(INavigationService navigationService)
         {
             this.navigationService = navigationService;
-            Title = "About2";
         }
 
         // TODO: Use radio-button to create something
@@ -24,8 +23,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public override async Task Initialize()
         {
-            await Task.Delay(500);
-            Title = "Finished";
+            await Task.Delay(1);
         }
     }
 }

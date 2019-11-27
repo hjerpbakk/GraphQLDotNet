@@ -34,7 +34,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
         }
 
         // TODO: De-duplicate
-        public async Task NavigateTo<TViewModel, TPageArgument>(TPageArgument argument) where TViewModel : PageViewModelBase
+        public async Task NavigateTo<TViewModel, TPageArgument>(TPageArgument argument) where TViewModel : PageViewModelBase<TPageArgument>
         {
             try
             {

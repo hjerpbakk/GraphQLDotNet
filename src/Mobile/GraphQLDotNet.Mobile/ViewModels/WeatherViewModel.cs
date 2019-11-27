@@ -68,6 +68,13 @@ namespace GraphQLDotNet.Mobile.ViewModels
             set { SetProperty(ref isRefreshing, value); }
         }
 
+        string title = "";
+        public string Title
+        {
+            get { return title; }
+            set { SetProperty(ref title, value); }
+        }
+
         public IAsyncCommand RefreshCommand => new AsyncCommand(async () =>
             {
                 try
