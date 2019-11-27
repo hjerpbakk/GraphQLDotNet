@@ -49,7 +49,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             }
         }
                
-        public async Task<IEnumerable<WeatherLocation>> GetLocations(string searchTerm = "", int maxNumberOfResults = 8)
+        public async Task<(bool completed, IEnumerable<WeatherLocation> locations)> GetLocations(string searchTerm = "", int maxNumberOfResults = 8)
         {
             if (weatherLocationsSemaphore.CurrentCount == 0)
             {
@@ -68,16 +68,16 @@ namespace GraphQLDotNet.Mobile.OpenWeather
                 };
 
                 var response = await graphQLHttpClient.SendQueryAsync(graphQLRequest, cancellationTokenSource.Token).ConfigureAwait(false);
-                return response.GetDataFieldAs<IEnumerable<WeatherLocation>>("locations");
+                return (true, response.GetDataFieldAs<IEnumerable<WeatherLocation>>("locations"));
             }
             catch (TaskCanceledException)
             {
-                return new WeatherLocation[0];
+                return (false, new WeatherLocation[0]);
             }
             catch (Exception exception)
             {
                 Crashes.TrackError(exception);
-                return new WeatherLocation[0];
+                return (false, new WeatherLocation[0]);
             }
             finally
             {

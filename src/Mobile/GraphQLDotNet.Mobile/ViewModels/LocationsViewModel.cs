@@ -19,7 +19,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private ObservableCollection<WeatherSummaryViewModel> locations;
         private bool isRefreshing;
 
-        // TODO: Current location øverst
         public LocationsViewModel(INavigationService navigationService, ILocalStorage localStorage, IOpenWeatherClient openWeatherClient)
         {
             this.navigationService = navigationService;

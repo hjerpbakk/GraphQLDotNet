@@ -136,7 +136,6 @@ namespace GraphQLDotNet.Services.OpenWeather
 
                 if (string.IsNullOrEmpty(searchTerms))
                 {
-                    // TODO: Hent de mest populære byer fra ID etc. My flyttes lenger ned der vi faktisk vet land
                     return availableLocations.Value.Take(maxResults);
                 }
 
