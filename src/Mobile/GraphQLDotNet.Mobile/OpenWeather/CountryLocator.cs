@@ -62,17 +62,14 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             }
             catch (FeatureNotSupportedException)
             {
-                // Handle not supported on device exception
                 return DefaultCountry;
             }
             catch (FeatureNotEnabledException)
             {
-                // Handle not enabled on device exception
                 return DefaultCountry;
             }
             catch (PermissionException)
             {
-                // Handle permission exception
                 return DefaultCountry;
             }
             catch (Exception exception)
