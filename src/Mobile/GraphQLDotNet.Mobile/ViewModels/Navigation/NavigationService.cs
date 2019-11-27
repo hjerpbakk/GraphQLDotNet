@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Reflection;
 using System.Threading.Tasks;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using Microsoft.AppCenter.Crashes;
@@ -10,6 +8,11 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
 {
     public sealed class NavigationService : INavigationService
     {
+        private readonly ViewModelLocator viewModelLocator;
+
+        public NavigationService(ViewModelLocator viewModelLocator)
+            => this.viewModelLocator = viewModelLocator;
+
         public async Task NavigateTo<TViewModel>() where TViewModel : PageViewModelBase
             => await NavigateTo<TViewModel>((Page page) => ((TViewModel)page.BindingContext).Initialize());
         
@@ -20,7 +23,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
         {
             try
             {
-                var page = CreatePage(typeof(TViewModel)); 
+                var page = viewModelLocator.CreatePage(typeof(TViewModel)); 
                 var init = ((PageViewModelBase)page.BindingContext).Initialize();
                 await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page), true);
                 await init;
@@ -47,7 +50,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
         {
             try
             {
-                var page = CreatePage(typeof(TViewModel));
+                var page = viewModelLocator.CreatePage(typeof(TViewModel));
                 var init = initialise(page);
                 var (hasNavigation, navigationPage) = GetNavigationPage();
                 if (hasNavigation)
@@ -72,29 +75,5 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
             ((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage
                 ? (true, navigationPage)
                 : ((bool hasNavigation, NavigationPage? navigationPage))(false, default);
-        
-        private Page CreatePage(Type viewModelType)
-        {
-            Type pageType = GetPageTypeForViewModel(viewModelType);
-            if (pageType == null)
-            {
-                throw new Exception($"Cannot locate page type for {viewModelType}");
-            }
-
-            Page page = (Page)Activator.CreateInstance(pageType);
-            return page;
-        }
-
-        private Type GetPageTypeForViewModel(Type viewModelType)
-        {
-            // TODO: Make it easier and more performant
-            var shitty = viewModelType.FullName.Replace("Model", "");
-            var shitty2 = shitty.Remove(shitty.Length - 4);
-            var viewName = shitty2 + "Page";
-            var viewModelAssemblyName = viewModelType.GetTypeInfo().Assembly.FullName;
-            var viewAssemblyName = string.Format(CultureInfo.InvariantCulture, "{0}, {1}", viewName, viewModelAssemblyName);
-            var viewType = Type.GetType(viewAssemblyName);
-            return viewType;
-        }
     }
 }

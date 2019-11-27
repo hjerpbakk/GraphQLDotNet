@@ -8,7 +8,6 @@ using GraphQL.Common.Exceptions;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using GraphQLDotNet.Contracts;
-using GraphQLDotNet.Mobile.Models;
 using Microsoft.AppCenter.Crashes;
 using Polly;
 
@@ -19,13 +18,14 @@ namespace GraphQLDotNet.Mobile.OpenWeather
         private readonly SemaphoreSlim weatherLocationsSemaphore;
         private readonly GraphQLHttpClient graphQLHttpClient;
 
-        private CancellationTokenSource? cancellationTokenSource;
+        private CancellationTokenSource cancellationTokenSource;
 
         public OpenWeatherClient(OpenWeatherConfiguration openWeatherConfiguration)
         {
             weatherLocationsSemaphore = new SemaphoreSlim(1);
             graphQLHttpClient = new GraphQLHttpClient(
                 new GraphQLHttpClientOptions { EndPoint = new Uri(openWeatherConfiguration.GraphQLApiUrl) });
+            cancellationTokenSource = new CancellationTokenSource();
         }
             
         public async Task<WeatherForecast> GetWeatherForecast(long locationId)
@@ -53,7 +53,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
         {
             if (weatherLocationsSemaphore.CurrentCount == 0)
             {
-                cancellationTokenSource!.Cancel();
+                cancellationTokenSource.Cancel();
             }
 
             await weatherLocationsSemaphore.WaitAsync();

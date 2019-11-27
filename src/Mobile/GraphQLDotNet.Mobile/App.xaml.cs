@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GraphQLDotNet.Mobile.Helpers;
+using GraphQLDotNet.Mobile.OpenWeather;
+using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.Services;
 using GraphQLDotNet.Mobile.ViewModels;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using GraphQLDotNet.Mobile.Views.Styles;
+using LightInject;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Wibci.CountryReverseGeocode;
 using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile
@@ -18,6 +22,8 @@ namespace GraphQLDotNet.Mobile
         private readonly Lazy<LightTheme> lightTheme;
         private readonly Lazy<DarkTheme> darkTheme;
         private readonly Action setPlatformSpecificStyles;
+
+        private readonly IServiceContainer serviceContainer;
 
         public App(Action setPlatformSpecificStyles) : this()
         {
@@ -30,6 +36,7 @@ namespace GraphQLDotNet.Mobile
             setPlatformSpecificStyles = () => { };
             lightTheme = new Lazy<LightTheme>(new LightTheme());
             darkTheme = new Lazy<DarkTheme>(new DarkTheme());
+            serviceContainer = new ServiceContainer(new ContainerOptions { EnablePropertyInjection = false });
             InitializeComponent();
         }
 
@@ -50,8 +57,21 @@ namespace GraphQLDotNet.Mobile
         private async Task InitApp()
         {
             SetTheme();
-            var navigationService = ViewModelLocator.Resolve<INavigationService>();
-            await navigationService.NavigateTo<MainViewModel>();
+            await Compose().NavigateTo<MainViewModel>();
+        }
+
+        private INavigationService Compose()
+        {
+            serviceContainer.Register(f => serviceContainer, new PerContainerLifetime());
+            serviceContainer.Register<ViewModelLocator>(new PerContainerLifetime());
+            serviceContainer.Register<OpenWeatherConfiguration>(new PerContainerLifetime());
+            serviceContainer.Register<INavigationService, NavigationService>(new PerContainerLifetime());
+            serviceContainer.Register<ILocalStorage, LocalStorage>(new PerContainerLifetime());
+            serviceContainer.Register<ICountryLocator, CountryLocator>(new PerContainerLifetime());
+            serviceContainer.Register<IOpenWeatherClient, OpenWeatherClient>(new PerContainerLifetime());
+            serviceContainer.Register<CountryReverseGeocodeService>(new PerContainerLifetime());
+
+            return serviceContainer.GetInstance<INavigationService>();
         }
 
         private void SetTheme()
