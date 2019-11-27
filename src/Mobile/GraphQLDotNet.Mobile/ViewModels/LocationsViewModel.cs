@@ -89,6 +89,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public async override Task Initialize()
         {
+            if (Locations.Count > 0)
+            {
+                return;
+            }
+
             var weatherSummaries = localStorage.Load();
             Locations = new ObservableCollection<WeatherSummaryViewModel>(weatherSummaries.OrderBy(w => w.Ordering));
             if (weatherSummaries.Length == 0)

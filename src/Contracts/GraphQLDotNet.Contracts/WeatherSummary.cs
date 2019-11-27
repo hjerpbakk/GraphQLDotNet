@@ -15,8 +15,6 @@ namespace GraphQLDotNet.Contracts
             Clouds = clouds;
         }
 
-        public static WeatherSummary Default => new WeatherSummary("", 0D, "", 0L, DateTime.MinValue, 0L, 0L);
-
         public DateTime Date { get; }
         public string Location { get; }
         public double Temperature { get; }
