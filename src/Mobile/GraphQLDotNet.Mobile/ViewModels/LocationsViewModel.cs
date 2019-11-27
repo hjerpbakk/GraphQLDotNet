@@ -19,7 +19,10 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private ObservableCollection<WeatherSummaryViewModel> locations;
         private bool isRefreshing;
 
-        public LocationsViewModel(INavigationService navigationService, ILocalStorage localStorage, IOpenWeatherClient openWeatherClient)
+        public LocationsViewModel(INavigationService navigationService,
+            ILocalStorage localStorage,
+            IOpenWeatherClient openWeatherClient,
+            IMessenger messenger)
         {
             this.navigationService = navigationService;
             this.localStorage = localStorage;
@@ -27,31 +30,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
             RefreshCommand = new AsyncCommand(ExecuteRefreshLocations);
             locations = new ObservableCollection<WeatherSummaryViewModel>();
 
-            // TODO: this warning suxx
-#pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
-            MessagingCenter.Subscribe<AddLocationViewModel, AddLocationMessage>(this, nameof(AddLocationMessage), async (obj, locationMessage) =>
-            {
-                if (Locations.Contains(new WeatherSummaryViewModel(locationMessage.Id)))
-                {
-                    return;
-                }
-
-                var orderedSummary = new WeatherSummaryViewModel(locationMessage.Id, locationMessage.Name, Locations.Count);
-                Locations.Add(orderedSummary);
-                var summary = await openWeatherClient.GetWeatherSummariesFor(locationMessage.Id);
-                if (summary.Any())
-                {
-                    orderedSummary.UpdateWeather(summary.Single());
-                }
-
-                await localStorage.Save(Locations);
-            });
-
-            MessagingCenter.Subscribe<WeatherViewModel, RemoveLocationMessage>(this, nameof(RemoveLocationMessage), async (obj, locationMessage) =>
+            messenger.Subscribe<AddLocationViewModel, AddLocationMessage>(this, AddNewLocation);
+            messenger.Subscribe<WeatherViewModel, RemoveLocationMessage>(this, async (locationMessage) =>
             {
                 await RemoveLocationCommand.ExecuteAsync(new WeatherSummaryViewModel(locationMessage.Id));
             });
-#pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
         }
 
         public IAsyncCommand AddLocationCommand => new AsyncCommand(
@@ -130,6 +113,24 @@ namespace GraphQLDotNet.Mobile.ViewModels
             {
                 IsRefreshing = false;
             }
+        }
+
+        private async Task AddNewLocation(AddLocationMessage locationMessage)
+        {
+            if (Locations.Contains(new WeatherSummaryViewModel(locationMessage.Id)))
+            {
+                return;
+            }
+
+            var orderedSummary = new WeatherSummaryViewModel(locationMessage.Id, locationMessage.Name, Locations.Count);
+            Locations.Add(orderedSummary);
+            var summary = await openWeatherClient.GetWeatherSummariesFor(locationMessage.Id);
+            if (summary.Any())
+            {
+                orderedSummary.UpdateWeather(summary.Single());
+            }
+
+            await localStorage.Save(Locations);
         }
     }
 }

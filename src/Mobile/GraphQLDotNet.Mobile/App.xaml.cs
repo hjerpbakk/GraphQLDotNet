@@ -6,6 +6,7 @@ using GraphQLDotNet.Mobile.OpenWeather.Persistence;
 using GraphQLDotNet.Mobile.Services;
 using GraphQLDotNet.Mobile.ViewModels;
 using GraphQLDotNet.Mobile.ViewModels.Common;
+using GraphQLDotNet.Mobile.ViewModels.Messages;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using GraphQLDotNet.Mobile.Views.Styles;
 using LightInject;
@@ -70,6 +71,7 @@ namespace GraphQLDotNet.Mobile
             serviceContainer.Register<ICountryLocator, CountryLocator>(new PerContainerLifetime());
             serviceContainer.Register<IOpenWeatherClient, OpenWeatherClient>(new PerContainerLifetime());
             serviceContainer.Register<CountryReverseGeocodeService>(new PerContainerLifetime());
+            serviceContainer.Register<IMessenger, Messenger>(new PerContainerLifetime());
 
             return serviceContainer.GetInstance<INavigationService>();
         }

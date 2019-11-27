@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
@@ -19,16 +18,21 @@ namespace GraphQLDotNet.Mobile.ViewModels
         private readonly INavigationService navigationService;
         private readonly ICountryLocator countryLocator;
         private readonly IOpenWeatherClient openWeatherClient;
+        private readonly IMessenger messenger;
         private readonly Timer searchTypingTimer;
 
         private ObservableCollection<WeatherLocation> searchResults;
         private string latestQueryText;
 
-        public AddLocationViewModel(INavigationService navigationService, ICountryLocator countryLocator, IOpenWeatherClient openWeatherClient)
+        public AddLocationViewModel(INavigationService navigationService,
+            ICountryLocator countryLocator,
+            IOpenWeatherClient openWeatherClient,
+            IMessenger messenger)
         {
             this.navigationService = navigationService;
             this.countryLocator = countryLocator;
             this.openWeatherClient = openWeatherClient;
+            this.messenger = messenger;
             searchTypingTimer = new Timer { AutoReset = false, Interval = 10D };
             searchTypingTimer.Elapsed += SearchTypingTimer_Elapsed;
             searchResults = new ObservableCollection<WeatherLocation>();
@@ -60,10 +64,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
-                // TODO: Finnes det en bedre måte å sende dataene på? Gjøre denne non-static om meldinger er gudd.
-                MessagingCenter.Send(this,
-                    nameof(AddLocationMessage),
-                    new AddLocationMessage(SearchResults[row].Id, SearchResults[row].Name));
+                messenger.Publish(this, new AddLocationMessage(SearchResults[row].Id, SearchResults[row].Name));
                 await navigationService.PopModal();
             });
 

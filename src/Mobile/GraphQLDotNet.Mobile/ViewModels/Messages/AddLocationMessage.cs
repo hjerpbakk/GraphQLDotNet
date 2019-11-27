@@ -1,6 +1,6 @@
 ﻿namespace GraphQLDotNet.Mobile.ViewModels.Messages
 {
-    public readonly struct AddLocationMessage
+    public readonly struct AddLocationMessage : IMessage
     {
         public AddLocationMessage(long id, string name)
         {

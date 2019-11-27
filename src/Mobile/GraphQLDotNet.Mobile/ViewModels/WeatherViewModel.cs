@@ -7,7 +7,6 @@ using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Messages;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
 using Humanizer;
-using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
@@ -15,14 +14,17 @@ namespace GraphQLDotNet.Mobile.ViewModels
     {
         private readonly INavigationService navigationService;
         private readonly IOpenWeatherClient openWeatherClient;
-
+        private readonly IMessenger messenger;
         private WeatherSummaryViewModel weatherSummary;
         private WeatherForecast? weatherForecast;
 
-        public WeatherViewModel(INavigationService navigationService, IOpenWeatherClient openWeatherClient)
+        public WeatherViewModel(INavigationService navigationService,
+            IOpenWeatherClient openWeatherClient,
+            IMessenger messenger)
         {
             this.navigationService = navigationService;
             this.openWeatherClient = openWeatherClient;
+            this.messenger = messenger;
             weatherSummary = WeatherSummaryViewModel.Default;
         }
 
@@ -92,9 +94,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 var locationId = weatherForecast == null
                     ? weatherSummary.Id
                     : weatherForecast.Id;
-                MessagingCenter.Send(this,
-                    nameof(RemoveLocationMessage),
-                    new RemoveLocationMessage(locationId));
+                messenger.Publish(this, new RemoveLocationMessage(locationId));
                 await navigationService.Pop();
             });
 

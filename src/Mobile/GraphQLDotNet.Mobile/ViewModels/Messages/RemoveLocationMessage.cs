@@ -1,6 +1,6 @@
 ﻿namespace GraphQLDotNet.Mobile.ViewModels.Messages
 {
-    public readonly struct RemoveLocationMessage
+    public readonly struct RemoveLocationMessage : IMessage
     {
         public RemoveLocationMessage(long id)
         {
