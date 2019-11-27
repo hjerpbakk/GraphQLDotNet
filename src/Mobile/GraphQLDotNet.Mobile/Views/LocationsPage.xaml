@@ -4,6 +4,7 @@
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
              xmlns:converters="clr-namespace:GraphQLDotNet.Mobile.Views.Converters"
+             xmlns:controls="clr-namespace:GraphQLDotNet.Mobile.Views.Controls"
              x:Class="GraphQLDotNet.Mobile.Views.LocationsPage"
              x:DataType="vm:LocationsViewModel"
              BackgroundColor="{DynamicResource Background}"
@@ -19,42 +20,16 @@
             <CollectionView ItemsSource="{Binding Locations, Mode=OneWay}"
                             SelectionMode="Single"
                             SelectedItem="{Binding SelectedLocation}"
-                            SelectionChangedCommand="{Binding SelectionChangedCommand}">
+                            SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                            ItemSizingStrategy="MeasureFirstItem">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout
+                    Orientation="Vertical"
+                    ItemSpacing="0"/>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:WeatherSummaryViewModel">
-                    <Grid Padding="5, 15, 10, 15">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Frame Grid.RowSpan="2"
-                            Padding="0"
-                            HeightRequest="50"
-                            WidthRequest="50"
-                            BorderColor="Transparent"
-                            BackgroundColor="Transparent">
-                            <Image Source="{Binding OpenWeatherIcon, Mode=OneWay}"
-                                Aspect="AspectFill" />
-                        </Frame>
-                        <Label Grid.Column="1"
-                                Text="{Binding Time, Mode=OneWay}"
-                                Style="{DynamicResource TextSubheadSecondary}" />
-                        <Label Grid.Row="1"
-                                Grid.Column="1"
-                                Text="{Binding Name, Mode=OneTime}"
-                                Style="{DynamicResource TextHeadline}"
-                                VerticalOptions="StartAndExpand" />
-                        <Label Grid.RowSpan="2"
-                                Grid.Column="2"
-                                Text="{Binding Temperature, Mode=OneWay}"
-                                Style="{DynamicResource TemperatureLabel}"
-                                VerticalOptions="CenterAndExpand" />
-                    </Grid>
+                    <controls:WeatherSummaryView BindingContext="{Binding .}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>

@@ -15,6 +15,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
             Title = "About2";
         }
 
+        // TODO: Use radio-button to create something
         public IAsyncCommand OpenWebCommand => new AsyncCommand(async () =>
         {
             await navigationService.NavigateTo<AboutViewModel>();
