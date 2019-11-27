@@ -101,7 +101,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 ? nameAndCountry[1]
                 : await countryLocator.GetCurrentCountry();
             var searchString = $"{nameAndCountry[0]}, {currentCountry}";
-            // TODO: Custom renderer for kewl loading effect?
             await UpdateLocations(searchString);
         }
 

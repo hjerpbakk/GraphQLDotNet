@@ -8,6 +8,7 @@ using GraphQL.Common.Exceptions;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using GraphQLDotNet.Contracts;
+using GraphQLDotNet.Mobile.Services.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Polly;
 
@@ -62,9 +63,9 @@ namespace GraphQLDotNet.Mobile.OpenWeather
             {
                 var graphQLRequest = new GraphQLRequest
                 {
-                    Query = "query GetLocations($beginsWith: String, $maxResults: Int) { locations(beginsWith: $beginsWith, maxResults: $maxResults)  { name country id latitude longitude } }",
+                    Query = "query GetLocations($searchTerms: String, $maxResults: Int) { locations(searchTerms: $searchTerms, maxResults: $maxResults)  { name country id latitude longitude } }",
                     OperationName = "GetLocations",
-                    Variables = new { beginsWith = searchTerm, maxResults = maxNumberOfResults }
+                    Variables = new { searchTerms = searchTerm, maxResults = maxNumberOfResults }
                 };
 
                 var response = await graphQLHttpClient.SendQueryAsync(graphQLRequest, cancellationTokenSource.Token).ConfigureAwait(false);
@@ -90,6 +91,7 @@ namespace GraphQLDotNet.Mobile.OpenWeather
         {
             try
             {
+                LocationAnalytics.HasNLocations(locationIds.Length);
                 var graphQLRequest = new GraphQLRequest
                 {
                     Query = "query WeatherSummaries($location_ids: [Long]!) { summaries(location_ids: $location_ids)  { location temperature openWeatherIcon id date timezone } }",

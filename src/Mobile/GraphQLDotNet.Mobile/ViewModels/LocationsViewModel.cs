@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using GraphQLDotNet.Mobile.OpenWeather;
 using GraphQLDotNet.Mobile.OpenWeather.Persistence;
+using GraphQLDotNet.Mobile.Services.Analytics;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Messages;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
-using Xamarin.Forms;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
@@ -122,6 +122,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 return;
             }
 
+            LocationAnalytics.AddedALocation();
             var orderedSummary = new WeatherSummaryViewModel(locationMessage.Id, locationMessage.Name, Locations.Count);
             Locations.Add(orderedSummary);
             var summary = await openWeatherClient.GetWeatherSummariesFor(locationMessage.Id);

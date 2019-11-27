@@ -1,6 +1,4 @@
-﻿using System;
-using Foundation;
-using GraphQLDotNet.Mobile.Services;
+﻿using Foundation;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -31,8 +29,7 @@ namespace GraphQLDotNet.Mobile.iOS
         {
             var color = Xamarin.Forms.Application.Current.Resources["ActionColor"];
             var tintColor = new UIColor(((Color)color).ToCGColor());
-
-            // TODO: How to change tintcolor of already visible views
+            // TODO: How to change tintcolor of already visible views?
             UIView.Appearance.TintColor = tintColor;
             UIBarButtonItem.Appearance.TintColor = tintColor;
         }

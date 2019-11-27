@@ -142,10 +142,11 @@ namespace GraphQLDotNet.Services.OpenWeather
                 var nameAndCountry = searchTerms.Split(',');
                 if (nameAndCountry.Length > 1)
                 {
-                    return availableLocations.Value
+                    var matchingLocations = availableLocations.Value
                         .Where(l => l.Name.StartsWith(nameAndCountry[0].Trim(), StringComparison.InvariantCultureIgnoreCase)
                             && l.Country.StartsWith(nameAndCountry[1].Trim(), StringComparison.InvariantCultureIgnoreCase))
                         .Take(maxResults);
+                    return matchingLocations;
                 }
 
                 return availableLocations.Value

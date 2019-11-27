@@ -37,6 +37,7 @@
     <Folder Include="ViewModels\Navigation\" />
     <Folder Include="ViewModels\Common\" />
     <Folder Include="Views\Styles\" />
+    <Folder Include="Services\Analytics\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Contracts\GraphQLDotNet.Contracts\GraphQLDotNet.Contracts.csproj" />
