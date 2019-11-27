@@ -20,8 +20,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
         {
             try
             {
-                var page = CreatePage(typeof(TViewModel));
-                // TODO: Consider the use of Application here...
+                var page = CreatePage(typeof(TViewModel)); 
                 var init = ((PageViewModelBase)page.BindingContext).Initialize();
                 await Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(page), true);
                 await init;
