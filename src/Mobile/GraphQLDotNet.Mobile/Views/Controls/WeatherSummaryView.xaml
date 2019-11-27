@@ -4,7 +4,7 @@
              x:Class="GraphQLDotNet.Mobile.Views.Controls.WeatherSummaryView"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              x:DataType="vm:WeatherSummaryViewModel">
-    <Grid Padding="5, 15, 10, 15">
+    <Grid Margin="5, 15, 10, 15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

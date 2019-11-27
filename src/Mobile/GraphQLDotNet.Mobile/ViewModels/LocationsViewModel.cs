@@ -67,22 +67,13 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 }
             });
 
-        public IAsyncCommand SelectionChangedCommand => new AsyncCommand(
-            async () =>
+        public IAsyncCommand<WeatherSummaryViewModel> GoToDetailsCommand => new AsyncCommand<WeatherSummaryViewModel>(
+            async (WeatherSummaryViewModel selectedLocation) =>
             {
-                if (SelectedLocation as object == null)
-                {
-                    return;
-                }
-
-                await navigationService.NavigateTo<WeatherViewModel, WeatherSummaryViewModel>(SelectedLocation!);
-                SelectedLocation = null;
-                OnPropertyChanged(nameof(SelectedLocation));
+                await navigationService.NavigateTo<WeatherViewModel, WeatherSummaryViewModel>(selectedLocation);
             });
 
         public IAsyncCommand RefreshCommand { get; }
-
-        public WeatherSummaryViewModel? SelectedLocation { get; set; }
 
         public ObservableCollection<WeatherSummaryViewModel> Locations
         {

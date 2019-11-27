@@ -17,33 +17,39 @@
         <ToolbarItem Text="Add" Command="{Binding AddLocationCommand, Mode=OneTime}" />
     </ContentPage.ToolbarItems>
     <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand, Mode=OneTime}">
-            <CollectionView ItemsSource="{Binding Locations, Mode=OneWay}"
-                            SelectionMode="Single"
-                            SelectedItem="{Binding SelectedLocation}"
-                            SelectionChangedCommand="{Binding SelectionChangedCommand}"
-                            ItemSizingStrategy="MeasureFirstItem">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout
-                    Orientation="Vertical"
-                    ItemSpacing="0"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="vm:WeatherSummaryViewModel">
-                    <controls:WeatherSummaryView BindingContext="{Binding .}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.EmptyView>
-                <StackLayout>
-                    <Label Text="No locations chosen."
-                           Margin="10,100,10,10"
-                           Style="{DynamicResource TextHeadline}"
-                           HorizontalOptions="Fill"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="Add another location using the Add button."
-                           Style="{DynamicResource TextSubhead}"
-                           HorizontalOptions="Fill"
-                           HorizontalTextAlignment="Center" />
-                </StackLayout>
+        <CollectionView ItemsSource="{Binding Locations, Mode=OneWay}"
+                        SelectionMode="Single"
+                        ItemSizingStrategy="MeasureFirstItem">
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout
+                Orientation="Vertical"
+                ItemSpacing="0"/>
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="vm:WeatherSummaryViewModel">
+                <controls:WeatherSummaryView BindingContext="{Binding .}">
+                    <controls:WeatherSummaryView.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding Source={RelativeSource 
+                                AncestorType={x:Type vm:LocationsViewModel}}, 
+                                Path=GoToDetailsCommand}"
+                            CommandParameter="{Binding .}"/>
+                    </controls:WeatherSummaryView.GestureRecognizers>
+                </controls:WeatherSummaryView>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+        <CollectionView.EmptyView>
+            <StackLayout>
+                <Label Text="No locations chosen."
+                        Margin="10,100,10,10"
+                        Style="{DynamicResource TextHeadline}"
+                        HorizontalOptions="Fill"
+                        HorizontalTextAlignment="Center" />
+                <Label Text="Add another location using the Add button."
+                        Style="{DynamicResource TextSubhead}"
+                        HorizontalOptions="Fill"
+                        HorizontalTextAlignment="Center" />
+            </StackLayout>
         </CollectionView.EmptyView>
         </CollectionView>
     </RefreshView>
