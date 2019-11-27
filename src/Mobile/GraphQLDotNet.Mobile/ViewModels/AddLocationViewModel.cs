@@ -84,8 +84,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
         public override async Task Initialize()
         {
             var currentCountry = await countryLocator.GetCurrentCountry();
-            var (completed, locations) = await openWeatherClient.GetLocations($", {currentCountry}");
-            SearchResults = new ObservableCollection<WeatherLocation>(locations);
+            await UpdateLocations($", {currentCountry}");
         }
 
         private void SearchTypingTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -101,10 +100,15 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 ? nameAndCountry[1]
                 : await countryLocator.GetCurrentCountry();
             var searchString = $"{nameAndCountry[0]}, {currentCountry}";
+            // TODO: Custom renderer for kewl loading effect?
+            await UpdateLocations(searchString);
+        }
+
+        private async Task UpdateLocations(string searchString)
+        {
             var (completed, locations) = await openWeatherClient.GetLocations(searchString);
             if (completed)
             {
-                // TODO: Custom renderer for kewl loading effect?
                 SearchResults = new ObservableCollection<WeatherLocation>(locations);
             }
         }
