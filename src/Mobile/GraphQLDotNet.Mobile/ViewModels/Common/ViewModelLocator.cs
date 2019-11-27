@@ -35,7 +35,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
         public Page CreatePage(Type viewModelType)
         {
             var pageType = pageViewModelMapping.GetPageType(viewModelType);
-            var page = (Page)Activator.CreateInstance(pageType);
+            var page = (Page)serviceContainer!.GetInstance(pageType);
             return page;
         }
 
@@ -56,6 +56,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
             where TPage : Page
         {
             serviceContainer!.Register<TViewModel>();
+            serviceContainer!.Register<TPage>();
             pageViewModelMapping.AddMapping<TViewModel, TPage>();
         }
     }
