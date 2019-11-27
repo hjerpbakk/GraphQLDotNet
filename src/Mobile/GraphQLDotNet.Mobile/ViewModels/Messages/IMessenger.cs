@@ -5,11 +5,9 @@ namespace GraphQLDotNet.Mobile.ViewModels.Messages
 {
     public interface IMessenger
     {
-        void Subscribe<TPublisher, TMessage>(object subscriber, Func<TMessage, Task> callback)
-            where TPublisher : class
+        void Subscribe<TMessage>(Func<TMessage, Task> callback)
             where TMessage : IMessage;
-        void Publish<TPublisher, TMessage>(TPublisher sender, TMessage message)
-            where TPublisher : class
+        void Publish<TMessage>(TMessage message)
             where TMessage : IMessage;
     }
 }

@@ -7,16 +7,14 @@ namespace GraphQLDotNet.Mobile.ViewModels.Messages
 {
     public sealed class Messenger : IMessenger
     {
-        public void Subscribe<TPublisher, TMessage>(object subscriber, Func<TMessage, Task> callback)
-            where TPublisher : class
+        public void Subscribe<TMessage>(Func<TMessage, Task> callback)
             where TMessage : IMessage
-            => MessagingCenter.Subscribe<TPublisher, TMessage>(subscriber,
+            => MessagingCenter.Subscribe<Messenger, TMessage>(this,
                 typeof(TMessage).Name,
                 (_, message) => callback(message).FireAndForgetSafeAsync());
 
-        public void Publish<TPublisher, TMessage>(TPublisher sender, TMessage message)
-            where TPublisher : class
+        public void Publish<TMessage>(TMessage message)
             where TMessage : IMessage
-            => MessagingCenter.Send(sender, typeof(TMessage).Name, message);
+            => MessagingCenter.Send(this, typeof(TMessage).Name, message);
     }
 }

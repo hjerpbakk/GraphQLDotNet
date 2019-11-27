@@ -94,7 +94,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 var locationId = weatherForecast == null
                     ? weatherSummary.Id
                     : weatherForecast.Id;
-                messenger.Publish(this, new RemoveLocationMessage(locationId));
+                messenger.Publish(new RemoveLocationMessage(locationId));
                 await navigationService.Pop();
             });
 

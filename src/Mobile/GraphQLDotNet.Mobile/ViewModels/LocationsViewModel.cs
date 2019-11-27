@@ -30,8 +30,8 @@ namespace GraphQLDotNet.Mobile.ViewModels
             RefreshCommand = new AsyncCommand(ExecuteRefreshLocations);
             locations = new ObservableCollection<WeatherSummaryViewModel>();
 
-            messenger.Subscribe<AddLocationViewModel, AddLocationMessage>(this, AddNewLocation);
-            messenger.Subscribe<WeatherViewModel, RemoveLocationMessage>(this, async (locationMessage) =>
+            messenger.Subscribe<AddLocationMessage>(AddNewLocation);
+            messenger.Subscribe<RemoveLocationMessage>(async (locationMessage) =>
             {
                 await RemoveLocationCommand.ExecuteAsync(new WeatherSummaryViewModel(locationMessage.Id));
             });

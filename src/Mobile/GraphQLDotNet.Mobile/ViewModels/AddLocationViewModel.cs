@@ -64,7 +64,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
                     return;
                 }
 
-                messenger.Publish(this, new AddLocationMessage(SearchResults[row].Id, SearchResults[row].Name));
+                messenger.Publish(new AddLocationMessage(SearchResults[row].Id, SearchResults[row].Name));
                 await navigationService.PopModal();
             });
 
