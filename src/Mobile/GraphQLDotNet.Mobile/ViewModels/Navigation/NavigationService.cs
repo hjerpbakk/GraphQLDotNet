@@ -11,51 +11,10 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
     public sealed class NavigationService : INavigationService
     {
         public async Task NavigateTo<TViewModel>() where TViewModel : PageViewModelBase
-        {
-            try
-            {
-                var page = CreatePage(typeof(TViewModel));
-                var init = ((PageViewModelBase)page.BindingContext).Initialize();
-                if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
-                {
-                    await navigationPage.PushAsync(page, true);
-                }
-                else
-                {
-                    Application.Current.MainPage = page;
-                }
-
-                await init;
-            }
-            catch (Exception exception)
-            {
-                Crashes.TrackError(exception);
-            }
-        }
-
-        // TODO: De-duplicate
+            => await NavigateTo<TViewModel>((Page page) => ((TViewModel)page.BindingContext).Initialize());
+        
         public async Task NavigateTo<TViewModel, TPageArgument>(TPageArgument argument) where TViewModel : PageViewModelBase<TPageArgument>
-        {
-            try
-            {
-                var page = CreatePage(typeof(TViewModel));
-                var init = ((PageViewModelBase<TPageArgument>)page.BindingContext).Initialize(argument);
-                if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
-                {
-                    await navigationPage.PushAsync(page, true);
-                }
-                else
-                {
-                    Application.Current.MainPage = page;
-                }
-
-                await init;
-            }
-            catch (Exception exception)
-            {
-                Crashes.TrackError(exception);
-            }
-        }
+            => await NavigateTo<TViewModel>((Page page) => ((TViewModel)page.BindingContext).Initialize(argument));
 
         public async Task NavigateModallyTo<TViewModel>() where TViewModel : PageViewModelBase
         {
@@ -78,12 +37,43 @@ namespace GraphQLDotNet.Mobile.ViewModels.Navigation
 
         public async Task Pop()
         {
-            if (((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage)
+            var (hasNavigation, navigationPage) = GetNavigationPage();
+            if (hasNavigation)
             {
-                await navigationPage.PopAsync(true);
+                await navigationPage!.PopAsync(true);
             }
         }
 
+        private async Task NavigateTo<TViewModel>(Func<Page, Task> initialise)
+        {
+            try
+            {
+                var page = CreatePage(typeof(TViewModel));
+                var init = initialise(page);
+                var (hasNavigation, navigationPage) = GetNavigationPage();
+                if (hasNavigation)
+                {
+                    await navigationPage!.PushAsync(page, true);
+                }
+                else
+                {
+                    Application.Current.MainPage = page;
+                }
+
+                await init;
+            }
+            catch (Exception exception)
+            {
+                Crashes.TrackError(exception);
+            }
+        }
+
+        // This is specific for the structure of the current application, not too proud of this one 🙈
+        private static (bool hasNavigation, NavigationPage? navigationPage) GetNavigationPage() =>
+            ((TabbedPage)Application.Current.MainPage)?.CurrentPage is NavigationPage navigationPage
+                ? (true, navigationPage)
+                : ((bool hasNavigation, NavigationPage? navigationPage))(false, default);
+        
         private Page CreatePage(Type viewModelType)
         {
             Type pageType = GetPageTypeForViewModel(viewModelType);
