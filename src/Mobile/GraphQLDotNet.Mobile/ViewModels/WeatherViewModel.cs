@@ -28,7 +28,6 @@ namespace GraphQLDotNet.Mobile.ViewModels
 
         public override async Task Initialize(WeatherSummaryViewModel argument)
         {
-            // TODO: Support map
             weatherSummary = argument;
             Title = argument.Name;
             TriggerPropertyChanged();
@@ -99,21 +98,11 @@ namespace GraphQLDotNet.Mobile.ViewModels
                 await navigationService.Pop();
             });
 
-        public void TriggerPropertyChanged()
-        {
-            OnPropertyChanged(
-                nameof(Temperature),
-                nameof(Icon),
-                nameof(Description),
-                nameof(TempMin),
-                nameof(TempMax),
-                nameof(Pressure),
-                nameof(Humidity),
-                nameof(Sunrise),
-                nameof(Sunset),
-                nameof(Wind),
-                nameof(Visibility));
-        }
+        /// <summary>
+        /// Notify all properties have changed.
+        /// </summary>
+        private void TriggerPropertyChanged()
+            => OnPropertyChanged("");
 
         private string GetWind()
         {
