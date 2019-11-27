@@ -43,25 +43,23 @@ namespace GraphQLDotNet.Contracts
             Clouds = clouds;
         }
 
-        // TODO: Remove defaults if default constructor is not needed
-        public long Id { get; } = -1L;
-        public string Location { get; } = "";
-        public DateTime Date { get; } = DateTime.MinValue;
-        public double Temperature { get; } = 0D;
-        public double TemperatureF => 32 + (int)(Temperature / 0.5556);
-        public string OpenWeatherIcon { get; } = "";
-        public string Summary { get; } = "";
-        public string Description { get; } = "";
-        public double TempMin { get; } = 0D;
-        public double TempMax { get; } = 0D;
-        public long Pressure { get; } = 0L;
-        public long Humidity { get; } = 0L;
-        public DateTime Sunrise { get; } = DateTime.MinValue;
-        public DateTime Sunset { get; } = DateTime.MinValue;
-        public double WindSpeed { get; } = 0D;
-        public long WindDegrees { get; } = 0L;
-        public long Visibility { get; } = 0L;
-        public long Timezone { get; } = 0L;
-        public long Clouds { get; } = 0L;
+        public long Id { get; }
+        public string Location { get; }
+        public DateTime Date { get; }
+        public double Temperature { get; }
+        public string OpenWeatherIcon { get; }
+        public string Summary { get; }
+        public string Description { get; }
+        public double TempMin { get; }
+        public double TempMax { get; }
+        public long Pressure { get; }
+        public long Humidity { get; }
+        public DateTime Sunrise { get; }
+        public DateTime Sunset { get; }
+        public double WindSpeed { get; }
+        public long WindDegrees { get; }
+        public long Visibility { get; }
+        public long Timezone { get; }
+        public long Clouds { get; }
     }
 }
