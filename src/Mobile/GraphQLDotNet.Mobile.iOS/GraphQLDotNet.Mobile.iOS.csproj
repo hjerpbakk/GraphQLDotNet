@@ -93,9 +93,6 @@
     </ImageAsset>
     <BundleResource Include="Resources\tab_settings%402x.png" />
     <BundleResource Include="Resources\tab_settings%403x.png" />
-    <BundleResource Include="Resources\tab_feed.png" />
-    <BundleResource Include="Resources\tab_feed%402x.png" />
-    <BundleResource Include="Resources\tab_feed%403x.png" />
     <BundleResource Include="Resources\xamarin_logo.png" />
     <BundleResource Include="Resources\xamarin_logo%402x.png" />
     <BundleResource Include="Resources\xamarin_logo%403x.png" />
@@ -118,6 +115,8 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\iTunesArtwork%402x.png" />
+    <BundleResource Include="Resources\cloud%402x.png" />
+    <BundleResource Include="Resources\cloud%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

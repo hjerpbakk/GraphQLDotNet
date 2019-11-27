@@ -7,14 +7,13 @@ namespace GraphQLDotNet.API.GraphTypes
     {
         public WeatherSummaryType()
         {
-            // TODO: Better field descriptions
-            Field(x => x.Id).Description("The Id of the forecast location.");
-            Field(x => x.Location).Description("Location of the measurement.");
-            Field(x => x.Date).Description("The Date of the forecast.").Type(new DateTimeGraphType());
-            Field(x => x.Temperature).Description("The Temperature in C.");
-            Field(x => x.OpenWeatherIcon).Description("Icon id of the weather.");
-            Field(x => x.Timezone).Description("The Timezone");
-            Field(x => x.Clouds).Description("The cloud coverage in percentage");
+            Field(x => x.Id).Description("The id of the forecast location.");
+            Field(x => x.Location).Description("The location of the forecast.");
+            Field(x => x.Date).Description("The date and time of the forecast.").Type(new DateTimeGraphType());
+            Field(x => x.Temperature).Description("The temperature in C.");
+            Field(x => x.OpenWeatherIcon).Description("The icon for the forecast.");
+            Field(x => x.Timezone).Description("The timezone of the date and times in this forecast.");
+            Field(x => x.Clouds).Description("The cloud coverage in percentage.");
         }
     }
 }
