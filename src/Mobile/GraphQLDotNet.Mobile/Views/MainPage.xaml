@@ -4,11 +4,13 @@
             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             mc:Ignorable="d"
-            xmlns:views="clr-namespace:GraphQLDotNet.Mobile.Views"
-            xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
             x:Class="GraphQLDotNet.Mobile.Views.MainPage"
-            vm:ViewModelLocator.AutoWireViewModel="true"
-            Style="{DynamicResource TabbedPageStyle}">      
+            xmlns:views="clr-namespace:GraphQLDotNet.Mobile.Views"
+            xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
+            xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
+            common:ViewModelLocator.AutoWireViewModel="true"
+            x:DataType="vm:MainViewModel"
+            Style="{DynamicResource TabbedPageStyle}">
      <TabbedPage.Children>
         <NavigationPage Title="Weather">
             <NavigationPage.Icon>
@@ -23,11 +25,11 @@
         <NavigationPage Title="Settings">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="tab_about.png" />
+                    <On Platform="iOS" Value="tab_settings.png" />
                 </OnPlatform>
             </NavigationPage.Icon>
             <x:Arguments>
-                <views:AboutPage />
+                <views:SettingsPage />
             </x:Arguments>
         </NavigationPage>
     </TabbedPage.Children>

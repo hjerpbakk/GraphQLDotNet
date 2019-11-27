@@ -4,10 +4,10 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="GraphQLDotNet.Mobile.Views.AboutPage"
+             x:Class="GraphQLDotNet.Mobile.Views.SettingsPage"
              xmlns:vm="clr-namespace:GraphQLDotNet.Mobile.ViewModels"
              xmlns:common="clr-namespace:GraphQLDotNet.Mobile.ViewModels.Common"
-             x:DataType="vm:AboutViewModel"
+             x:DataType="vm:SettingsViewModel"
              BackgroundColor="{DynamicResource Background}"
              Title="Settings"
              common:ViewModelLocator.AutoWireViewModel="true">
@@ -29,9 +29,9 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
-                                <Span Text="AppName" FontAttributes="Bold" FontSize="22" />
+                                <Span Text="Weather--" FontAttributes="Bold" FontSize="22" />
                                 <Span Text=" " />
-                                <Span Text="1.0" ForegroundColor="{DynamicResource TextSecondaryColor}" />
+                                <Span Text="2019.1" ForegroundColor="{DynamicResource TextSecondaryColor}" />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
@@ -54,14 +54,14 @@
                             <FormattedString.Spans>
                                 <Span Text="It shares code with its" />
                                 <Span Text=" " />
-                                <Span Text="iOS, Android, and Windows" FontAttributes="Bold" />
+                                <Span Text="iOS and Android" FontAttributes="Bold" />
                                 <Span Text=" " />
                                 <Span Text="versions." />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Button Margin="0,10,0,0" Text="Learn more" Command="{Binding OpenWebCommand}" BackgroundColor="{DynamicResource ActionColor}" TextColor="White" />
+                <Button Margin="0,10,0,0" Text="View the source" Command="{Binding OpenWebCommand}" BackgroundColor="{DynamicResource ActionColor}" TextColor="White" />
             </StackLayout>
         </ScrollView>
     </Grid>

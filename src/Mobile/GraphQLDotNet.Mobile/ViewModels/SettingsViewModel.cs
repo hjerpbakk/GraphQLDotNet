@@ -1,15 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GraphQLDotNet.Mobile.ViewModels.Commands;
 using GraphQLDotNet.Mobile.ViewModels.Common;
 using GraphQLDotNet.Mobile.ViewModels.Navigation;
+using Xamarin.Essentials;
 
 namespace GraphQLDotNet.Mobile.ViewModels
 {
-    public class AboutViewModel : PageViewModelBase
+    public class SettingsViewModel : PageViewModelBase
     {
         private readonly INavigationService navigationService;
 
-        public AboutViewModel(INavigationService navigationService)
+        public SettingsViewModel(INavigationService navigationService)
         {
             this.navigationService = navigationService;
         }
@@ -17,8 +19,7 @@ namespace GraphQLDotNet.Mobile.ViewModels
         // TODO: Use radio-button to create something
         public IAsyncCommand OpenWebCommand => new AsyncCommand(async () =>
         {
-            await navigationService.NavigateTo<AboutViewModel>();
-            //Launcher.OpenAsync(new Uri("https://xamarin.com/platform"));
+            await Launcher.OpenAsync(new Uri("https://github.com/Sankra/GraphQLDotNet"));
         });
 
         public override async Task Initialize()

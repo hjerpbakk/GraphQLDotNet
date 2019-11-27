@@ -18,7 +18,7 @@ namespace GraphQLDotNet.Mobile.ViewModels.Common
             ViewModelLocator.serviceContainer = serviceContainer;
             AddMapping<MainViewModel, MainPage>();
             AddMapping<LocationsViewModel, LocationsPage>();
-            AddMapping<AboutViewModel, AboutPage>();
+            AddMapping<SettingsViewModel, SettingsPage>();
             AddMapping<AddLocationViewModel, AddLocationPage>();
             AddMapping<WeatherViewModel, WeatherPage>();
         }
