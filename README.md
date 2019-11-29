@@ -11,7 +11,7 @@ The code uses some of the new features of C# 8, such as nullable reference types
 
 I've given a presentation on modern Xamarin Forms and this repo in particular at a local .Net User Group meeting, and you can view the slides below:
 
-TODO: SpeackerDeck
+![Screenshots of the app](screens.PNG)
 
 ## Run locally
 
