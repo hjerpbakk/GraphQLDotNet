@@ -13,9 +13,9 @@ The API can be explored on [https://graphql-weather.azurewebsites.net/ui/playgro
 
 The code uses some of the new features of C# 8, such as nullable reference types.
 
-I've given a presentation on modern Xamarin Forms and this repo in particular at a local .Net User Group meeting, and you can view the slides below:
+I've given a presentation on modern Xamarin Forms and this repo in particular at a local .Net User Group meeting, and you can view the slides below here:
 
-<script async class="speakerdeck-embed" data-id="76f56db5a1974e1bbb35a67ff926d440" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+https://speakerdeck.com/sankra/xamarin-forms-from-duplo-to-lego
 
 ## Run locally
 
