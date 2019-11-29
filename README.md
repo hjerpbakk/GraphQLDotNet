@@ -1,6 +1,10 @@
-# GraphQLDotNet
+# Weather--
 
-Educational repository showcasing a GraphQL API consumed by a Xamarin Forms app. This repository can be used as a template for:
+![Screenshots of the app](screens.PNG)
+
+## An app showcasing GraphQL with ASP.Net Core 3 and Xamarin Forms
+
+This is an educational repository showcasing a GraphQL API consumed by a Xamarin Forms app. This repository can be used as a template for:
 
 - a modern Xamarin Forms 4.3 app with clean and testable architecture consuming a GraphQL endpoint
 - an Asp.Net Core 3 GraphQL server in front of the [OpenWeather](https://openweathermap.org) APIs
@@ -11,7 +15,7 @@ The code uses some of the new features of C# 8, such as nullable reference types
 
 I've given a presentation on modern Xamarin Forms and this repo in particular at a local .Net User Group meeting, and you can view the slides below:
 
-![Screenshots of the app](screens.PNG)
+<script async class="speakerdeck-embed" data-id="76f56db5a1974e1bbb35a67ff926d440" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 
 ## Run locally
 
