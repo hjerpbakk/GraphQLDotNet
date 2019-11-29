@@ -27,7 +27,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.hjerpbakk.GraphQLDotNet-Mobile</string>
 	<key>CFBundleVersion</key>
-	<string>alpha0002</string>
+	<string>alpha0003</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>XSAppIconAssets</key>

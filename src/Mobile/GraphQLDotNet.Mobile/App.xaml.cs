@@ -43,7 +43,7 @@ namespace GraphQLDotNet.Mobile
 
         protected override void OnStart()
         {
-            AppCenter.Start($"{Secrets.AppCenteriOsSecret}",
+            AppCenter.Start($"ios={Secrets.AppCenteriOsSecret};android={Secrets.AppCenterAndroidSecret};uwp=",
                   typeof(Analytics), typeof(Crashes));
             InitApp().FireAndForgetSafeAsync();
         }

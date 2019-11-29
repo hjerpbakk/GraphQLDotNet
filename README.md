@@ -19,13 +19,13 @@ The apps needs a tiny bit configuration before running locally:
 
 ### The server
 
-The server needs an *OpenWeather API key*, which is available for free on [openweather.org](https://openweathermap.org). This key must be set as an environment variable or present in `appsettings.json` at the root of the `GraphQLDotNet.API` for the server to run:
+The server needs an *OpenWeather API key*, which is available for free on [openweather.org](https://openweathermap.org). This key must be set as an environment variable or present in `appsettings.json` for the server to run:
 
 ```shell
 OpenWeatherConfiguration__ApiKey="[APIKEY]"
 ```
 
-To run the server after configuration is in place, navigate to the TODO full path `GraphQLDotNet.API`-folder, and run:
+To run the server after configuration is in place, navigate to the `/src/API/GraphQLDotNet.API`-folder, and run:
 
 ```shell
 dotnet run
@@ -33,16 +33,16 @@ dotnet run
 
 ### The apps
 
-The apps needs the *address of the server* and optioanlly an *AppCenter secret*, for iOS and/or Android, to use crash reporting and analytics in AppCenter. These must be specified in a `secrets.json` file present at the root of the GraphQLDotNet.Mobile project. This file is ignored by Git.
+The apps need the *address of the server* and optionally an *AppCenter secret*, for iOS and/or Android, to use crash reporting and analytics in AppCenter. These must be specified in a `secrets.json` file present at the root of the `src/Mobile/GraphQLDotNet.Mobile` project. This file is ignored by Git.
 
 If the server is running locally, you can use:
 
 ```json
 {
   "ApiBaseAddress": "localhost",
-  "AppCenteriOsSecret": "[OptionalAppCenteriOSSecret]",
-  "AppCenterAndroidSecret": "[OptionalAppCenterAndroidSecret]"
+  "AppCenteriOsSecret": "",
+  "AppCenterAndroidSecret": ""
 }
 ```
 
-TODO: Bilde fra VS for Mac
+Then either `GraphQLDotNet.Mobile.Android` or `GraphQLDotNet.Mobile.iOS` can be run from Visual Studio.
