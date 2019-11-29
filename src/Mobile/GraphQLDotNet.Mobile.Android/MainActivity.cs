@@ -17,7 +17,6 @@ namespace GraphQLDotNet.Mobile.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-            // TODO: Support themes on Android: https://codetraveler.io/2019/09/11/check-for-dark-mode-in-xamarin-forms/
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
